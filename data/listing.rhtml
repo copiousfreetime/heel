@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <title>Index of /<%= req_uri %>/</title>
+    </head>
+    <body>
+        <h2>Index of /<%= req_uri %>/</h2>
+        <div>
+            <table summary="Directory Listing" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr><th>Name</th><th>Last Modified</th><th>Size</th><th>Type</th></tr> 
+            </thead>
+            <tbody>
+                <% entries.each do |entry| %>
+                <tr>
+                    <td><%= entry.name %></td>
+                    <td><%= entry.last_modifield %></td>
+                    <td><%= entry.size %></td>
+                    <td><%= entry.mime_type %></td>
+                </tr>
+                <% end %>
+            </tbody>
+            </table>
+        </div>
+    </body>
+</html>

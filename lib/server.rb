@@ -49,7 +49,7 @@ module MongrelHere
                end
 
                 op.on("-d", "--daemonize", "Run daemonized in the background") do 
-                    @parsed_optoins.daemonize = true
+                    @parsed_options.daemonize = true
                 end
 
                 op.on("-v", "--version", "Show version") do 

@@ -25,8 +25,8 @@ module MongrelHere
             @directory_listing_allowed  = options[:directory_listing_allowed]
             @directory_index_html       = options[:directory_index_html]
             @using_icons                = options[:using_icons]
-            @icon_uri                   = options[:icon_uri]
-            @directory_listing_template = options[:directory_listing_template]
+            @icon_url                   = options[:icon_url]
+            @directory_listing_template = ERB.new File.read(options[:directory_listing_template])
 
             ADDITIONAL_MIME_TYPES.each do |mt|
                 type = MIME::Type.from_array(mt)
@@ -73,10 +73,40 @@ module MongrelHere
             end
         end
 
+        # send a directory listing back to the client
+        def respond_with_directory_listing(req_path,request,response)
+            base_uri = Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::REQUEST_URI])
+            entries = []
+            Dir.entries(req_path).each do |entry|
+                next if entry == "."
+                stat            = File.stat(File.join(req_path,entry))
+                entry_data      = OpenStruct.new 
+
+                entry_data.name          = entry
+                entry_data.size          = num_to_bytes(stat.size)
+                entry_data.last_modified = stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
+
+                if stat.directory? then
+                    entry_data.type = "Directory"
+                else
+                    entry_data.type = (MIME::Types.of(entry).first || default_mime_type).to_s
+                end
+                
+                if using_icons? then
+                    entry_data.icon_url = File.join(icon_url, icon_for(entry_data.type))
+                end
+                entries << entry_data
+            end
+
+            response.start(200) do |head,out|
+                head['Content-Type'] = 'text/html'
+                out.write(directory_listing_template.result(binding))
+            end
+        end
+
         # process the request, returning either the file, a directory
         # listing (if allowed) or an appropriate error
         def process(request, response)
-
             method   = request.params[Mongrel::Const::REQUEST_METHOD] || Mongrel::Const::GET
             if ( method == Mongrel::Const::GET ) or ( method == Mongrel::Const::HEAD ) then
                 
@@ -97,6 +127,24 @@ module MongrelHere
             # invalid method
             else
                 response.start(403) { |head,out| out.write("Only HEAD and GET requests are honored.") }
+            end
+        end
+
+        # essentially this is strfbytes from facets
+        def num_to_bytes(num,fmt="%.2f")
+           case
+            when num < 1024
+              "#{self} bytes"
+            when num < 1024**2
+              "#{fmt % (self.to_f / 1024)} KB"
+            when num < 1024**3
+              "#{fmt % (self.to_f / 1024**2)} MB"
+            when num < 1024**4
+              "#{fmt % (self.to_f / 1024**3)} GB"
+            when num < 1024**5
+              "#{fmt % (self.to_f / 1024**4)} TB"
+            else
+              "#{self} bytes"
             end
         end
     end
