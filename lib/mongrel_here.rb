@@ -6,6 +6,7 @@ module MongrelHere
     VERSION         = [0,0,1].freeze
     AUTHOR          = "Jeremy Hinegardner".freeze
     AUTHOR_EMAIL    = "jeremy@hinegardner.org".freeze
+    HOMEPAGE        = "http://pieces-of-flare.rubyforge.org/mongrel_here/"
     COPYRIGHT       = "2007 #{AUTHOR}".freeze
     DESCRIPTION     = <<DESC
 mongrel_here is a trival webserver to quick and easily serve up the the

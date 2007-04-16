@@ -7,6 +7,7 @@ require 'rake/gempackagetask'
 require 'rake/clean'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
+require 'mongrel_here'
 
 #-----------------------------------------------------------------------
 # most of this is out of hoe, but I needed more flexibility in directory
@@ -19,12 +20,12 @@ require 'spec/rake/spectask'
 PKG_INFO = OpenStruct.new
 PKG_INFO.name               = "mongrel_here"
 PKG_INFO.rubyforge_name     = PKG_INFO.name.downcase
-PKG_INFO.summary            = Keybox::DESCRIPTION
-PKG_INFO.description        = Keybox::DESCRIPTION
-PKG_INFO.url                = Keybox::HOMEPAGE
-PKG_INFO.email              = Keybox::AUTHOR_EMAIL
-PKG_INFO.author             = Keybox::AUTHOR
-PKG_INFO.version            = Keybox::VERSION.join(".")
+PKG_INFO.summary            = MongrelHere::DESCRIPTION
+PKG_INFO.description        = MongrelHere::DESCRIPTION
+PKG_INFO.url                = MongrelHere::HOMEPAGE
+PKG_INFO.email              = MongrelHere::AUTHOR_EMAIL
+PKG_INFO.author             = MongrelHere::AUTHOR
+PKG_INFO.version            = MongrelHere::VERSION.join(".")
 
 PKG_INFO.rdoc_dir           = "doc/rdoc"
 PKG_INFO.rdoc_main          = "README"
