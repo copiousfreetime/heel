@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'mime/types'
+require 'erb'
 
 module MongrelHere
 
@@ -10,6 +11,7 @@ module MongrelHere
         attr_reader :directory_index_html
         attr_reader :icon_uri
         attr_reader :directory_listing_template
+        attr_reader :default_mime_type
 
         # if any other mime types are needed, add them directly via the
         # mime-types calls.
@@ -21,12 +23,12 @@ module MongrelHere
         ]
 
         def initialize(options = {})
-            @document_root              = options[:document_root]
-            @directory_listing_allowed  = options[:directory_listing_allowed]
-            @directory_index_html       = options[:directory_index_html]
-            @using_icons                = options[:using_icons]
-            @icon_url                   = options[:icon_url]
-            @directory_listing_template = ERB.new File.read(options[:directory_listing_template])
+            @document_root              = options[:document_root] || Dir.pwd
+            @directory_listing_allowed  = options[:directory_listing_allowed] || true
+            @directory_index_html       = options[:directory_index_html] || "index.html"
+            @using_icons                = options[:using_icons] || false
+            @icon_url                   = options[:icon_url] || "/icons"
+            @directory_listing_template = ::ERB.new File.read(File.join(APP_DATA_DIR,"listing.rhtml"))
 
             ADDITIONAL_MIME_TYPES.each do |mt|
                 type = MIME::Type.from_array(mt)
@@ -75,7 +77,7 @@ module MongrelHere
 
         # send a directory listing back to the client
         def respond_with_directory_listing(req_path,request,response)
-            base_uri = Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::REQUEST_URI])
+            base_uri = ::Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::REQUEST_URI])
             entries = []
             Dir.entries(req_path).each do |entry|
                 next if entry == "."
@@ -111,7 +113,7 @@ module MongrelHere
             if ( method == Mongrel::Const::GET ) or ( method == Mongrel::Const::HEAD ) then
                 
                 req_path = File.expand_path(File.join(@document_root,
-                                                      HttpRequest.unescape(request.params[Mongrel::Const::PATH_INFO])),
+                                                      ::Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::PATH_INFO])),
                                             @document_root)
                 res_type = how_to_respond(req_path)
 
@@ -136,15 +138,15 @@ module MongrelHere
             when num < 1024
               "#{self} bytes"
             when num < 1024**2
-              "#{fmt % (self.to_f / 1024)} KB"
+              "#{fmt % (num.to_f / 1024)} KB"
             when num < 1024**3
-              "#{fmt % (self.to_f / 1024**2)} MB"
+              "#{fmt % (num.to_f / 1024**2)} MB"
             when num < 1024**4
-              "#{fmt % (self.to_f / 1024**3)} GB"
+              "#{fmt % (num.to_f / 1024**3)} GB"
             when num < 1024**5
-              "#{fmt % (self.to_f / 1024**4)} TB"
+              "#{fmt % (num.to_f / 1024**4)} TB"
             else
-              "#{self} bytes"
+              "#{num} bytes"
             end
         end
     end
