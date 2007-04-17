@@ -81,6 +81,7 @@ module MongrelHere
             entries = []
             Dir.entries(req_path).each do |entry|
                 next if entry == "."
+                next if req_path == document_root and entry == ".."
                 stat            = File.stat(File.join(req_path,entry))
                 entry_data      = OpenStruct.new 
 
@@ -89,9 +90,9 @@ module MongrelHere
                 entry_data.last_modified = stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
 
                 if stat.directory? then
-                    entry_data.type = "Directory"
+                    entry_data.mime_type = "Directory"
                 else
-                    entry_data.type = (MIME::Types.of(entry).first || default_mime_type).to_s
+                    entry_data.mime_type = (MIME::Types.of(entry).first || default_mime_type).to_s
                 end
                 
                 if using_icons? then
@@ -99,6 +100,8 @@ module MongrelHere
                 end
                 entries << entry_data
             end
+
+            entries = entries.sort_by { |e| e.name }
 
             response.start(200) do |head,out|
                 head['Content-Type'] = 'text/html'
@@ -136,7 +139,7 @@ module MongrelHere
         def num_to_bytes(num,fmt="%.2f")
            case
             when num < 1024
-              "#{self} bytes"
+              "#{num} bytes"
             when num < 1024**2
               "#{fmt % (num.to_f / 1024)} KB"
             when num < 1024**3

@@ -83,7 +83,6 @@ module MongrelHere
         def run
             error_version_help
             merge_options
-            puts options
             dr = options.document_root
             config = ::Mongrel::Configurator.new :host => "*", :port => options.port do
                 listener do
