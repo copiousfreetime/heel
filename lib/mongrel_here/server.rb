@@ -7,7 +7,7 @@ module MongrelHere
         attr_reader :stderr
         attr_reader :stdin
 
-        def initialize
+        def initialize(argv = [])
             argv ||= []
 
             @options        = self.default_options

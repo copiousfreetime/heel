@@ -12,9 +12,4 @@ module MongrelHere
 mongrel_here is a trival webserver to quick and easily serve up the the
 web contents of a directory.  
 DESC
-
-    def go
-        server = MongrelHere::Server.new(ARGV)
-        server.run
-    end
 end
