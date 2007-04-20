@@ -12,6 +12,7 @@ module MongrelHere
         attr_reader :icon_uri
         attr_reader :directory_listing_template
         attr_reader :default_mime_type
+        attr_reader :ignore_globs
 
         # if any other mime types are needed, add them directly via the
         # mime-types calls.
@@ -23,6 +24,7 @@ module MongrelHere
         ]
 
         def initialize(options = {})
+            @ignore_globs               = options[:ignore_globs] || %w( *~ .htaccess . )
             @document_root              = options[:document_root] || Dir.pwd
             @directory_listing_allowed  = options[:directory_listing_allowed] || true
             @directory_index_html       = options[:directory_index_html] || "index.html"
@@ -59,7 +61,10 @@ module MongrelHere
                        elsif directory_listing_allowed?
                            return :directory_listing
                        end
-                    elsif stat.file? and stat.readable?
+                    elsif stat.file? and stat.readable? then
+                        if should_ignore?(File.basename(req_path)) then
+                            return 403
+                        end
                         return req_path
                     else
                         # TODO: debug log
@@ -75,12 +80,19 @@ module MongrelHere
             end
         end
 
+        def should_ignore?(fname)
+            ignore_globs.each do |glob|
+                return true if File.fnmatch(glob,fname)
+            end
+            false 
+        end
+
         # send a directory listing back to the client
         def respond_with_directory_listing(req_path,request,response)
             base_uri = ::Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::REQUEST_URI])
             entries = []
             Dir.entries(req_path).each do |entry|
-                next if entry == "."
+                next if should_ignore?(entry)
                 next if req_path == document_root and entry == ".."
                 stat            = File.stat(File.join(req_path,entry))
                 entry_data      = OpenStruct.new 
@@ -103,10 +115,13 @@ module MongrelHere
 
             entries = entries.sort_by { |e| e.name }
 
-            response.start(200) do |head,out|
+            response.start(200,true) do |head,out|
                 head['Content-Type'] = 'text/html'
                 out.write(directory_listing_template.result(binding))
             end
+        end
+
+        def respond_with_send_file(path,method,request,response)
         end
 
         # process the request, returning either the file, a directory
@@ -126,12 +141,12 @@ module MongrelHere
                 when String
                     respond_with_send_file(res_type,method,request,response)
                 when Integer
-                    respond_with_error(res_type,request,response)
+                    response.status = res_type
                 end
 
             # invalid method
             else
-                response.start(403) { |head,out| out.write("Only HEAD and GET requests are honored.") }
+                response.start(403,true) { |head,out| out.write("Only HEAD and GET requests are honored.") }
             end
         end
 

@@ -14,7 +14,7 @@
             <tbody>
                 <% entries.each do |entry| %>
                 <tr>
-                    <td><a href="<%= entry.name %>"><%= entry.name %></a></td>
+                    <td><a href="<%= "#{base_uri.chomp('/')}/#{entry.name}" %>"><%= entry.name %></a></td>
                     <td><%= entry.last_modified %></td>
                     <td><%= entry.size %></td>
                     <td><%= entry.mime_type %></td>

@@ -83,10 +83,11 @@ module MongrelHere
         def run
             error_version_help
             merge_options
-            dr = options.document_root
+            document_root = options.document_root
             config = ::Mongrel::Configurator.new :host => "*", :port => options.port do
                 listener do
-                    uri "/", :handler => MongrelHere::DirHandler.new(dr)
+                    uri "/", :handler => MongrelHere::DirHandler.new({:document_root => document_root})
+                    uri "/", :handler => MongrelHere::ErrorHandler.new
                 end
                 setup_signals
                 run

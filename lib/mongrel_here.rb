@@ -16,4 +16,5 @@ end
 
 require 'mongrel_here/server'
 require 'mongrel_here/dir_handler'
+require 'mongrel_here/error_handler'
 
