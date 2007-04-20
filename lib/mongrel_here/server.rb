@@ -84,10 +84,15 @@ module MongrelHere
             error_version_help
             merge_options
             document_root = options.document_root
+            stats = ::Mongrel::StatisticsFilter.new(:sample_rate => 1)
             config = ::Mongrel::Configurator.new :host => "*", :port => options.port do
                 listener do
+                    uri "/", :handler => stats
                     uri "/", :handler => MongrelHere::DirHandler.new({:document_root => document_root})
                     uri "/", :handler => MongrelHere::ErrorHandler.new
+                    uri "/icons", :handler => MongrelHere::DirHandler.new({ :document_root => 
+                                                                          File.join(APP_DATA_DIR, "famfamfam", "icons")})
+                    uri "/status", :handler => Mongrel::StatusHandler.new(:stats_filter => stats)
                 end
                 setup_signals
                 run

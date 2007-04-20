@@ -12,10 +12,13 @@ module MongrelHere
 
         def process(request,response)
             status = response.status
-            message = ::Mongrel::HTTP_STATUS_CODES[status]
-            response.start(status,true) do |head,out|
-                head['Content-Type'] = 'text/html'
-                out.write(template.result(binding))
+            if status != 200 then 
+                message = ::Mongrel::HTTP_STATUS_CODES[status]
+
+                response.start(status) do |head,out|
+                    head['Content-Type'] = 'text/html'
+                    out.write(template.result(binding))
+                end
             end
         end
     end

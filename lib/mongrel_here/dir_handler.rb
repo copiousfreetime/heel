@@ -33,8 +33,10 @@ module MongrelHere
             @directory_listing_template = ::ERB.new File.read(File.join(APP_DATA_DIR,"listing.rhtml"))
 
             ADDITIONAL_MIME_TYPES.each do |mt|
-                type = MIME::Type.from_array(mt)
-                MIME::Types.add(type)
+                if MIME::Types[mt.first].nil? then
+                    type = MIME::Type.from_array(mt)
+                    MIME::Types.add(type)
+                end
             end
 
             @default_mime_type = MIME::Types["application/octet-stream"].first
@@ -115,13 +117,49 @@ module MongrelHere
 
             entries = entries.sort_by { |e| e.name }
 
-            response.start(200,true) do |head,out|
+            response.start(200) do |head,out|
                 head['Content-Type'] = 'text/html'
                 out.write(directory_listing_template.result(binding))
             end
         end
 
+        # this method is essentially the send_file method from
+        # Mongrel::DirHandler
         def respond_with_send_file(path,method,request,response)
+            stat    = File.stat(path)
+            mtime   = stat.mtime
+            etag    = ::Mongrel::Const::ETAG_FORMAT % [mtime.to_i, stat.size, stat.ino]
+
+            modified_since  = request.params[::Mongrel::Const::HTTP_IF_MODIFIED_SINCE]
+            none_match      = request.params[::Mongrel::Const::HTTP_IF_NONE_MATCH]
+
+            last_response_time = Time.httpddate(modified_since) rescue nil
+
+            same_response = case
+                            when modified_since && !last_response_time                               : false
+                            when modified_since && last_response_time > Time.now                     : false
+                            when modified_since && mtime > last_response_time                        : false
+                            when none_match     && none_match == "*"                                 : false
+                            when none_match     && !none_match.strip.split(/\s*,\s*/).include?(etag) : false
+                            else modified_since || none_match
+                            end
+            header = response.header
+            header[::Mongrel::Const::ETAG] = etag
+
+            if same_response then
+                response.start(304) {}
+            else
+                response.status = 200
+                header[::Mongrel::Const::LAST_MODIFIED] = mtime.httpdate
+                header[::Mongrel::Const::CONTENT_TYPE] = (MIME::Types.of(path).first || default_mime_type).to_s
+            end
+
+            response.send_status(stat.size)
+            response.send_header
+
+            if method == ::Mongrel::Const::GET then
+                response.send_file(path,stat.size < ::Mongrel::Const::CHUNK_SIZE * 2)
+            end
         end
 
         # process the request, returning either the file, a directory
@@ -146,7 +184,7 @@ module MongrelHere
 
             # invalid method
             else
-                response.start(403,true) { |head,out| out.write("Only HEAD and GET requests are honored.") }
+                response.start(403) { |head,out| out.write("Only HEAD and GET requests are honored.") }
             end
         end
 
