@@ -9,10 +9,12 @@ module MongrelHere
     class DirHandler < Mongrel::HttpHandler
         attr_reader :document_root
         attr_reader :directory_index_html
-        attr_reader :icon_uri
-        attr_reader :directory_listing_template
+        attr_reader :icon_url
         attr_reader :default_mime_type
         attr_reader :ignore_globs
+        attr_reader :reload_template_changes
+        attr_reader :template
+        attr_reader :template_mtime
 
         # if any other mime types are needed, add them directly via the
         # mime-types calls.
@@ -20,22 +22,50 @@ module MongrelHere
             # [ content-type , [ array, of, filename, extentions] ]
             ["images/svg+xml", ["svg"]],
             ["video/x-flv", ["flv"]],
-            ["application/x-shockwave-flash", ["swf"]]
+            ["application/x-shockwave-flash", ["swf"]],
+            ["text/plain", ["rb", "rhtml"]],
         ]
+
+        ICONS_BY_MIME_TYPE = {
+            "text/plain"                => "page_white_text.png",
+            "image"                     => "picture.png",
+            "pdf"                       => "page_white_acrobat.png",
+            "xml"                       => "page_white_code.png",
+            "compress"                  => "compress.png",
+            "gzip"                      => "compress.png",
+            "zip"                       => "compress.png",
+            "application/xhtml+xml"     => "xhtml.png",
+            "application/word"          => "page_word.png",
+            "application/excel"         => "page_excel.png",
+            "application/powerpoint"    => "page_white_powerpoint.png",
+            "text/html"                 => "html.png",
+            "application"               => "application.png",
+            "text"                      => "page_white_text.png",
+            :directory                  => "folder.png",
+            :default                    => "page_white.png",
+        }
 
         def initialize(options = {})
             @ignore_globs               = options[:ignore_globs] || %w( *~ .htaccess . )
             @document_root              = options[:document_root] || Dir.pwd
             @directory_listing_allowed  = options[:directory_listing_allowed] || true
             @directory_index_html       = options[:directory_index_html] || "index.html"
-            @using_icons                = options[:using_icons] || false
+            @using_icons                = options[:using_icons] || true
             @icon_url                   = options[:icon_url] || "/icons"
-            @directory_listing_template = ::ERB.new File.read(File.join(APP_DATA_DIR,"listing.rhtml"))
+            @reload_template_changes    = options[:reload_template_changes] || false
+            reload_template
 
             ADDITIONAL_MIME_TYPES.each do |mt|
-                if MIME::Types[mt.first].nil? then
+                if MIME::Types[mt.first].size == 0 then
                     type = MIME::Type.from_array(mt)
                     MIME::Types.add(type)
+                else
+                    type = MIME::Types[mt.first].first
+                    mt[1].each do |ext|
+                        type.extensions << ext unless type.extensions.include?(ext)
+                    end
+                    # have to reindex if new extensions added
+                    MIME::Types.index_extensions(type)
                 end
             end
 
@@ -48,6 +78,29 @@ module MongrelHere
 
         def using_icons?
             return @using_icons
+        end
+
+        def icon_for(mime_type)
+            icon = nil
+            [:content_type, :sub_type, :media_type].each do |t| 
+                icon = ICONS_BY_MIME_TYPE[mime_type.send(t)]
+                return icon if icon
+            end
+            icon = ICONS_BY_MIME_TYPE[:default]
+        end
+
+        def reload_template_changes?
+            return @reload_template_changes
+        end
+
+        def reload_template
+            fname = File.join(APP_DATA_DIR,"listing.rhtml")
+            fstat = File.stat(fname)
+            @template_mtime ||= fstat.mtime
+            if @template.nil? or fstat.mtime > @template_mtime then
+                @template = ::ERB.new(File.read(fname))
+                log "Reloaded #{fname}"
+            end
         end
 
         # determine how to respond to the request, it will either be a
@@ -99,28 +152,33 @@ module MongrelHere
                 stat            = File.stat(File.join(req_path,entry))
                 entry_data      = OpenStruct.new 
 
-                entry_data.name          = entry
+                entry_data.name          = entry == ".." ? "Parent Directory" : entry
+                entry_data.link          = entry
                 entry_data.size          = num_to_bytes(stat.size)
                 entry_data.last_modified = stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
 
                 if stat.directory? then
-                    entry_data.mime_type = "Directory"
-                    entry_data.size      = "-"
+                    entry_data.content_type = "Directory"
+                    entry_data.size         = "-"
+                    entry_data.name         += "/"
+                    if using_icons? then
+                        entry_data.icon_url = File.join(icon_url, ICONS_BY_MIME_TYPE[:directory])
+                    end
                 else
-                    entry_data.mime_type = (MIME::Types.of(entry).first || default_mime_type).to_s
-                end
-                
-                if using_icons? then
-                    entry_data.icon_url = File.join(icon_url, icon_for(entry_data.type))
+                    entry_data.mime_type = MIME::Types.of(entry).first || default_mime_type
+                    entry_data.content_type = entry_data.mime_type.content_type
+                    if using_icons? then
+                        entry_data.icon_url = File.join(icon_url, icon_for(entry_data.mime_type))
+                    end
                 end
                 entries << entry_data
             end
 
-            entries = entries.sort_by { |e| e.name }
+            entries = entries.sort_by { |e| e.link }
 
             response.start(200) do |head,out|
                 head['Content-Type'] = 'text/html'
-                out.write(directory_listing_template.result(binding))
+                out.write(template.result(binding))
             end
         end
 
@@ -168,6 +226,8 @@ module MongrelHere
         def process(request, response)
             method   = request.params[Mongrel::Const::REQUEST_METHOD] || Mongrel::Const::GET
             if ( method == Mongrel::Const::GET ) or ( method == Mongrel::Const::HEAD ) then
+
+                reload_template if reload_template_changes
                 
                 req_path = File.expand_path(File.join(@document_root,
                                                       ::Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::PATH_INFO])),
@@ -205,6 +265,10 @@ module MongrelHere
             else
               "#{num} bytes"
             end
+        end
+
+        def log(msg)
+            STDERR.print "-->  ", msg, "\n"
         end
     end
 end

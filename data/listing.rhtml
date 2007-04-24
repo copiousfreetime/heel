@@ -7,45 +7,63 @@
             a, a:active { text-decoration: none; color: blue;}
             a:visited { color: purple;}
             a:hover, a:focus { text-decoration: underline; color: red;}
-            body { font-family: Verdana, Arial, Helvetica, sans-serif; background-color: #FFF; }
+            body { font-family: Verdana, Arial, Helvetica, sans-serif; background-color: #eee; }
             .c { text-align: center; }
-            table { border-width: 0 0 0 0; }
-            thead { background-color: #aaa; color: blue;}
-            th { font-weight: bold; text-align: left; border-width: 0 0 0 0; padding: 0px;}
-            th.n { width: 40%; }
-            th.l { width: 20%; }
-            th.m { width: 20%; text-align: center;}
-            th.t { width: 20%; }
-            td { font-family: monospace; text-align: left ; padding: 0px; border-width: 0px }
-            td.n { text-align: right; }
-            div.header { background: #aaa; }
-            div.content { background: #FFF; }
-            div.foot { font-size: larger; }
+            table { border-collapse: collapse; border-spacing: 0px; width: 100%;}
+            tr { background-color: #ccf;}
+            tr:hover { background-color: #faa;}
+            td, th { 
+                border-bottom: 1px solid #ccc; 
+                padding: 0em .3em 0em .3em ; 
+                color: #666; 
+                text-align: left;
+                vertical-align: middle;
+            }
+            thead th { 
+                border-top: 2px solid #666; 
+                border-bottom: 2px solid #666; 
+                font-weight: bold; 
+                background: #aaa; 
+                color: #fff;
+                text-transform: uppercase;
+            }
+
+            tr.odd { background-color: #cfc; color: #333;}
+            tr.odd:hover { background-color: #faa; color: #333;}
+            td.n { text-align: right; padding-right: 2em;}
+            div.header { }
+            div.content { background: #FFF; width: 100%;}
+            div.footer { border-top: 2px solid #333; text-align: right;}
         </style>
     </head>
     <body>
-        <div id="header">
-            <h2>Index of <%= base_uri %></h2>
+        <div class="header">
+            <h1>Index of <%= base_uri %></h1>
         </div>
-        <div id="content">
+        <div class="content">
             <table summary="Directory Listing">
                 <thead>
-                    <tr><th class="n">Name</th><th class="l" >Last Modified</th><th class="m">Size</th><th class="t">Type</th></tr> 
+                    <tr><th class="n">File Name</th><th class="l" >Last Modified Timestamp</th><th class="m">File Size</th><th class="t">File Type</th></tr> 
                 </thead>
                 <tbody>
-                    <% entries.each do |entry| %>
-                    <tr>
-                        <td><a href="<%= "#{base_uri.chomp('/')}/#{entry.name}" %>"><%= entry.name %></a></td>
+                    <% entries.each_with_index do |entry,i| %>
+                    <tr<%= i % 2 > 0 ? ' class="odd" ' : '' %>>
+                        <td>
+                            <% if entry.icon_url then %>
+                            <img src="<%= entry.icon_url %>" width="16" height="16" alt="icon for type <%= entry.content_type %>" />
+                            <% end %>
+                            <a href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>"><%= entry.name %></a>
+                        </td>
                         <td><%= entry.last_modified %></td>
-                        <td class="<%= entry.mime_type == "Directory" ? 'c' : 'n' %>" ><%= entry.size %></td>
-                        <td><%= entry.mime_type %></td>
+                        <td class="<%= entry.content_type == "Directory" ? 'c' : 'n' %>" ><%= entry.size %></td>
+                        <td><%= entry.content_type %></td>
                     </tr>
                     <% end %>
                 </tbody>
             </table>
         </div>
-        <div id="footer">
-            mongrel_here/<%= MongrelHere::VERSION.join(".") %>
+        <div class="footer">
+            <a href="<%= MongrelHere::HOMEPAGE %>">mongrel_here</a>/v<%= MongrelHere::VERSION.join(".") %>
         </div>
     </body>
 </html>

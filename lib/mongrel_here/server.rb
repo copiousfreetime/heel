@@ -88,7 +88,7 @@ module MongrelHere
             config = ::Mongrel::Configurator.new :host => "*", :port => options.port do
                 listener do
                     uri "/", :handler => stats
-                    uri "/", :handler => MongrelHere::DirHandler.new({:document_root => document_root})
+                    uri "/", :handler => MongrelHere::DirHandler.new({:document_root => document_root, })
                     uri "/", :handler => MongrelHere::ErrorHandler.new
                     uri "/icons", :handler => MongrelHere::DirHandler.new({ :document_root => 
                                                                           File.join(APP_DATA_DIR, "famfamfam", "icons")})
