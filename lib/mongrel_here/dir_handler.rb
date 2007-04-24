@@ -105,6 +105,7 @@ module MongrelHere
 
                 if stat.directory? then
                     entry_data.mime_type = "Directory"
+                    entry_data.size      = "-"
                 else
                     entry_data.mime_type = (MIME::Types.of(entry).first || default_mime_type).to_s
                 end

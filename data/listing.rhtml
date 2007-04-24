@@ -3,25 +3,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <title>Index of <%= base_uri %></title>
+        <style type="text/css">
+            a, a:active { text-decoration: none; color: blue;}
+            a:visited { color: purple;}
+            a:hover, a:focus { text-decoration: underline; color: red;}
+            body { font-family: Verdana, Arial, Helvetica, sans-serif; background-color: #FFF; }
+            .c { text-align: center; }
+            table { border-width: 0 0 0 0; }
+            thead { background-color: #aaa; color: blue;}
+            th { font-weight: bold; text-align: left; border-width: 0 0 0 0; padding: 0px;}
+            th.n { width: 40%; }
+            th.l { width: 20%; }
+            th.m { width: 20%; text-align: center;}
+            th.t { width: 20%; }
+            td { font-family: monospace; text-align: left ; padding: 0px; border-width: 0px }
+            td.n { text-align: right; }
+            div.header { background: #aaa; }
+            div.content { background: #FFF; }
+            div.foot { font-size: larger; }
+        </style>
     </head>
     <body>
-        <h2>Index of <%= base_uri %></h2>
-        <div>
-            <table summary="Directory Listing" cellspacing="0" cellpadding="0">
-            <thead>
-                <tr><th>Name</th><th>Last Modified</th><th>Size</th><th>Type</th></tr> 
-            </thead>
-            <tbody>
-                <% entries.each do |entry| %>
-                <tr>
-                    <td><a href="<%= "#{base_uri.chomp('/')}/#{entry.name}" %>"><%= entry.name %></a></td>
-                    <td><%= entry.last_modified %></td>
-                    <td><%= entry.size %></td>
-                    <td><%= entry.mime_type %></td>
-                </tr>
-                <% end %>
-            </tbody>
+        <div id="header">
+            <h2>Index of <%= base_uri %></h2>
+        </div>
+        <div id="content">
+            <table summary="Directory Listing">
+                <thead>
+                    <tr><th class="n">Name</th><th class="l" >Last Modified</th><th class="m">Size</th><th class="t">Type</th></tr> 
+                </thead>
+                <tbody>
+                    <% entries.each do |entry| %>
+                    <tr>
+                        <td><a href="<%= "#{base_uri.chomp('/')}/#{entry.name}" %>"><%= entry.name %></a></td>
+                        <td><%= entry.last_modified %></td>
+                        <td class="<%= entry.mime_type == "Directory" ? 'c' : 'n' %>" ><%= entry.size %></td>
+                        <td><%= entry.mime_type %></td>
+                    </tr>
+                    <% end %>
+                </tbody>
             </table>
+        </div>
+        <div id="footer">
+            mongrel_here/<%= MongrelHere::VERSION.join(".") %>
         </div>
     </body>
 </html>
