@@ -127,8 +127,11 @@ module MongrelHere
                     end
 
                 rescue => error
+                    if error.kind_of?(Errno::ENOENT) then
+                        return 404
+                    end
                     # TODO: debug log
-                    return 404
+                    return 500
                 end
             else
                return 403

@@ -2,10 +2,67 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
-        <title>Error <%= status %> title>
+        <title>Error <%= status %> </title>
+        <style type="text/css">
+            body { font-family: Verdana, Arial, Helvetica, sans-serif; background-color: #e0e0e0;}
+            div.wrap { 
+                background: transparent;
+                text-align: left;
+                width: 400px;
+                margin-top: 100px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            div.box {
+                border-left: 1px solid #333;
+                border-right: 1px solid #333;
+                background: #FFF;
+                display: block;
+            }
+            img { padding-right: 20px;} 
+            h1 { display: inline; font-weight: bold; }
+            h2 { display: inline; font-weight: bold; padding-left: 25px;text-align: center;}
+            div.header { font-size: x-large; }
+            div.content { font-size: x-large; border: 0; padding: 10px 25px 10px 25px;}
+            div.footer { text-align: right; width: 400px; }
+
+            .curved { background: transparent;}
+            .curved .c1, .curved .c2, .curved .c3, .curved .c4 {
+                display: block;
+                overflow: hidden;
+                height: 1px;
+                font-size: 1px;
+            }
+            .curved .c2, .curved .c3, .curved .c4 {
+                background: #fff;
+                border-left: 1px solid #000;
+                border-right: 1px solid #000;
+            }
+            .c1 { margin: 0 5px 0 5px; background: #000; }
+            .c2 { margin: 0 3px 0 3px; border-left: 2px solid #000; border-right: 2px solid #000; }
+            .c3 { margin: 0 2px 0 2px; }
+            .c4 { margin: 0 1px 0 1px; }
+        </style>
     </head>
     <body>
-        <h2>Error <%= status %></h2>
-        <h2><%= message %></h2>
+        <div class="wrap">
+            <div class="header">
+                Requested URL: <%= base_uri %>
+            </div>
+            <div class="curved">
+                <b class="c1"></b><b class="c2"></b><b class="c3"></b><b class="c4"></b> 
+                <div class="box">
+                    <div class="content">
+                        <img src="/icons/error.png"><h1>Error <%= status %></h1>
+                        <br />
+                        <h2><%= message %></h2>
+                    </div>
+                </div>
+                <b class="c4"></b><b class="c3"></b><b class="c2"></b><b class="c1"></b>
+            </div>
+            <div class="footer">
+                <a href="<%= MongrelHere::HOMEPAGE %>">mongrel_here</a>/v<%= MongrelHere::VERSION.join(".") %>
+            </div>
+        </div>
     </body>
 </html>
