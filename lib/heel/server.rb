@@ -1,7 +1,7 @@
+require 'heel'
 require 'ostruct'
-require 'mongrel_here'
 
-module MongrelHere
+module Heel
     class Server
         attr_accessor :options
         attr_accessor :parsed_options
@@ -72,7 +72,7 @@ module MongrelHere
 
         def error_version_help
             if @parsed_options.show_version then
-                puts "#{@parser.program_name}: version #{MongrelHere::VERSION.join(".")}"
+                puts "#{@parser.program_name}: version #{Heel::VERSION.join(".")}"
                 exit 0
             elsif @parsed_options.show_help then
                 puts @parser.to_s
@@ -88,17 +88,17 @@ module MongrelHere
             config = ::Mongrel::Configurator.new :host => "*", :port => options.port do
                 listener do
                     uri "/", :handler => stats
-                    uri "/", :handler => MongrelHere::DirHandler.new({:document_root => document_root, })
-                    uri "/", :handler => MongrelHere::ErrorHandler.new
-                    uri "/icons", :handler => MongrelHere::DirHandler.new({ :document_root => 
+                    uri "/", :handler => Heel::DirHandler.new({:document_root => document_root, })
+                    uri "/", :handler => Heel::ErrorHandler.new
+                    uri "/icons", :handler => Heel::DirHandler.new({ :document_root => 
                                                                           File.join(APP_DATA_DIR, "famfamfam", "icons")})
-                    uri "/status", :handler => Mongrel::StatusHandler.new(:stats_filter => stats)
+                    uri "/status", :handler => ::Mongrel::StatusHandler.new(:stats_filter => stats)
                 end
                 setup_signals
                 run
             end
 
-            puts "mongrel_here running on port #{options.port} with document root #{options.document_root}"
+            puts "heel running on port #{options.port} with document root #{options.document_root}"
             config.join
         end
     end

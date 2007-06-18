@@ -7,7 +7,7 @@ require 'rake/gempackagetask'
 require 'rake/clean'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
-require 'mongrel_here'
+require 'heel'
 
 #-----------------------------------------------------------------------
 # most of this is out of hoe, but I needed more flexibility in directory
@@ -18,14 +18,14 @@ require 'mongrel_here'
 # published to I'll migrate this to using hoe.
 #-----------------------------------------------------------------------
 PKG_INFO = OpenStruct.new
-PKG_INFO.name               = "mongrel_here"
+PKG_INFO.name               = "heel"
 PKG_INFO.rubyforge_name     = PKG_INFO.name.downcase
-PKG_INFO.summary            = MongrelHere::DESCRIPTION
-PKG_INFO.description        = MongrelHere::DESCRIPTION
-PKG_INFO.url                = MongrelHere::HOMEPAGE
-PKG_INFO.email              = MongrelHere::AUTHOR_EMAIL
-PKG_INFO.author             = MongrelHere::AUTHOR
-PKG_INFO.version            = MongrelHere::VERSION.join(".")
+PKG_INFO.summary            = Heel::DESCRIPTION
+PKG_INFO.description        = Heel::DESCRIPTION
+PKG_INFO.url                = Heel::HOMEPAGE
+PKG_INFO.email              = Heel::AUTHOR_EMAIL
+PKG_INFO.author             = Heel::AUTHOR
+PKG_INFO.version            = Heel::VERSION.join(".")
 
 PKG_INFO.rdoc_dir           = "doc/rdoc"
 PKG_INFO.rdoc_main          = "README"

@@ -1,12 +1,12 @@
-require 'rubygems'
+require 'heel'
 require 'mime/types'
 require 'erb'
 
-module MongrelHere
+module Heel
 
     # A refactored version of Mongrel::DirHandler using the mime-types
     # gem and a prettier directory listing.
-    class DirHandler < Mongrel::HttpHandler
+    class DirHandler < ::Mongrel::HttpHandler
         attr_reader :document_root
         attr_reader :directory_index_html
         attr_reader :icon_url
@@ -73,11 +73,11 @@ module MongrelHere
         end
 
         def directory_listing_allowed?
-            return @directory_listing_allowed
+            return !!@directory_listing_allowed
         end
 
         def using_icons?
-            return @using_icons
+            return !!@using_icons
         end
 
         def icon_for(mime_type)
@@ -109,6 +109,9 @@ module MongrelHere
             if req_path.index(document_root) == 0 then
                 begin
                     stat = File.stat(req_path)
+
+                    # if it is a directory, we either return the
+                    # directory index file, or a directory listing
                     if stat.directory? then
                        dir_index = File.join(req_path,directory_index_html)
                        if File.exists?(dir_index) then
@@ -116,6 +119,9 @@ module MongrelHere
                        elsif directory_listing_allowed?
                            return :directory_listing
                        end
+
+                    # if it is a file and readable, make sure that the
+                    # path is a legal path
                     elsif stat.file? and stat.readable? then
                         if should_ignore?(File.basename(req_path)) then
                             return 403
@@ -152,6 +158,7 @@ module MongrelHere
             Dir.entries(req_path).each do |entry|
                 next if should_ignore?(entry)
                 next if req_path == document_root and entry == ".."
+
                 stat            = File.stat(File.join(req_path,entry))
                 entry_data      = OpenStruct.new 
 

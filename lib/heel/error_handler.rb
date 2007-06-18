@@ -1,8 +1,9 @@
+require 'heel'
 require 'erb'
 
-module MongrelHere
+module Heel
 
-    class ErrorHandler < Mongrel::HttpHandler
+    class ErrorHandler < ::Mongrel::HttpHandler
 
         attr_reader :template
 
