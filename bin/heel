@@ -3,8 +3,8 @@
 $: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
 require 'rubygems'
 require 'mongrel'
-require 'mongrel_here/server'
+require 'heel/server'
 
-server = MongrelHere::Server.new(ARGV)
+server = Heel::Server.new(ARGV)
 server.run
 
