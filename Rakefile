@@ -1,121 +1,121 @@
-# make sure our ./lib directory is added to the ruby search path
-$: << File.expand_path(File.join(File.dirname(__FILE__),"lib"))
-
-require 'ostruct'
 require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/clean'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
+
+$: << File.join(File.dirname(__FILE__),"lib")
+
 require 'heel'
 
-#-----------------------------------------------------------------------
-# most of this is out of hoe, but I needed more flexibility in directory
-# structures, publishing options for docs and such
-#
-# Once the build, and runtime dependency issues are resolved with gems
-# and hoe has the ability to change the directory that rdocs are
-# published to I'll migrate this to using hoe.
-#-----------------------------------------------------------------------
-PKG_INFO = OpenStruct.new
-PKG_INFO.name               = "heel"
-PKG_INFO.rubyforge_name     = PKG_INFO.name.downcase
-PKG_INFO.summary            = Heel::DESCRIPTION
-PKG_INFO.description        = Heel::DESCRIPTION
-PKG_INFO.url                = Heel::HOMEPAGE
-PKG_INFO.email              = Heel::AUTHOR_EMAIL
-PKG_INFO.author             = Heel::AUTHOR
-PKG_INFO.version            = Heel::VERSION.join(".")
-
-PKG_INFO.rdoc_dir           = "doc/rdoc"
-PKG_INFO.rdoc_main          = "README"
-PKG_INFO.rdoc_title         = "#{PKG_INFO.name} - #{PKG_INFO.version}"
-PKG_INFO.rdoc_options       = [ "--line-numbers" , "--inline-source",
-                                "--title", PKG_INFO.rdoc_title,
-                                "--main", PKG_INFO.rdoc_main ]
-PKG_INFO.extra_rdoc_files   = FileList['README', 'CHANGES', 'COPYING']
-PKG_INFO.rdoc_files         = FileList['lib/**/*.rb', 'bin/**'] + 
-                              PKG_INFO.extra_rdoc_files
-PKG_INFO.file_list          = FileList['data/**','vendor/**/*.rb',
-                                       'spec/**/*.rb'] + PKG_INFO.rdoc_files
-PKG_INFO.publish_dir        = "doc"
-PKG_INFO.message            = "\e[1m\e[31m\e[40mTry `keybox --help` for more information\e[0m"
-
-#-----------------------------------------------------------------------
-# setup an initial task
-#-----------------------------------------------------------------------
-desc "Default task"
 task :default => :spec
 
 #-----------------------------------------------------------------------
-# Packaging and Installation
+# Documentation
 #-----------------------------------------------------------------------
-spec = Gem::Specification.new do |s|
-    s.name                  = PKG_INFO.rubyforge_name
-    s.rubyforge_project     = PKG_INFO.rubyforge_name
-    s.version               = PKG_INFO.version
-    s.summary               = PKG_INFO.summary
-    s.description           = PKG_INFO.description
+namespace :doc do
 
-    s.author                = PKG_INFO.author
-    s.email                 = PKG_INFO.email
-    s.homepage              = PKG_INFO.url
+    # generating documentation locally
+    Rake::RDocTask.new do |rdoc|
+        rdoc.rdoc_dir   = Heel::SPEC.local_rdoc_dir
+        rdoc.options    = Heel::SPEC.rdoc_options 
+        rdoc.rdoc_files = Heel::SPEC.rdoc_files
+    end
 
-    s.files                 = PKG_INFO.file_list
-    s.require_paths         << "lib"
-    s.executables           = Dir.entries("bin").delete_if { |f| f =~ /^\./ }
+    desc "View the RDoc documentation locally"
+    task :view => :rdoc do
+        show_files Heel::SPEC.local_rdoc_dir
+    end
 
-    s.extra_rdoc_files      = PKG_INFO.extra_rdoc_files
-    s.has_rdoc              = true 
-    s.rdoc_options.concat(PKG_INFO.rdoc_options)
+    # TODO: factor this out into rubyforge namespace
+    desc "Deploy the RDoc documentation to rubyforge"
+    task :rdoc => :rerdoc do
+        sh  "rsync -zav --delete doc/ #{Heel::SPEC.rubyforge_rdoc_dest}"
+    end
 
-    s.post_install_message  = PKG_INFO.message
-    s.add_dependency("highline", ">= 1.2.6")
-end
-
-Rake::GemPackageTask.new(spec) do |pkg|
-    pkg.need_tar = true
-    pkg.need_zip = true
-end
-
-desc "Install as a gem"
-task :install_gem => [:clobber, :package] do
-    sh "sudo gem install pkg/*.gem"
-end
-
-desc "dump_gemspec"
-task :dump_gemspec do
-    puts spec.to_ruby
 end
 
 #-----------------------------------------------------------------------
-# Documentation and Testing (rspec)
+# Testing - TODO factor this out into a separate taslklib
 #-----------------------------------------------------------------------
+namespace :test do
 
-rd = Rake::RDocTask.new do |rdoc|
-    rdoc.rdoc_dir   = PKG_INFO.rdoc_dir
-    rdoc.title      = PKG_INFO.rdoc_title
-    rdoc.main       = PKG_INFO.rdoc_main
-    rdoc.rdoc_files = PKG_INFO.rdoc_files
-    rdoc.options.concat(PKG_INFO.rdoc_options)
+    Spec::Rake::SpecTask.new do |r|
+        r.rcov      = true
+        r.rcov_dir  = Heel::SPEC.local_coverage_dir
+        r.libs      = Heel::SPEC.require_paths
+        r.spec_opts = %w(--format specdoc)
+    end
+
+    task :coverage => [:spec] do
+        show_files Heel::SPEC.local_coverage_dir
+    end
+
 end
 
-rspec = Spec::Rake::SpecTask.new do |r|
-    r.warning   = true
-    r.rcov      = true
-    r.rcov_dir  = "doc/coverage"
-    r.libs      << "./lib" 
-    r.spec_opts = %w(-f s)
+#-----------------------------------------------------------------------
+# Packaging 
+#-----------------------------------------------------------------------
+namespace :dist do
+
+    Rake::GemPackageTask.new(Heel::SPEC) do |pkg|
+        pkg.need_tar = Heel::SPEC.need_tar
+        pkg.need_zip = Heel::SPEC.need_zip
+    end
+
+    desc "Install as a gem"
+    task :install => [:clobber, :package] do
+        sh "sudo gem install pkg/#{Heel::SPEC.full_name}.gem"
+    end
+
+    # uninstall the gem and all executables
+    desc "Uninstall gem"
+    task :uninstall do 
+        sh "sudo gem uninstall #{Heel::SPEC.name} -x"
+    end
+
+    desc "dump gemspec"
+    task :gemspec do
+        puts Heel::SPEC.to_ruby
+    end
+
+    desc "reinstall gem"
+    task :reinstall => [:install, :uninstall]
+
+    # TODO: factor this out into separate tasklib
+    desc "Release files to rubyforge"
+    task :release => [:clean, :package] do
+        rubyforge = RubyForge.new
+        rubyforge.login
+    end
+
 end
 
-# the coverage report is considered documentation
-desc "Generate all documentation"
-task :docs => [:rdoc,:spec] 
+#-----------------------------------------------------------------------
+# Distribution
+#-----------------------------------------------------------------------
+namespace :dist do
+
+end
+
 
 #-----------------------------------------------------------------------
-# if we are in the project source code control sandbox then there are
-# other tasks available.
+# TODO: factor website out into its own tasklib
+# Website maintenance
 #-----------------------------------------------------------------------
-if File.directory?("_darcs") then
-    require 'tasks/rubyforge'
+namespace :site do
+
+    desc "Build the public website"
+    task :build do
+    end
+
+    desc "Update the website on rubyforge"
+    task :deploy => :build do
+        sh "rsync -zav --delete #{Heel::SPEC.local_site_dir} #{Heel::SPEC.remote_site_location}"
+    end
+
+    desc "View the website locally"
+    task :view => :build do
+    end
+
 end

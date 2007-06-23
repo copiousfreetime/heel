@@ -94,7 +94,7 @@ module Heel
         end
 
         def reload_template
-            fname = File.join(APP_DATA_DIR,"listing.rhtml")
+            fname = File.join(APP_RESOURCE_DIR,"listing.rhtml")
             fstat = File.stat(fname)
             @template_mtime ||= fstat.mtime
             if @template.nil? or fstat.mtime > @template_mtime then

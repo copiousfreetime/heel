@@ -3,6 +3,7 @@ require 'ostruct'
 
 module Heel
     class Server
+
         attr_accessor :options
         attr_accessor :parsed_options
 
@@ -13,9 +14,9 @@ module Heel
         def initialize(argv = [])
             argv ||= []
 
-            @options        = self.default_options
+            @options        = default_options
             @parsed_options = ::OpenStruct.new
-            @parser         = self.option_parser
+            @parser         = option_parser
 
             begin
                 @parser.parse!(argv)
@@ -24,18 +25,26 @@ module Heel
         end
 
         def default_options
-            options = ::OpenStruct.new
-            options.show_version    = false
-            options.show_help       = false
-            options.port            = 4323
-            options.root            = Dir.pwd
-            options.daemonize       = false
-            return options
+            if @default_options.nil? then
+                @default_options                 = ::OpenStruct.new
+                @default_options.show_version    = false
+                @default_options.show_help       = false
+                @default_options.address         = "0.0.0.0"
+                @default_options.port            = 4331
+                @default_options.document_root   = Dir.pwd
+                @default_options.daemonize       = false
+            end
+            return @default_options
         end
 
         def option_parser
             OptionParser.new do |op|
                 op.separator ""
+
+                op.on("-a", "--address ADDRESS", "Address to bind to",
+                                        "(default: #{default_options.address}") do |add|
+                    @parsed_options.address = add
+                end
 
                 op.on("-d", "--daemonize", "Run daemonized in the background") do 
                     @parsed_options.daemonize = true
@@ -45,13 +54,13 @@ module Heel
                     @parsed_options.show_help = true
                 end
 
-                op.on("-pPORT", "--port PORT", Integer,
-                      "Port to bind to (default: 4323)") do |port|
+                op.on("-p", "--port PORT", Integer, "Port to bind to",
+                                        "(default: #{default_options.port})") do |port|
                     @parsed_options.port = port
                 end
 
-                op.on("-rROOT","--root ROOT", 
-                      "Set the document root"," (default: #{Dir.pwd})") do |document_root|
+                op.on("-r","--root ROOT", 
+                      "Set the document root"," (default: #{default_options.document_root})") do |document_root|
                     @parsed_options.document_root = document_root
                end
 
@@ -85,20 +94,20 @@ module Heel
             merge_options
             document_root = options.document_root
             stats = ::Mongrel::StatisticsFilter.new(:sample_rate => 1)
-            config = ::Mongrel::Configurator.new :host => "*", :port => options.port do
+            config = ::Mongrel::Configurator.new :host => options.address, :port => options.port do
                 listener do
                     uri "/", :handler => stats
-                    uri "/", :handler => Heel::DirHandler.new({:document_root => document_root, })
+                    uri "/", :handler => Heel::DirHandler.new({:document_root => document_root})
                     uri "/", :handler => Heel::ErrorHandler.new
                     uri "/icons", :handler => Heel::DirHandler.new({ :document_root => 
-                                                                          File.join(APP_DATA_DIR, "famfamfam", "icons")})
+                                                                          File.join(APP_RESOURCE_DIR, "famfamfam", "icons")})
                     uri "/status", :handler => ::Mongrel::StatusHandler.new(:stats_filter => stats)
                 end
                 setup_signals
                 run
             end
 
-            puts "heel running on port #{options.port} with document root #{options.document_root}"
+            puts "heel running at #{options.address}:#{options.port} with document root #{options.document_root}"
             config.join
         end
     end
