@@ -1,8 +1,10 @@
 = heel Changelog
 
-=== Version 0.2.0 - 2007-08-10
+=== Version 0.2.0 - 2007-08-11
 
 * Initial public release
+* Added daemonizing of server
+* Added launching of browser to server URL
 
 === Version 0.1.0
 

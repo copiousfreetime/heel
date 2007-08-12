@@ -29,7 +29,9 @@ for use when you need a quick web server fo a directory.  Once the server is run
 
 === For running: 
 
+* mongrel
 * {launchy}[http://copiousfreetime.rubyforge.org/launchy/] >= 0.1.1
+* mime-types
 
 === For development:
 
