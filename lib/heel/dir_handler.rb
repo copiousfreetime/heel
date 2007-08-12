@@ -99,7 +99,7 @@ module Heel
             @template_mtime ||= fstat.mtime
             if @template.nil? or fstat.mtime > @template_mtime then
                 @template = ::ERB.new(File.read(fname))
-                log "Reloaded #{fname}"
+                # log "Reloaded #{fname}"
             end
         end
 

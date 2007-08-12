@@ -1,5 +1,8 @@
-require 'mongrel_here/error_handler'
+require 'heel/error_handler'
 context 'Error Handler' do 
+    before(:each) do
+        
+    end
     specify 'should have an ERB template'
-    eh = MongrelHere::
+    eh = Heel::
 end

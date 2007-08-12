@@ -14,13 +14,20 @@ module Heel
         def initialize(argv = [])
             argv ||= []
 
+            set_io
+            
             @options        = default_options
             @parsed_options = ::OpenStruct.new
             @parser         = option_parser
+            @error_message  = nil
+            
 
             begin
                 @parser.parse!(argv)
-            rescue OptionParse::ParseError => pe
+            rescue ::OptionParser::ParseError => pe
+                msg = ["#{@parser.program_name}: #{pe}",
+                        "Try `#{@parser.program_name} --help` for more information"]
+                @error_message = msg.join("\n")
             end
         end
 
@@ -79,16 +86,30 @@ module Heel
             @options = OpenStruct.new(options)
         end
 
+        # set the IO objects in a single method call.  This is really only for testing 
+        # instrumentation
+        def set_io(stdin = $stdin, stdout = $stdout ,setderr = $stderr)
+            @stdin  = stdin
+            @stdout = stdout
+            @stderr = stderr
+        end
+
+        # if Version or Help options are set, then output the appropriate information instead of 
+        # running the server.
         def error_version_help
             if @parsed_options.show_version then
-                puts "#{@parser.program_name}: version #{Heel::VERSION.join(".")}"
+                @stdout.puts "#{@parser.program_name}: version #{Heel::VERSION}"
                 exit 0
             elsif @parsed_options.show_help then
-                puts @parser.to_s
+                @stdout.puts @parser.to_s
                 exit 0
+            elsif @error_message then
+                @stdout.puts @error_message
+                exit 1
             end
         end
 
+        # run the heel server with the current options.
         def run
             error_version_help
             merge_options
@@ -107,8 +128,9 @@ module Heel
                 run
             end
 
-            puts "heel running at #{options.address}:#{options.port} with document root #{options.document_root}"
+            @stdout.puts "heel running at http://#{options.address}:#{options.port} with document root #{options.document_root}"
             config.join
         end
+        
     end
 end

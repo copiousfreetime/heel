@@ -1,8 +1,11 @@
 = heel Changelog
 
+=== Version 0.2.0 - 2007-08-10
+
+* Initial public release
+
 === Version 0.1.0
 
-* Initial public release 
 * rename project to 'heel'
 * gem packaging
 

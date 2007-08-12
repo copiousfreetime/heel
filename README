@@ -1,12 +1,12 @@
 Mongrel Here
 
-* Homepage[http://pieces-of-flare.rubyforge.org/mongrel_here/]
+* Homepage[http://pieces-of-flare.rubyforge.org/heel/]
 * {Rubyforge Project}[http://rubyforge.org/projects/pieces-of-flare/]
 * email jeremy at hinegardner dot org
 
 == DESCRIPTION:
 
-mongrel_here is a small static file web server for use when you need a
+heel is a small static file web server for use when you need a
 quick web server in a directory.  
 
 == FEATURES/PROBLEMS:
@@ -25,7 +25,7 @@ quick web server in a directory.
 
 == INSTALL:
 
-* gem install mongrel_here
+* gem install heel
 
 == CREDITS:
 
