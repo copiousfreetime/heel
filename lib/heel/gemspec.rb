@@ -14,11 +14,13 @@ module Heel
 
                 spec.summary            = "A mongrel based static file webserver."
                 spec.description        = <<-DESC
-                Heel is a mongrel based webserver to quickly and easily
-                serve up the contents of a directory as webpages.
+                Heel is a mongrel based web server to quickly and easily serve up the
+                contents of a directory as webpages.  Beyond just serving up webpages
+                heel uses an ERB template and famfamfam icons to create useful index
+                pages.
                 
-                Beyond just serving up webpages heel uses an ERB template and famfamfam icons
-                to create useful index pages.
+                And to make things even easier it launches your browser for you so no
+                cut and paste necessary.
                 DESC
 
                 spec.extra_rdoc_files   = FileList["CHANGES", "LICENSE", "README"]
