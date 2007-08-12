@@ -18,6 +18,7 @@ for use when you need a quick web server fo a directory.  Once the server is run
 	                                     (default: 0.0.0.0)
 	    -d, --daemonize                  Run daemonized in the background
 	    -h, --help                       Display this text
+	    -k, --kill                       Kill an existing daemonized heel process
 	    -p, --port PORT                  Port to bind to
 	                                     (default: 4331)
 	    -r, --root ROOT                  Set the document root

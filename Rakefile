@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/clean'
 require 'rake/rdoctask'
+require 'rake/contrib/sshpublisher'
 require 'spec/rake/spectask'
 
 $: << File.join(File.dirname(__FILE__),"lib")

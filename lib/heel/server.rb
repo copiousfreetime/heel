@@ -79,7 +79,7 @@ module Heel
                     @parsed_options.show_help = true
                 end
                 
-                op.on("-k", "--kill", "Kill an existing backgrounded heel process") do
+                op.on("-k", "--kill", "Kill an existing daemonized heel process") do
                     @parsed_options.kill = true
                 end
 
