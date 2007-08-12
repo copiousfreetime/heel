@@ -4,11 +4,11 @@ module Heel
     class Version
         MAJOR   = 0 
         MINOR   = 1 
-        TINY    = 0 
+        BUILD    = 0 
 
         class << self
             def to_a
-                [MAJOR, MINOR, TINY]
+                [MAJOR, MINOR, BUILD]
             end
 
             def to_s

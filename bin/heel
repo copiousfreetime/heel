@@ -6,6 +6,5 @@ require 'rubygems'
 require 'mongrel'
 require 'heel'
 
-server = Heel::Server.new(ARGV)
-server.run
+Heel::Server.new(ARGV).run
 

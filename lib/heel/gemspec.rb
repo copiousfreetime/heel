@@ -5,20 +5,20 @@ require 'rake'
 
 module Heel
     SPEC = Heel::Specification.new do |spec|
-                spec.name               = "heel"
+                spec.name               = "Heel"
                 spec.version            = Heel::VERSION
                 spec.rubyforge_project  = "copiousfreetime"
                 spec.author             = "Jeremy Hinegardner"
                 spec.email              = "jeremy@hinegardner.org"
-                spec.homepage           = "http://#{spec.rubyforge_project}.rubyforge.org/#{spec.name}/"
+                spec.homepage           = "http://copiousfreetime.rubyforge.org/heel/"
 
-                spec.summary            = "A mongrel based webserver."
+                spec.summary            = "A mongrel based static file webserver."
                 spec.description        = <<-DESC
                 Heel is a mongrel based webserver to quickly and easily
-                serve up the contents of a directory as a webpages.
+                serve up the contents of a directory as webpages.
                 DESC
 
-                spec.extra_rdoc_files   = %w[LICENSE README CHANGES]
+                spec.extra_rdoc_files   = FileList["CHANGES", "LICENSE", "README"]
                 spec.has_rdoc           = true
                 spec.rdoc_main          = "README"
                 spec.rdoc_options       = [ "--line-numbers" , "--inline-source" ]
@@ -29,15 +29,19 @@ module Heel
                                           FileList["lib/**/*.rb", "resources/**/*"]
 
                 spec.add_dependency("mongrel", ">= 1.0.1")
+                spec.add_dependency("launchy", ">= 0.1.1")
+                
+                spec.required_ruby_version  = ">= 1.8.5"
 
-                spec.platform           = Gem::Platform::RUBY
+                spec.platform = Gem::Platform::RUBY
 
+                spec.remote_user        = "jjh"
                 spec.local_rdoc_dir     = "doc/rdoc"
-                spec.remote_rdoc_dir    = "#{spec.name}/rdoc"
+                spec.remote_rdoc_dir    = ""
                 spec.local_coverage_dir = "doc/coverage"
-                spec.remote_coverage_dir= "#{spec.name}/coverage"
 
                 spec.remote_site_dir    = "#{spec.name}/"
+
            end
 end
 

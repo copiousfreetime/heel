@@ -93,7 +93,7 @@ module Heel
 
         # rdoc files is the same as what would be generated during gem
         # installation. That is, everything in the require paths plus
-        # the rdoc_extra_files
+        # the extra_rdoc_files
         #
         def rdoc_files 
             flist = extra_rdoc_files.dup

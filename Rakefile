@@ -8,7 +8,13 @@ $: << File.join(File.dirname(__FILE__),"lib")
 
 require 'heel'
 
-task :default => :spec
+# load all the extra tasks for the project
+TASK_DIR = File.join(File.dirname(__FILE__),"tasks")
+FileList[File.join(TASK_DIR,"*.rb")].each do |tasklib|
+    require "tasks/#{File.basename(tasklib)}"
+end
+
+task :default => 'test:default'
 
 #-----------------------------------------------------------------------
 # Documentation
@@ -27,38 +33,17 @@ namespace :doc do
         show_files Heel::SPEC.local_rdoc_dir
     end
 
-    # TODO: factor this out into rubyforge namespace
-    desc "Deploy the RDoc documentation to rubyforge"
-    task :rdoc => :rerdoc do
-        sh  "rsync -zav --delete doc/ #{Heel::SPEC.rubyforge_rdoc_dest}"
-    end
-
 end
 
-#-----------------------------------------------------------------------
-# Testing - TODO factor this out into a separate taslklib
-#-----------------------------------------------------------------------
-namespace :test do
-
-    Spec::Rake::SpecTask.new do |r|
-        r.rcov      = true
-        r.rcov_dir  = Heel::SPEC.local_coverage_dir
-        r.libs      = Heel::SPEC.require_paths
-        r.spec_opts = %w(--format specdoc)
-    end
-
-    task :coverage => [:spec] do
-        show_files Heel::SPEC.local_coverage_dir
-    end
-
-end
 
 #-----------------------------------------------------------------------
-# Packaging 
+# Packaging and Distribution  
 #-----------------------------------------------------------------------
 namespace :dist do
+    
+    GEM_SPEC = eval(Heel::SPEC.to_ruby)
 
-    Rake::GemPackageTask.new(Heel::SPEC) do |pkg|
+    Rake::GemPackageTask.new(GEM_SPEC) do |pkg|
         pkg.need_tar = Heel::SPEC.need_tar
         pkg.need_zip = Heel::SPEC.need_zip
     end
@@ -82,40 +67,23 @@ namespace :dist do
     desc "reinstall gem"
     task :reinstall => [:install, :uninstall]
 
-    # TODO: factor this out into separate tasklib
-    desc "Release files to rubyforge"
-    task :release => [:clean, :package] do
-        rubyforge = RubyForge.new
-        rubyforge.login
+    desc "distribute copiously"
+    task :copious => [:package] do
+        Rake::SshFilePublisher.new('jeremy@copiousfreetime.org',
+                               '/var/www/vhosts/www.copiousfreetime.org/htdocs/gems/gems',
+                               'pkg',"#{Heel::SPEC.full_name}.gem").upload
+        sh "ssh jeremy@copiousfreetime.org rake -f /var/www/vhosts/www.copiousfreetime.org/htdocs/gems/Rakefile"
     end
 
 end
 
-#-----------------------------------------------------------------------
-# Distribution
-#-----------------------------------------------------------------------
-namespace :dist do
-
-end
-
 
 #-----------------------------------------------------------------------
-# TODO: factor website out into its own tasklib
-# Website maintenance
+# update the top level clobber task to depend on all possible sub-level
+# tasks that have a name like ':clobber'  in other namespaces
 #-----------------------------------------------------------------------
-namespace :site do
-
-    desc "Build the public website"
-    task :build do
+Rake.application.tasks.each do |t|
+    if t.name =~ /:clobber/ then
+        task :clobber => [t.name]
     end
-
-    desc "Update the website on rubyforge"
-    task :deploy => :build do
-        sh "rsync -zav --delete #{Heel::SPEC.local_site_dir} #{Heel::SPEC.remote_site_location}"
-    end
-
-    desc "View the website locally"
-    task :view => :build do
-    end
-
 end
