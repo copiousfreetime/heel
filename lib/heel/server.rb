@@ -49,7 +49,7 @@ module Heel
                 op.separator ""
 
                 op.on("-a", "--address ADDRESS", "Address to bind to",
-                                        "(default: #{default_options.address}") do |add|
+                                        "(default: #{default_options.address})") do |add|
                     @parsed_options.address = add
                 end
 
@@ -68,7 +68,8 @@ module Heel
 
                 op.on("-r","--root ROOT", 
                       "Set the document root"," (default: #{default_options.document_root})") do |document_root|
-                    @parsed_options.document_root = document_root
+                    @parsed_options.document_root = File.expand_path(document_root)
+                    raise ::OptionParser::ParseError, "#{@parsed_options.document_root} is not a valid directory" if not File.directory?(@parsed_options.document_root)
                end
 
                 op.on("-v", "--version", "Show version") do 

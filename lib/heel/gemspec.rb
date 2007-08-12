@@ -5,7 +5,7 @@ require 'rake'
 
 module Heel
     SPEC = Heel::Specification.new do |spec|
-                spec.name               = "Heel"
+                spec.name               = "heel"
                 spec.version            = Heel::VERSION
                 spec.rubyforge_project  = "copiousfreetime"
                 spec.author             = "Jeremy Hinegardner"
