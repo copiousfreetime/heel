@@ -7,7 +7,7 @@
 == DESCRIPTION:
 
 Heel is a small static file web server based on {mongrel}[http://mongrel.rubyforge.org] 
-for use when you need a quick web server fo a directory.  Once the server is running heel will use
+for use when you need a quick web server for a directory.  Once the server is running heel will use
 {launchy}[http://copiousfreetime.rubyforge.org/launchy/] to open your browser at the URL of your document root.
 
 == SYNOPSIS:
