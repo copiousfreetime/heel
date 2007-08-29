@@ -2,7 +2,11 @@ require File.expand_path(File.join(File.dirname(__FILE__),"spec_helper.rb"))
 
 describe Heel::ErrorHandler do 
     before(:each) do 
-        @server = Heel::Server.new(%w[--directory /tmp])
+        @server = Heel::Server.new(%w[--root /tmp --daemonize --no-launch-browser])
+    end
+        
+    after(:each) do
+        @server.kill_existing_proc
     end
     
     it "should return the error page" do

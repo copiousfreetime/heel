@@ -1,6 +1,7 @@
 begin
+    require 'rubygems'
     require 'heel'
-    require 'rspec'
+    require 'spec'
     require 'net/http'
 rescue LoadError
     $: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))

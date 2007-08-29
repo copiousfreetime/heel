@@ -34,7 +34,7 @@ module Heel
                                           FileList["lib/**/*.rb", "resources/**/*"]
 
                 spec.add_dependency("mongrel", ">= 1.0.1")
-                spec.add_dependency("launchy", ">= 0.1.2")
+                spec.add_dependency("launchy", ">= 0.3.0")
                 spec.add_dependency("mime-types", ">= 1.15")
                 
                 spec.required_ruby_version  = ">= 1.8.5"

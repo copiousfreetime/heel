@@ -53,11 +53,12 @@ module Heel
                 @default_options                 = ::OpenStruct.new
                 @default_options.show_version    = false
                 @default_options.show_help       = false
-                @default_options.address         = "0.0.0.0"
+                @default_options.address         = "127.0.0.1"
                 @default_options.port            = 4331
                 @default_options.document_root   = Dir.pwd
                 @default_options.daemonize       = false
                 @default_options.kill            = false
+                @default_options.launch_browser  = true
             end
             return @default_options
         end
@@ -81,6 +82,10 @@ module Heel
                 
                 op.on("-k", "--kill", "Kill an existing daemonized heel process") do
                     @parsed_options.kill = true
+                end
+                
+                op.on("-l", "--[no-]launch-browser", "Control automatically launching a browser") do |v|
+                    @parsed_options.launch_browser = v
                 end
 
                 op.on("-p", "--port PORT", Integer, "Port to bind to",
@@ -205,8 +210,10 @@ module Heel
                 config.log "Use Ctrl-C to stop."
             end
             
-            config.log "Launching your browser..."
-            ::Launchy.do_magic("http://#{options.address}:#{options.port}/")
+            if options.launch_browser then
+                config.log "Launching your browser..."
+                ::Launchy.open("http://#{options.address}:#{options.port}/")
+            end
             
             config.join
             
