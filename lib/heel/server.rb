@@ -25,10 +25,6 @@ module Heel
             end
         end
 
-        DEFAULT_DIRECTORY = File.join(home_directory,".heel")
-        DEFAULT_PID_FILE  = File.join(DEFAULT_DIRECTORY,"heel.pid")
-        DEFAULT_LOG_FILE  = File.join(DEFAULT_DIRECTORY,"heel.log")
-
         def initialize(argv = [])
             argv ||= []
 
@@ -62,6 +58,18 @@ module Heel
             end
             return @default_options
         end
+        
+        def default_directory
+            ENV["HEEL_DEFAULT_DIRECTORY"] || File.join(::Heel::Server.home_directory,".heel")
+        end
+        
+        def pid_file
+            File.join(default_directory,"heel.pid")
+        end
+        
+        def log_file
+            File.join(default_directory,"heel.log")
+        end
 
         def option_parser
             OptionParser.new do |op|
@@ -84,8 +92,8 @@ module Heel
                     @parsed_options.kill = true
                 end
                 
-                op.on("-l", "--[no-]launch-browser", "Control automatically launching a browser") do |v|
-                    @parsed_options.launch_browser = v
+                op.on("-l", "--[no-]launch-browser", "Control automatically launching a browser") do |l|
+                    @parsed_options.launch_browser = l
                 end
 
                 op.on("-p", "--port PORT", Integer, "Port to bind to",
@@ -141,14 +149,14 @@ module Heel
         
         # kill an already running background heel process
         def kill_existing_proc
-            if File.exists?(DEFAULT_PID_FILE) then
+            if File.exists?(pid_file) then
                 begin
-                    pid = open(DEFAULT_PID_FILE).read.to_i
+                    pid = open(pid_file).read.to_i
                     @stdout.puts "Sending TERM to process #{pid}"
                     Process.kill("TERM", pid)
                 rescue Errno::ESRCH
                     @stdout.puts "Process does not exist. Removing stale pid file."
-                    File.unlink(DEFAULT_PID_FILE)
+                    File.unlink(pid_file)
                 end
             else
                 @stdout.puts "No pid file exists, no process to kill"
@@ -160,11 +168,11 @@ module Heel
         # setup the directory that heel will use as the location to run from, where its logs will
         # be stored and its PID file if backgrounded.
         def setup_heel_dir
-            if not File.exists?(DEFAULT_DIRECTORY) then
-                FileUtils.mkdir_p(DEFAULT_DIRECTORY)
-                @stdout.puts "Created #{DEFAULT_DIRECTORY}"
-                @stdout.puts "PID file #{DEFAULT_PID_FILE} is stored here"
-                @stdout.puts "along with the log #{DEFAULT_LOG_FILE}"
+            if not File.exists?(default_directory) then
+                FileUtils.mkdir_p(default_directory)
+                @stdout.puts "Created #{default_directory}"
+                @stdout.puts "PID file #{pid_file} is stored here"
+                @stdout.puts "along with the log #{log_file}"
             end
         end
 
@@ -178,15 +186,15 @@ module Heel
             document_root = options.document_root
             background_me = options.daemonize
             stats = ::Mongrel::StatisticsFilter.new(:sample_rate => 1)
-            config = ::Mongrel::Configurator.new :host => options.address, :port => options.port, :pid_file => DEFAULT_PID_FILE do
+            config = ::Mongrel::Configurator.new :host => options.address, :port => options.port, :pid_file => pid_file do
                 if background_me then
-                    if File.exists?(DEFAULT_PID_FILE) then
-                        log "ERROR: PID File #{DEFAULT_PID_FILE} already exists.  Heel may already be running."
-                        log "ERROR: Check the Log file #{DEFAULT_LOG_FILE}"
+                    if File.exists?(pid_file) then
+                        log "ERROR: PID File #{pid_file} already exists.  Heel may already be running."
+                        log "ERROR: Check the Log file #{log_file}"
                         log "ERROR: Heel will not start until the .pid file is cleared."
                         exit 1
                     end
-                    daemonize({:cwd => DEFAULT_DIRECTORY, :log_file => DEFAULT_LOG_FILE})
+                    daemonize({:cwd => default_directory, :log_file => log_file})
                 end
                 
                 listener do

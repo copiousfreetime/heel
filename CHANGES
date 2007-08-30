@@ -5,6 +5,7 @@
 * update with Launchy requirement 0.3.0
 * remove unneeded famfamfam icons
 * change default listening address to 127.0.0.1
+* refactored handler test, now with more coverage
 
 === Version 0.2.0 - 2007-08-11
 
