@@ -1,6 +1,11 @@
 = Changelog
 
-== Version 0.3.1 - 2007-08-11
+== Version 0.3.2 - 2007-08-30
+
+* fix failure to find background option
+* remember to double check your tests before releasing
+
+== Version 0.3.1 - 2007-08-30
 
 * fix failure to find pid file [Bug #13530]
 * remember to stop releasing software in the wee hours of the morning

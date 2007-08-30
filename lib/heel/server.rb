@@ -217,7 +217,7 @@ module Heel
             config.run
             config.log "heel running at http://#{options.address}:#{options.port} with document root #{options.document_root}"
                         
-            if background_me then
+            if c_background_me then
                 config.write_pid_file
             else
                 config.log "Use Ctrl-C to stop."
