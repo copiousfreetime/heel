@@ -183,23 +183,28 @@ module Heel
             merge_options
             setup_heel_dir
             
-            document_root = options.document_root
-            background_me = options.daemonize
+            # capture method/variables into a local context so they can be used inside the Configurator block
+            c_document_root = options.document_root
+            c_background_me = options.daemonize
+            c_default_dir   = default_directory
+            c_pid_file      = pid_file
+            c_log_file      = log_file
+
             stats = ::Mongrel::StatisticsFilter.new(:sample_rate => 1)
-            config = ::Mongrel::Configurator.new :host => options.address, :port => options.port, :pid_file => pid_file do
-                if background_me then
-                    if File.exists?(pid_file) then
-                        log "ERROR: PID File #{pid_file} already exists.  Heel may already be running."
-                        log "ERROR: Check the Log file #{log_file}"
+            config = ::Mongrel::Configurator.new(:host => options.address, :port => options.port, :pid_file => c_pid_file) do
+                if c_background_me then
+                    if File.exists?(c_pid_file) then
+                        log "ERROR: PID File #{c_pid_file} already exists.  Heel may already be running."
+                        log "ERROR: Check the Log file #{c_log_file}"
                         log "ERROR: Heel will not start until the .pid file is cleared."
                         exit 1
                     end
-                    daemonize({:cwd => default_directory, :log_file => log_file})
+                    daemonize({:cwd => c_default_dir, :log_file => c_log_file})
                 end
                 
                 listener do
                     uri "/", :handler => stats
-                    uri "/", :handler => Heel::DirHandler.new({:document_root => document_root})
+                    uri "/", :handler => Heel::DirHandler.new({:document_root => c_document_root})
                     uri "/", :handler => Heel::ErrorHandler.new
                     uri "/icons", :handler => Heel::DirHandler.new({ :document_root => 
                                                                           File.join(APP_RESOURCE_DIR, "famfamfam", "icons")})

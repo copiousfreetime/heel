@@ -1,6 +1,11 @@
 = Changelog
 
-=== Version NEXT 
+== Version 0.3.1 - 2007-08-11
+
+* fix failure to find pid file [Bug #13530]
+* remember to stop releasing software in the wee hours of the morning
+
+=== Version 0.3.0 
 
 * update with Launchy requirement 0.3.0
 * remove unneeded famfamfam icons
