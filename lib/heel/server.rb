@@ -196,7 +196,7 @@ module Heel
                     if File.exists?(c_pid_file) then
                         log "ERROR: PID File #{c_pid_file} already exists.  Heel may already be running."
                         log "ERROR: Check the Log file #{c_log_file}"
-                        log "ERROR: Heel will not start until the .pid file is cleared."
+                        log "ERROR: Heel will not start until the .pid file is cleared (`heel --kill' to clean it up)."
                         exit 1
                     end
                     daemonize({:cwd => c_default_dir, :log_file => c_log_file})
