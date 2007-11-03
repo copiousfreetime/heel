@@ -252,11 +252,22 @@ module Heel
                 when Integer
                     response.status = res_type
                 end
+                
 
             # invalid method
             else
                 response.start(403) { |head,out| out.write("Only HEAD and GET requests are honored.") }
             end
+            log_line = [ request.params[Mongrel::Const::REMOTE_ADDR], "-", "-", "[#{Time.now.strftime("%d/%b/%Y:%H:%M:%S %Z")}]" ]
+            log_line << "\"#{method}"
+            log_line << request.params['REQUEST_URI']
+            log_line << "#{request.params['HTTP_VERSION']}\""
+            log_line << response.status
+            log_line << "-"
+            
+            
+            
+            log log_line.join(' ')            
         end
 
         # essentially this is strfbytes from facets
@@ -278,7 +289,7 @@ module Heel
         end
 
         def log(msg)
-            STDERR.print "-->  ", msg, "\n"
+            STDERR.print msg, "\n"
         end
     end
 end
