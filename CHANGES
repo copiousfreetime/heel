@@ -1,4 +1,7 @@
 = Changelog
+== Version 0.4.0 - 2007-11-04
+
+* Added common log format output to terminal or logfile as appropriate.
 
 == Version 0.3.2 - 2007-08-30
 
