@@ -185,11 +185,12 @@ module Heel
             end
 
             entries = entries.sort_by { |e| e.link }
-
+            res_bytes = 0
             response.start(200) do |head,out|
                 head['Content-Type'] = 'text/html'
-                out.write(template.result(binding))
+                res_bytes = out.write(template.result(binding))
             end
+            return res_bytes
         end
 
         # this method is essentially the send_file method from
@@ -229,6 +230,7 @@ module Heel
             if method == ::Mongrel::Const::GET then
                 response.send_file(path,stat.size < ::Mongrel::Const::CHUNK_SIZE * 2)
             end
+            return stat.size
         end
 
         # process the request, returning either the file, a directory
@@ -243,12 +245,13 @@ module Heel
                                                       ::Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::PATH_INFO])),
                                             @document_root)
                 res_type = how_to_respond(req_path)
-
+                res_size = 0
+                
                 case res_type 
                 when :directory_listing
-                    respond_with_directory_listing(req_path,request,response)
+                    res_size = respond_with_directory_listing(req_path,request,response)
                 when String
-                    respond_with_send_file(res_type,method,request,response)
+                    res_size = respond_with_send_file(res_type,method,request,response)
                 when Integer
                     response.status = res_type
                 end
@@ -263,9 +266,7 @@ module Heel
             log_line << request.params['REQUEST_URI']
             log_line << "#{request.params['HTTP_VERSION']}\""
             log_line << response.status
-            log_line << "-"
-            
-            
+            log_line << res_size
             
             log log_line.join(' ')            
         end
