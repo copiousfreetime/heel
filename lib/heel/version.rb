@@ -3,8 +3,8 @@ require 'heel'
 module Heel
     class Version
         MAJOR   = 0 
-        MINOR   = 3 
-        BUILD   = 2 
+        MINOR   = 4 
+        BUILD   = 0 
 
         class << self
             def to_a
