@@ -5,7 +5,10 @@ module Heel
 
     class ErrorHandler < ::Mongrel::HttpHandler
 
-        attr_reader :template
+        attr_reader     :template
+        attr_accessor   :listener
+        attr_reader     :request_notify
+        
 
         def initialize(options = {})
             @template = ::ERB.new File.read(File.join(APP_RESOURCE_DIR,"error.rhtml"))

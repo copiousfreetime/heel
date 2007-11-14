@@ -7,14 +7,16 @@ module Heel
     # A refactored version of Mongrel::DirHandler using the mime-types
     # gem and a prettier directory listing.
     class DirHandler < ::Mongrel::HttpHandler
-        attr_reader :document_root
-        attr_reader :directory_index_html
-        attr_reader :icon_url
-        attr_reader :default_mime_type
-        attr_reader :ignore_globs
-        attr_reader :reload_template_changes
-        attr_reader :template
-        attr_reader :template_mtime
+        attr_reader   :document_root
+        attr_reader   :directory_index_html
+        attr_reader   :icon_url
+        attr_reader   :default_mime_type
+        attr_reader   :ignore_globs
+        attr_reader   :reload_template_changes
+        attr_reader   :template
+        attr_reader   :template_mtime
+        attr_accessor :listener
+        attr_reader   :request_notify
 
         # if any other mime types are needed, add them directly via the
         # mime-types calls.
