@@ -1,6 +1,5 @@
 require 'heel'
 require 'ostruct'
-require 'daemons/daemonize'
 require 'launchy'
 require 'tmpdir'
 require 'fileutils'
