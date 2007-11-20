@@ -56,7 +56,7 @@ module Heel
             @directory_listing_allowed  = options[:directory_listing_allowed] || true
             @directory_index_html       = options[:directory_index_html] || "index.html"
             @using_icons                = options[:using_icons] || true
-            @icon_url                   = options[:icon_url] || "/icons"
+            @icon_url                   = options[:icon_url] || "/heel_icons"
             @reload_template_changes    = options[:reload_template_changes] || false
             @highlighting               = options[:highlighting] || false
             reload_template

@@ -1,4 +1,12 @@
 = Changelog
+
+== Version 0.5.1 - 2007-11-20
+
+* Change heel's resource paths to be:
+** /css -> /heel_css
+** /icons -> /heel_icons
+** /status -> /heel_status
+
 == Version 0.5.0 - 2007-11-19
 
 * Add in code highlighting support via coderay
@@ -23,25 +31,25 @@
 * fix failure to find pid file [Bug #13530]
 * remember to stop releasing software in the wee hours of the morning
 
-=== Version 0.3.0 - 2007-08-30
+== Version 0.3.0 - 2007-08-30
 
 * update with Launchy requirement 0.3.0
 * remove unneeded famfamfam icons
 * change default listening address to 127.0.0.1
 * refactored handler test, now with more coverage
 
-=== Version 0.2.0 - 2007-08-11
+== Version 0.2.0 - 2007-08-11
 
 * Initial public release
 * Added daemonizing of server
 * Added launching of browser to server URL
 
-=== Version 0.1.0
+== Version 0.1.0
 
 * rename project to 'heel'
 * gem packaging
 
-=== Version 0.0.1 - 2007-05-03
+== Version 0.0.1 - 2007-05-03
 
 * initial development release 
 

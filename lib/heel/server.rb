@@ -217,11 +217,11 @@ module Heel
                         uri "/", :handler => Heel::DirHandler.new({:document_root => c_document_root, 
                                                                    :highlighting => c_highlighting })
                         uri "/", :handler => Heel::ErrorHandler.new
-                        uri "/css", :handler => Heel::DirHandler.new({:document_root =>
+                        uri "/heel_css", :handler => Heel::DirHandler.new({:document_root =>
                                                                               File.join(APP_RESOURCE_DIR, "css")})
-                        uri "/icons", :handler => Heel::DirHandler.new({ :document_root => 
+                        uri "/heel_icons", :handler => Heel::DirHandler.new({ :document_root => 
                                                                               File.join(APP_RESOURCE_DIR, "famfamfam", "icons")})
-                        uri "/status", :handler => ::Mongrel::StatusHandler.new(:stats_filter => stats)
+                        uri "/heel_status", :handler => ::Mongrel::StatusHandler.new(:stats_filter => stats)
                     end
                 rescue Errno::EADDRINUSE
                     log "ERROR: Address (#{c_address}:#{c_port}) is already in use, please check running processes or run `heel --kill'"
