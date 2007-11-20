@@ -1,4 +1,10 @@
 = Changelog
+== Version 0.5.0 - 2007-11-19
+
+* Add in code highlighting support via coderay
+* extract CSS files to a resource
+* increase test coverage
+
 == Version 0.4.1 - 2007-11-15
 
 * Fix bug [#15645] - not starting up on windows

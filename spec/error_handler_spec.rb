@@ -21,6 +21,7 @@ describe Heel::ErrorHandler do
         
         @handler.process(@request,@response)
         @response.finished
+        
         @response.status.should == 404
         @socket.string.should =~ /Not Found/m
         

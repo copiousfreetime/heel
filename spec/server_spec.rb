@@ -63,6 +63,12 @@ describe Heel::Server do
         server.options.port.should == 4242        
     end
     
+    it "should allow the highlighting option to be unset" do
+        server = Heel::Server.new(%w[--no-highlighting])
+        server.merge_options
+        server.options.highlighting.should == false
+    end
+    
     it "should set no-launch-browser option and kill option" do
         server = Heel::Server.new(%w[--no-launch-browser])
         server.merge_options

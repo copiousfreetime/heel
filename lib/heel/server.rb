@@ -52,6 +52,7 @@ module Heel
                 @default_options.port            = 4331
                 @default_options.document_root   = Dir.pwd
                 @default_options.daemonize       = false
+                @default_options.highlighting    = true
                 @default_options.kill            = false
                 @default_options.launch_browser  = true
             end
@@ -91,12 +92,18 @@ module Heel
                     @parsed_options.kill = true
                 end
                 
-                op.on("-l", "--[no-]launch-browser", "Control automatically launching a browser") do |l|
+                op.on("--[no-]highlighting", "Turn on or off syntax highlighting",
+                                             " (default: on)") do |highlighting|
+                    @parsed_options.highlighting = highlighting
+                end
+                
+                op.on("--[no-]launch-browser", "Turn on or off automatic browser launch",
+                                               " (default: on)") do |l|
                     @parsed_options.launch_browser = l
                 end
 
                 op.on("-p", "--port PORT", Integer, "Port to bind to",
-                                        "(default: #{default_options.port})") do |port|
+                                        " (default: #{default_options.port})") do |port|
                     @parsed_options.port = port
                 end
 
@@ -186,6 +193,7 @@ module Heel
             c_document_root = options.document_root
             c_background_me = options.daemonize
             c_default_dir   = default_directory
+            c_highlighting  = options.highlighting
             c_pid_file      = pid_file
             c_log_file      = log_file
 
@@ -203,8 +211,11 @@ module Heel
                 
                 listener do
                     uri "/", :handler => stats
-                    uri "/", :handler => Heel::DirHandler.new({:document_root => c_document_root})
+                    uri "/", :handler => Heel::DirHandler.new({:document_root => c_document_root, 
+                                                               :highlighting => c_highlighting })
                     uri "/", :handler => Heel::ErrorHandler.new
+                    uri "/css", :handler => Heel::DirHandler.new({:document_root =>
+                                                                          File.join(APP_RESOURCE_DIR, "css")})
                     uri "/icons", :handler => Heel::DirHandler.new({ :document_root => 
                                                                           File.join(APP_RESOURCE_DIR, "famfamfam", "icons")})
                     uri "/status", :handler => ::Mongrel::StatusHandler.new(:stats_filter => stats)

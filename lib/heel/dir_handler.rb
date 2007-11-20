@@ -1,6 +1,8 @@
 require 'heel'
 require 'mime/types'
 require 'erb'
+require 'coderay'
+require 'coderay/helpers/file_type'
 
 module Heel
 
@@ -11,6 +13,7 @@ module Heel
         attr_reader   :directory_index_html
         attr_reader   :icon_url
         attr_reader   :default_mime_type
+        attr_reader   :highlighting
         attr_reader   :ignore_globs
         attr_reader   :reload_template_changes
         attr_reader   :template
@@ -55,6 +58,7 @@ module Heel
             @using_icons                = options[:using_icons] || true
             @icon_url                   = options[:icon_url] || "/icons"
             @reload_template_changes    = options[:reload_template_changes] || false
+            @highlighting               = options[:highlighting] || false
             reload_template
 
             ADDITIONAL_MIME_TYPES.each do |mt|
@@ -101,48 +105,48 @@ module Heel
             @template_mtime ||= fstat.mtime
             if @template.nil? or fstat.mtime > @template_mtime then
                 @template = ::ERB.new(File.read(fname))
-                # log "Reloaded #{fname}"
             end
         end
 
         # determine how to respond to the request, it will either be a
         # directory listing, a file return, or an error return.
-        def how_to_respond(req_path)
-            if req_path.index(document_root) == 0 then
-                begin
-                    stat = File.stat(req_path)
+        def how_to_respond(req_path,query_params = {})
+            return 403 unless req_path.index(document_root) == 0
+            begin
+                stat = File.stat(req_path)
 
-                    # if it is a directory, we either return the
-                    # directory index file, or a directory listing
-                    if stat.directory? then
-                       dir_index = File.join(req_path,directory_index_html)
-                       if File.exists?(dir_index) then
-                           return dir_index
-                       elsif directory_listing_allowed?
-                           return :directory_listing
-                       end
+                # if it is a directory, we either return the
+                # directory index file, or a directory listing
+                if stat.directory? then
+                   dir_index = File.join(req_path,directory_index_html)
+                   if File.exists?(dir_index) then
+                       return dir_index
+                   elsif directory_listing_allowed?
+                       return :directory_listing
+                   end
 
-                    # if it is a file and readable, make sure that the
-                    # path is a legal path
-                    elsif stat.file? and stat.readable? then
-                        if should_ignore?(File.basename(req_path)) then
-                            return 403
-                        end
-                        return req_path
-                    else
-                        # TODO: debug log
+                # if it is a file and readable, make sure that the
+                # path is a legal path
+                elsif stat.file? and stat.readable? then
+                    if should_ignore?(File.basename(req_path)) then
                         return 403
+                    elsif highlighting and not %w(false off).include? query_params['highlighting'].to_s.downcase
+                        ft = ::FileType[req_path,true]
+                        return :highlighted_file if ft and ft != :html
                     end
-
-                rescue => error
-                    if error.kind_of?(Errno::ENOENT) then
-                        return 404
-                    end
-                    # TODO: debug log
-                    return 500
+                    return req_path
+                else
+                    log "ERROR: #{req_path} is not a directory or a readable file"
+                    return 403
                 end
-            else
-               return 403
+
+            rescue => error
+                if error.kind_of?(Errno::ENOENT) then
+                    return 404
+                end
+                log "ERROR: Unknown, check out the stacktrace"
+                log error
+                return 500
             end
         end
 
@@ -195,44 +199,51 @@ module Heel
             return res_bytes
         end
 
-        # this method is essentially the send_file method from
-        # Mongrel::DirHandler
+        
+        # send the file back with the appropriate mimetype
         def respond_with_send_file(path,method,request,response)
             stat    = File.stat(path)
-            mtime   = stat.mtime
-            etag    = ::Mongrel::Const::ETAG_FORMAT % [mtime.to_i, stat.size, stat.ino]
-
-            modified_since  = request.params[::Mongrel::Const::HTTP_IF_MODIFIED_SINCE]
-            none_match      = request.params[::Mongrel::Const::HTTP_IF_NONE_MATCH]
-
-            last_response_time = Time.httpddate(modified_since) rescue nil
-
-            same_response = case
-                            when modified_since && !last_response_time                               : false
-                            when modified_since && last_response_time > Time.now                     : false
-                            when modified_since && mtime > last_response_time                        : false
-                            when none_match     && none_match == "*"                                 : false
-                            when none_match     && !none_match.strip.split(/\s*,\s*/).include?(etag) : false
-                            else modified_since || none_match
-                            end
-            header = response.header
-            header[::Mongrel::Const::ETAG] = etag
-
-            if same_response then
-                response.start(304) {}
-            else
-                response.status = 200
-                header[::Mongrel::Const::LAST_MODIFIED] = mtime.httpdate
-                header[::Mongrel::Const::CONTENT_TYPE] = (MIME::Types.of(path).first || default_mime_type).to_s
-            end
-
+            header  = response.header
+            
+            header[::Mongrel::Const::LAST_MODIFIED] = stat.mtime
+            header[::Mongrel::Const::CONTENT_TYPE]  = (MIME::Types.of(path).first || default_mime_type).to_s
+            
+            response.status = 200
             response.send_status(stat.size)
             response.send_header
-
+            
             if method == ::Mongrel::Const::GET then
                 response.send_file(path,stat.size < ::Mongrel::Const::CHUNK_SIZE * 2)
             end
+            
             return stat.size
+        end
+        
+        #
+        # send back the file marked up by code ray
+        def respond_with_highlighted_file(path,request,response)
+            res_bytes = 0
+            response.start(200) do |head,out|
+                head[::Mongrel::Const::CONTENT_TYPE] = 'text/html'
+                bytes = CodeRay.scan_file(path,:auto).html
+                res_bytes = out.write(<<-EOM)
+                <html>
+                  <head>
+                    <title>#{path}</title>
+                    <!-- CodeRay syntax highlighting CSS -->
+                    <link rel="stylesheet" href="/css/coderay-cycnus.css" type="text/css" />
+                  </head>
+                  <body>
+                    <div class="CodeRay">
+                    <pre>
+#{CodeRay.scan_file(path,:auto).html({:line_numbers => :inline})}
+                     </pre>
+                    </div>
+                  </body>
+                </html>
+                EOM
+            end
+            return res_bytes
         end
 
         # process the request, returning either the file, a directory
@@ -246,12 +257,13 @@ module Heel
                 req_path = File.expand_path(File.join(@document_root,
                                                       ::Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::PATH_INFO])),
                                             @document_root)
-                res_type = how_to_respond(req_path)
+                res_type = how_to_respond(req_path,::Mongrel::HttpRequest.query_parse(request.params['QUERY_STRING']))
                 res_size = 0
-                
                 case res_type 
                 when :directory_listing
                     res_size = respond_with_directory_listing(req_path,request,response)
+                when :highlighted_file
+                    res_size = respond_with_highlighted_file(req_path,request,response)
                 when String
                     res_size = respond_with_send_file(res_type,method,request,response)
                 when Integer

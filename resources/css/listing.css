@@ -1,0 +1,29 @@
+a, a:active { text-decoration: none; color: blue;}
+a:visited { color: purple;}
+a:hover, a:focus { text-decoration: underline; color: red;}
+body { font-family: Verdana, Arial, Helvetica, sans-serif; background-color: #eee; }
+.c { text-align: center; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%;}
+tr { background-color: #ccf;}
+tr:hover { background-color: #faa;}
+td, th { 
+    border-bottom: 1px solid #ccc; 
+    padding: 0em .3em 0em .3em ; 
+    color: #666; 
+    text-align: left;
+    vertical-align: middle;
+}
+thead th { 
+    border-top: 2px solid #666; 
+    border-bottom: 2px solid #666; 
+    font-weight: bold; 
+    background: #aaa; 
+    color: #fff;
+    text-transform: uppercase;
+}
+tr.odd { background-color: #cfc; color: #333;}
+tr.odd:hover { background-color: #faa; color: #333;}
+td.n { text-align: right; padding-right: 2em;}
+div.header { }
+div.content { background: #FFF; width: 100%;}
+div.footer { border-top: 2px solid #333; text-align: right;}
