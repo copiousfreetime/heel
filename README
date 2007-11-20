@@ -62,14 +62,14 @@ Or run it in the background
 
 === For running: 
 
-* {mongrel}[http://mongrel.rubyforge.org/]
+* {coderay}[http://coderay.rubychan.de/]
 * {launchy}[http://copiousfreetime.rubyforge.org/launchy/] >= 0.1.1
 * {mime-types}[http://mime-types.rubyforge.org/]
-* {coderay}[http://coderay.rubychan.de/]
+* {mongrel}[http://mongrel.rubyforge.org/]
+* {rake}[http://rake.rubyforge.org/] >= 0.7.1
 
 === For development:
 
-* {rake}[http://rake.rubyforge.org/] >= 0.7.1
 * {rcov}[http://eigenclass.org/hiki.rb?rcov] >= 0.7.0.1
 * {rspec}[http://rspec.rubyforge.org/]  >= 0.7.3
 
