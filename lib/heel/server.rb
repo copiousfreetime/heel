@@ -76,7 +76,7 @@ module Heel
                 op.separator ""
 
                 op.on("-a", "--address ADDRESS", "Address to bind to",
-                                        "(default: #{default_options.address})") do |add|
+                                        "  (default: #{default_options.address})") do |add|
                     @parsed_options.address = add
                 end
 
@@ -93,17 +93,17 @@ module Heel
                 end
                 
                 op.on("--[no-]highlighting", "Turn on or off syntax highlighting",
-                                             " (default: on)") do |highlighting|
+                                             "  (default: on)") do |highlighting|
                     @parsed_options.highlighting = highlighting
                 end
                 
                 op.on("--[no-]launch-browser", "Turn on or off automatic browser launch",
-                                               " (default: on)") do |l|
+                                               "  (default: on)") do |l|
                     @parsed_options.launch_browser = l
                 end
 
                 op.on("-p", "--port PORT", Integer, "Port to bind to",
-                                        " (default: #{default_options.port})") do |port|
+                                        "  (default: #{default_options.port})") do |port|
                     @parsed_options.port = port
                 end
 
@@ -177,8 +177,7 @@ module Heel
             if not File.exists?(default_directory) then
                 FileUtils.mkdir_p(default_directory)
                 @stdout.puts "Created #{default_directory}"
-                @stdout.puts "PID file #{pid_file} is stored here"
-                @stdout.puts "along with the log #{log_file}"
+                @stdout.puts "heel's PID (#{pid_file}) and log file (#{log_file}) are stored here"
             end
         end
 
@@ -190,6 +189,8 @@ module Heel
             setup_heel_dir
             
             # capture method/variables into a local context so they can be used inside the Configurator block
+            c_address       = options.address
+            c_port          = options.port
             c_document_root = options.document_root
             c_background_me = options.daemonize
             c_default_dir   = default_directory
@@ -209,18 +210,23 @@ module Heel
                     daemonize({:cwd => c_default_dir, :log_file => c_log_file})
                 end
                 
-                listener do
-                    uri "/", :handler => stats
-                    uri "/", :handler => Heel::DirHandler.new({:document_root => c_document_root, 
-                                                               :highlighting => c_highlighting })
-                    uri "/", :handler => Heel::ErrorHandler.new
-                    uri "/css", :handler => Heel::DirHandler.new({:document_root =>
-                                                                          File.join(APP_RESOURCE_DIR, "css")})
-                    uri "/icons", :handler => Heel::DirHandler.new({ :document_root => 
-                                                                          File.join(APP_RESOURCE_DIR, "famfamfam", "icons")})
-                    uri "/status", :handler => ::Mongrel::StatusHandler.new(:stats_filter => stats)
+                begin
+                    
+                    listener do
+                        uri "/", :handler => stats
+                        uri "/", :handler => Heel::DirHandler.new({:document_root => c_document_root, 
+                                                                   :highlighting => c_highlighting })
+                        uri "/", :handler => Heel::ErrorHandler.new
+                        uri "/css", :handler => Heel::DirHandler.new({:document_root =>
+                                                                              File.join(APP_RESOURCE_DIR, "css")})
+                        uri "/icons", :handler => Heel::DirHandler.new({ :document_root => 
+                                                                              File.join(APP_RESOURCE_DIR, "famfamfam", "icons")})
+                        uri "/status", :handler => ::Mongrel::StatusHandler.new(:stats_filter => stats)
+                    end
+                rescue Errno::EADDRINUSE
+                    log "ERROR: Address (#{c_address}:#{c_port}) is already in use, please check running processes or run `heel --kill'"
+                    exit 1
                 end
-
                 setup_signals
             end
             
@@ -235,6 +241,9 @@ module Heel
             
             if options.launch_browser then
                 config.log "Launching your browser..."
+                if c_background_me then
+                    puts "Launching your browser to http://#{options.address}:#{options.port}/"
+                end
                 ::Launchy.open("http://#{options.address}:#{options.port}/")
             end
             

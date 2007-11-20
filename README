@@ -10,19 +10,51 @@ Heel is a small static file web server based on {mongrel}[http://mongrel.rubyfor
 for use when you need a quick web server for a directory.  Once the server is running heel will use
 {launchy}[http://copiousfreetime.rubyforge.org/launchy/] to open your browser at the URL of your document root.
 
+    % heel 
+    ** Signals ready.  TERM => stop.  USR2 => restart.  INT => stop (no restart).
+    ** heel running at http://127.0.0.1:4331 with document root /Users/jeremy/Projects/heel
+    ** Use Ctrl-C to stop.
+    ** Launching your browser...
+    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET / HTTP/1.1" 200 8374
+    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET /css/listing.css HTTP/1.1" 200 984
+    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET /icons/application.png HTTP/1.1" 200 464
+    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET /icons/folder.png HTTP/1.1" 200 537
+    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET /favicon.ico HTTP/1.1" 404 0
+
+Or run it in the background
+
+    % heel --daemonize
+    Created /Users/jeremy/.heel
+    heel's PID (/Users/jeremy/.heel/heel.pid) and log file (/Users/jeremy/.heel/heel.log) are stored here
+
+    % heel --kill
+    Sending TERM to process 1086
+    Done.
+
+== FEATURES
+
+* Automatic launching of your browser to the URL it is serving with {launchy}[http://copiousfreetime.rubyforge.org/launchy/]
+* Automatic syntax highlighting of source code files with {coderay}[http://coderay.rubychan.de/]
+* Run in the foreground or daemonized
+* Bind to any address and port (default is 127.0.0.1:4331)
+
 == SYNOPSIS:
 
 	Usage: heel [options]
 
 	    -a, --address ADDRESS            Address to bind to
-	                                     (default: 0.0.0.0)
+	                                       (default: 127.0.0.1)
 	    -d, --daemonize                  Run daemonized in the background
 	    -h, --help                       Display this text
 	    -k, --kill                       Kill an existing daemonized heel process
+	        --[no-]highlighting          Turn on or off syntax highlighting
+	                                       (default: on)
+	        --[no-]launch-browser        Turn on or off automatic browser launch
+	                                       (default: on)
 	    -p, --port PORT                  Port to bind to
-	                                     (default: 4331)
+	                                       (default: 4331)
 	    -r, --root ROOT                  Set the document root
-	                                      (default: current working directory)
+	                                       (default: current working directory)
 	    -v, --version                    Show version
 
 
@@ -30,15 +62,16 @@ for use when you need a quick web server for a directory.  Once the server is ru
 
 === For running: 
 
-* mongrel
+* {mongrel}[http://mongrel.rubyforge.org/]
 * {launchy}[http://copiousfreetime.rubyforge.org/launchy/] >= 0.1.1
-* mime-types
+* {mime-types}[http://mime-types.rubyforge.org/]
+* {coderay}[http://coderay.rubychan.de/]
 
 === For development:
 
-* rake >= 0.7.1
-* rcov >= 0.7.0.1
-* rspec  >= 0.7.3
+* {rake}[http://rake.rubyforge.org/] >= 0.7.1
+* {rcov}[http://eigenclass.org/hiki.rb?rcov] >= 0.7.0.1
+* {rspec}[http://rspec.rubyforge.org/]  >= 0.7.3
 
 == INSTALL:
 
@@ -49,7 +82,7 @@ for use when you need a quick web server for a directory.  Once the server is ru
 * Zed Shaw for {mongrel}[http://mongrel.rubyforge.org]
 * http://www.famfamfam.com/ for amazing icons
 
-== LICENSE:
+== BSD LICENSE:
 
 Copyright (c) 2007, Jeremy Hinegardner
 
