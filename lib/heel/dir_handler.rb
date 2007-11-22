@@ -130,7 +130,7 @@ module Heel
                 elsif stat.file? and stat.readable? then
                     if should_ignore?(File.basename(req_path)) then
                         return 403
-                    elsif highlighting and not %w(false off).include? query_params['highlighting'].to_s.downcase
+                    elsif highlighting and (stat.size > 0) and not %w(false off).include? query_params['highlighting'].to_s.downcase
                         ft = ::FileType[req_path,true]
                         return :highlighted_file if ft and ft != :html
                     end
@@ -144,8 +144,8 @@ module Heel
                 if error.kind_of?(Errno::ENOENT) then
                     return 404
                 end
-                log "ERROR: Unknown, check out the stacktrace"
-                log error
+                log "ERROR: Unknown, check out the backtrace"
+                log error.backtrace.join("\n")
                 return 500
             end
         end
