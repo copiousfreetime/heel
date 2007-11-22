@@ -231,7 +231,7 @@ module Heel
                   <head>
                     <title>#{path}</title>
                     <!-- CodeRay syntax highlighting CSS -->
-                    <link rel="stylesheet" href="/css/coderay-cycnus.css" type="text/css" />
+                    <link rel="stylesheet" href="/heel_css/coderay-cycnus.css" type="text/css" />
                   </head>
                   <body>
                     <div class="CodeRay">

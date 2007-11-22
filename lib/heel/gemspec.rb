@@ -31,7 +31,7 @@ module Heel
                 spec.test_files         = FileList["spec/**/*.rb"]
                 spec.executable         = spec.name
                 spec.files              = spec.test_files + spec.extra_rdoc_files + 
-                                          FileList["lib/**/*.rb", "resources/**/*"]
+                                          FileList["lib/**/*.rb", "data/**/*"]
 
                 spec.add_dependency("mongrel", ">= 1.0.1")
                 spec.add_dependency("launchy", ">= 0.3.0")
