@@ -97,7 +97,7 @@ describe Heel::Server do
         @stdout.string.should =~ /Created/m
     end
     
-    it "should not find a pid file" do
+    it "should send a signal to a pid" do
         server = Heel::Server.new(%w[--kil])
         server.set_io(@stdin,@stdout)
         server.setup_heel_dir
@@ -111,4 +111,5 @@ describe Heel::Server do
             @stdout.string.should =~ /Sending TERM to process -42/m
         end
     end
+    
 end

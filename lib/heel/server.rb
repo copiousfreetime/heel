@@ -22,6 +22,10 @@ module Heel
                     (ENV["HOMEPATH"] && "#{ENV["HOMEDRIVE"]}#{ENV["HOMEPATH"]}") ||
                     "/"
             end
+            
+            def kill_existing_proc
+                Heel::Server.new.kill_existing_proc
+            end
         end
 
         def initialize(argv = [])
@@ -161,8 +165,10 @@ module Heel
                     @stdout.puts "Sending TERM to process #{pid}"
                     Process.kill("TERM", pid)
                 rescue Errno::ESRCH
-                    @stdout.puts "Process does not exist. Removing stale pid file."
+                    @stdout.puts "Unable to kill process with pid #{pid}.  Process does not exist.  Removing stale pid file."
                     File.unlink(pid_file)
+                rescue Errno::EPERM 
+                    @stdout.puts "Unable to kill process with pid #{pid}.  No permissions to kill process."
                 end
             else
                 @stdout.puts "No pid file exists, no process to kill"
