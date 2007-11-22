@@ -218,9 +218,9 @@ module Heel
                                                                    :highlighting => c_highlighting })
                         uri "/", :handler => Heel::ErrorHandler.new
                         uri "/heel_css", :handler => Heel::DirHandler.new({:document_root =>
-                                                                              File.join(APP_RESOURCE_DIR, "css")})
+                                                                              File.join(APP_DATA_DIR, "css")})
                         uri "/heel_icons", :handler => Heel::DirHandler.new({ :document_root => 
-                                                                              File.join(APP_RESOURCE_DIR, "famfamfam", "icons")})
+                                                                              File.join(APP_DATA_DIR, "famfamfam", "icons")})
                         uri "/heel_status", :handler => ::Mongrel::StatusHandler.new(:stats_filter => stats)
                     end
                 rescue Errno::EADDRINUSE

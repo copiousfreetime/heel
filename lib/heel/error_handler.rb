@@ -11,7 +11,7 @@ module Heel
         
 
         def initialize(options = {})
-            @template = ::ERB.new File.read(File.join(APP_RESOURCE_DIR,"error.rhtml"))
+            @template = ::ERB.new File.read(File.join(APP_DATA_DIR,"error.rhtml"))
         end
 
         def process(request,response)
