@@ -6,9 +6,6 @@
 * Changed change 'resources' directory to 'data' 
 * Renamed internal constants
 * Changed operating URL's to avoid conflict with directories heel may be serving
-** /css -> /heel_css
-** /icons -> /heel_icons
-** /status -> /heel_status
 
 == Version 0.5.0 - 2007-11-19
 
