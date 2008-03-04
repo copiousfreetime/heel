@@ -1,4 +1,7 @@
 = Changelog
+== Version 1.0.0 - 2008-03-04
+
+* Convert Heel to a Rack application, defaulting to using the thin server
 
 == Version 0.6.0 - 2007-11-21
 

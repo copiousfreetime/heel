@@ -38,6 +38,7 @@
 ^doc\/*
 ^pkg/*
 ^log/*
+^tmp/*
 \.swo$
 \.swp$
 email.txt

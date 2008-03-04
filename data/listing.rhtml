@@ -22,7 +22,7 @@
                             <img src="<%= entry.icon_url %>" width="16" height="16" alt="icon for type <%= entry.content_type %>" />
                             <% end %>
                             <a href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>"><%= entry.name %></a>
-						    <% if highlighting and entry.content_type != 'Directory' then %>
+						    <% if highlighting? and entry.content_type != 'Directory' then %>
 						     (<a href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting=false" %>">download</a>)
 						    <% end %>
                         </td>
@@ -35,7 +35,7 @@
             </table>
         </div>
         <div class="footer">
-            <a href="<%= Heel::SPEC::homepage %>">heel</a>/v<%= Heel::VERSION %>
+            <a href="http://copiousfreetime.rubyforge.org/heel/">heel</a>/v<%= Heel::VERSION %>
         </div>
     </body>
 </html>
