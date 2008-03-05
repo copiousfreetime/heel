@@ -1,8 +1,14 @@
-require 'heel/mime_map'
+#--
+# Copyright (c) 2008 Jeremy Hinegardner
+# All rights reserved. Licensed under the BSD license.  See LICENSE for details
+#++
+
+require 'heel'
 require 'erb'
 
 module Heel
   # generate html index pages of a directory
+  #
   class DirectoryIndexer
 
     attr_reader :options

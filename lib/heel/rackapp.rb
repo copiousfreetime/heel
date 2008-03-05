@@ -1,8 +1,11 @@
+#--
+# Copyright (c) 2008 Jeremy Hinegardner
+# All rights reserved. Licensed under the BSD license.  See LICENSE for details
+#++
+
+require 'heel'
 require 'rack'
 require 'rack/utils'
-require 'heel/mime_map'
-require 'heel/request'
-require 'heel/directory_indexer'
 require 'coderay'
 require 'coderay/helpers/file_type'
 
@@ -40,7 +43,7 @@ module Heel
     end
 
     def directory_index_template_file
-      @directory_index_template_file ||= File.join(Heel::DATA_DIR, "listing.rhtml")
+      @directory_index_template_file ||= Heel::Configuration.data_path("listing.rhtml")
     end
 
     def directory_indexer
@@ -71,7 +74,7 @@ module Heel
         response['Content-Length'] = body.length.to_s
         response.body             << body
       else
-        return error_response(403, "Directory index is forbidden")
+        return ::Heel::ErrorResponse.new(req.path_info,"Directory index is forbidden", 403).finish
       end
       return response.finish
     end
@@ -115,15 +118,6 @@ module Heel
       return response.finish
     end
 
-    # return an error condition to the client
-    #
-    def error_response(status, message, headers = {})
-      [ status, 
-        { "Content-Type" => "text/plain" }.merge(headers),
-        [ message ],
-      ]
-    end
-
     # interface to rack, env is a hash
     #
     # returns [ status, headers, body ]
@@ -132,13 +126,16 @@ module Heel
       req = Heel::Request.new(env, document_root)
       if req.get? then
         if req.forbidden? or should_ignore?(req.request_path) then
-          return error_response(403, "You do not have permissionto view #{req.path_info}") 
+          return ErrorResponse.new(req.path_info,"You do not have permissionto view #{req.path_info}",403).finish 
         end
-        return error_response(404, "File not found: #{req.path_info}") unless req.found?
+        return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}",403).finish unless req.found?
         return directory_index_response(req)                           if req.for_directory?
         return file_response(req)                                      if req.for_file?
       else
-        return error_response(405, "Method #{req.request_method} Not Allowed. Only GET is honored.", { "Allow" => "GET" })
+        return ErrorResponse.new(req.path_info,
+                                 "Method #{req.request_method} Not Allowed. Only GET is honored.", 
+                                405, 
+                                { "Allow" => "GET" }).finish
       end
     end
   end

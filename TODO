@@ -1,4 +1,3 @@
-* refactor tasks to be more inline with new rabal
-* refactor to a multiple backend architecture then
-** add webrick backend
-** add in event machine backend.
+* set Server: Header
+* fix specs
+* higlighting=false does not work

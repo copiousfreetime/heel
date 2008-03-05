@@ -1,3 +1,9 @@
+#--
+# Copyright (c) 2007, 2008 Jeremy Hinegardner
+# All rights reserved.  Licensed under the BSD license.  See LICENSE for details
+#++
+#
+require 'rack'
 module Heel
   # nothing more than a rack request with some additional methods
   class Request < ::Rack::Request
@@ -19,7 +25,6 @@ module Heel
     # +root_dir+
     #
     def request_path
-      puts "path_info = #{path_info}"
       @request_path ||= ::File.expand_path(::File.join(root_dir, ::Rack::Utils.unescape(path_info)))
     end
 
@@ -32,9 +37,7 @@ module Heel
     # a request must be for something that below the root directory
     #
     def forbidden?
-      x = request_path.index(root_dir) 
-      puts "request path = #{request_path}, root_dir = #{root_dir}, x = #{x}"
-      x != 0
+      request_path.index(root_dir) != 0
     end
 
     # a request is only good for something that actually exists and is readable

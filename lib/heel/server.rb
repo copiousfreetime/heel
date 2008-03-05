@@ -1,9 +1,14 @@
+#--
+# Copyright (c) 2008 Jeremy Hinegardner
+# All rights reserved. Licensed under the BSD license.  See LICENSE for details
+#++
+
 require 'heel'
+require 'thin'
 require 'ostruct'
 require 'launchy'
 require 'fileutils'
 require 'heel/rackapp'
-require 'rack'
 
 module Heel
   class Server
@@ -219,22 +224,21 @@ module Heel
       server = Thin::Server.new(options.address, options.port)
       server.pid_file = pid_file
       server.log_file = log_file
+      puts "logging to #{server.log_file}"
       dr = options.document_root
       h  = options.highlighting
       server.app = Rack::Builder.new {
-        use Rack::CommonLogger
-        use Rack::ShowExceptions
+        use Heel::Logger, server.log_file
         map "/" do 
-          use Rack::Lint
           run Heel::RackApp.new({ :document_root => dr,
                                   :highlighting  => h })
         end
 
         map "/heel_css" do 
-          run Rack::File.new(File.join(Heel::DATA_DIR, "css")) 
+          run Rack::File.new(Heel::Configuration.data_path( "css" )) 
         end
         map "/heel_icons" do
-          run Rack::File.new(File.join(Heel::DATA_DIR, "famfamfam", "icons")) 
+          run Rack::File.new(Heel::Configuration.data_path("famfamfam", "icons")) 
         end
 
       }
