@@ -242,13 +242,7 @@ module Heel
         end
 
       }
-      # server.app = Rack::URLMap.new(
-        # '/'           => Heel::RackApp.new({ :document_root => options.document_root,
-                                             # :highlighting  => options.highlighting }),
-        # '/heel_css'   => Rack::File.new(File.join(APP_DATA_DIR, "css")),
-        # '/heel_icons' => Rack::File.new(File.join(APP_DATA_DIR, "famfamfam", "icons"))
-
-      # )
+      
       server.app = Thin::Stats::Adapter.new(server.app, "/heel_stats")
 
       #config.log "heel running at http://#{options.address}:#{options.port} with document root #{options.document_root}"

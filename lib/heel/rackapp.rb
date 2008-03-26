@@ -134,8 +134,8 @@ module Heel
       else
         return ErrorResponse.new(req.path_info,
                                  "Method #{req.request_method} Not Allowed. Only GET is honored.", 
-                                405, 
-                                { "Allow" => "GET" }).finish
+                                 405, 
+                                 { "Allow" => "GET" }).finish
       end
     end
   end

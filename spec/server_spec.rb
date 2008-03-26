@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__),"spec_helper.rb"))
+require "spec/spec_helper"
 describe Heel::Server do
   before(:each) do 
     @stdin = StringIO.new

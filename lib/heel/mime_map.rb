@@ -62,11 +62,14 @@ module Heel
       @default_mime_type ||= MIME::Types["application/octet-stream"].first
     end
 
+    # returns the mime type of the file at a given pathname
+    #
     def mime_type_of(f)
       MIME::Types.of(f).first || default_mime_type
     end
 
     # return the icon name for a particular mime type
+    #
     def icon_for(mime_type)
       icon = nil
       [:content_type, :sub_type, :media_type].each do |t| 

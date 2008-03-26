@@ -74,7 +74,7 @@ module Heel
         if stat.directory? then
           entry_data.content_type = "Directory"
           entry_data.size         = "-"
-          entry_data.name         += "/"
+          entry_data.name        += "/"
           if using_icons? then
             entry_data.icon_url = File.join(options[:icon_url], MimeMap.icons_by_mime_type[:directory])
           end
@@ -93,6 +93,7 @@ module Heel
     end
  
     # essentially this is strfbytes from facets
+    #
     def num_to_bytes(num,fmt="%.2f")
       case
       when num < 1024
