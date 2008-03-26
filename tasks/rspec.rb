@@ -25,6 +25,7 @@ if spec_config = Configuration.for_if_exist?('test') then
 
       if rcov_config = Configuration.for_if_exist?('rcov') then
         r.rcov      = true
+        r.spec_opts = %w(--format specdoc --color)
         r.rcov_dir  = rcov_config.output_dir
         r.rcov_opts = rcov_config.rcov_opts
       end
