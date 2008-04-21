@@ -9,18 +9,29 @@ require 'rack'
 module Heel
 
   # wrapper around the rack common logger to open up the file and flush the logs
+  # this is invoked with a 'use' command in the Builder so a new instance of
+  # 'Logger' in created with each request, so we do all the heavy lifting in the
+  # meta class.
   #
   class Logger < ::Rack::CommonLogger
+    class << self
+      def log
+        @log
+      end
 
-    def initialize(app, log_file)
-      @logfile = File.open(log_file, "a")
+      def log_file=(lf)
+        @log = File.open(lf, "a")
+        at_exit { @log.close unless @log.closed? }
+      end
+    end
+
+    def initialize(app)
       super(app)
-      at_exit { @logfile.close unless @logfile.closed? }
     end
 
     def <<(str)
-      @logfile.write( str )
-      @logfile.flush
+      Heel::Logger.log.write( str )
+      Heel::Logger.log.flush
     end
   end
 end

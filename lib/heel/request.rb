@@ -5,11 +5,14 @@
 #
 require 'rack'
 module Heel
-  # nothing more than a rack request with some additional methods
+  # nothing more than a rack request with some additional methods and overriding
+  # where the erros get written
   class Request < ::Rack::Request
 
     attr_reader :root_dir
 
+    # Initialize the request with the environment and the root directory of the
+    # request 
     def initialize(env, root_dir)
       super(env)
       @root_dir = root_dir

@@ -91,6 +91,7 @@ module Heel
                                         end
 
         op.on("-d", "--daemonize", "Run daemonized in the background") do 
+          raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if Thin.win? 
           @parsed_options.daemonize = true
         end
 
@@ -193,12 +194,12 @@ module Heel
       end
     end
 
-    # make sure that if we are daemonizing
+    # make sure that if we are daemonizing the process is not running
     def ensure_not_running
       if options.daemonize and File.exist?(pid_file) then
-        log "ERROR: PID File #{c_pid_file} already exists.  Heel may already be running."
-        log "ERROR: Check the Log file #{c_log_file}"
-        log "ERROR: Heel will not start until the .pid file is cleared (`heel --kill' to clean it up)."
+        @stdout.puts "ERROR: PID File #{pid_file} already exists.  Heel may already be running."
+        @stdout.puts "ERROR: Check the Log file #{log_file}"
+        @stdout.puts "ERROR: Heel will not start until the .pid file is cleared (`heel --kill' to clean it up)."
         exit 1
       end
     end
@@ -213,26 +214,29 @@ module Heel
         end
         ::Launchy.open("http://#{options.address}:#{options.port}/")
       end
-   end
- 
-    # run the heel server with the current options.
-    def run
+    end
 
-      error_version_help_kill
-      merge_options
-      setup_heel_dir
-      ensure_not_running
-
+    def thin_server
       server = Thin::Server.new(options.address, options.port)
+
+      # overload the name of the process so it shows up as heel not thin
+      def server.name
+        "heel (v#{Heel::VERSION})"
+      end
+
       server.pid_file = pid_file
       server.log_file = log_file
+
+      # local variables for the block
       dr = options.document_root
       h  = options.highlighting
+
+      Heel::Logger.log_file = log_file
       server.app = Rack::Builder.new {
-        use Heel::Logger, server.log_file
+        use Heel::Logger
         map "/" do 
           run Heel::RackApp.new({ :document_root => dr,
-                                  :highlighting  => h })
+                                  :highlighting  => h})
         end
         map "/heel_css" do 
           run Rack::File.new(Heel::Configuration.data_path( "css" )) 
@@ -245,23 +249,49 @@ module Heel
       
       server.app = Thin::Stats::Adapter.new(server.app, "/heel_stats")
 
+      return server
+    end
+
+    def start_thin_server
+      server = thin_server
+
       server_thread = Thread.new do
         begin
-          puts "starting server"
-          server.start
-          puts "server started"
-        rescue RuntimeError 
-          $stderr.puts "ERROR: Unable to start server.  Heel may already be running.  Please check running processes or run `heel --kill'"
-          exit 1
+          if options.daemonize then
+            if cpid = fork then
+              # wait for the top child of the server double fork to exit
+              Process.waitpid(cpid)
+            else
+              server.daemonize
+              server.start
+            end
+          else
+            begin
+              server.start
+            rescue RuntimeError 
+              $stderr.puts "ERROR: Unable to start server.  Heel may already be running.  Please check running processes or run `heel --kill'"
+              exit 1
+            end
+          end
         end
       end
+    end
+
+ 
+    # run the heel server with the current options.
+    def run
+
+      error_version_help_kill
+      merge_options
+      setup_heel_dir
+      ensure_not_running
+
+      server_thread = start_thin_server
 
       if options.launch_browser then
-        launch_browser.join 
+        launch_browser.join
       end
       server_thread.join
-      puts "server thread joined"
-      server.daemonize if options.daemonize
     end
   end
 end
