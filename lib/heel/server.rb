@@ -224,7 +224,6 @@ module Heel
       server = Thin::Server.new(options.address, options.port)
       server.pid_file = pid_file
       server.log_file = log_file
-      puts "logging to #{server.log_file}"
       dr = options.document_root
       h  = options.highlighting
       server.app = Rack::Builder.new {
@@ -233,7 +232,6 @@ module Heel
           run Heel::RackApp.new({ :document_root => dr,
                                   :highlighting  => h })
         end
-
         map "/heel_css" do 
           run Rack::File.new(Heel::Configuration.data_path( "css" )) 
         end
@@ -245,7 +243,6 @@ module Heel
       
       server.app = Thin::Stats::Adapter.new(server.app, "/heel_stats")
 
-      #config.log "heel running at http://#{options.address}:#{options.port} with document root #{options.document_root}"
       server_thread = Thread.new do
         begin
           server.start

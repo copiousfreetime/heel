@@ -22,12 +22,12 @@ if pkg_config = Configuration.for_if_exist?("packaging") then
 
     desc "Install as a gem"
     task :install => [:clobber, :package] do
-      sh "sudo gem install -y pkg/#{Heel::SPEC.full_name}.gem"
+      sh "sudo gem install -y pkg/#{Heel::GEM_SPEC.full_name}.gem"
     end
 
     desc "Uninstall gem"
     task :uninstall do 
-      sh "sudo gem uninstall -i #{Heel::SPEC.name} -x"
+      sh "sudo gem uninstall -i #{Heel::GEM_SPEC.name} -x"
     end
 
     desc "dump gemspec"
@@ -42,7 +42,7 @@ if pkg_config = Configuration.for_if_exist?("packaging") then
     task :copious => [:package] do
         Rake::SshFilePublisher.new('jeremy@copiousfreetime.org',
                                '/var/www/vhosts/www.copiousfreetime.org/htdocs/gems/gems',
-                               'pkg',"#{Heel::SPEC.full_name}.gem").upload
+                               'pkg',"#{Heel::GEM_SPEC.full_name}.gem").upload
         sh "ssh jeremy@copiousfreetime.org rake -f /var/www/vhosts/www.copiousfreetime.org/htdocs/gems/Rakefile"
     end
 
