@@ -205,9 +205,11 @@ module Heel
 
     def launch_browser
       Thread.new do 
-        puts "Launching your browser..."
+        print "Launching your browser"
         if options.daemonize then
-          puts "Launching your browser to http://#{options.address}:#{options.port}/"
+          puts " at http://#{options.address}:#{options.port}/"
+        else
+          puts "..."
         end
         ::Launchy.open("http://#{options.address}:#{options.port}/")
       end
@@ -245,16 +247,20 @@ module Heel
 
       server_thread = Thread.new do
         begin
+          puts "starting server"
           server.start
+          puts "server started"
         rescue RuntimeError 
           $stderr.puts "ERROR: Unable to start server.  Heel may already be running.  Please check running processes or run `heel --kill'"
           exit 1
         end
       end
+
       if options.launch_browser then
         launch_browser.join 
       end
       server_thread.join
+      puts "server thread joined"
       server.daemonize if options.daemonize
     end
   end

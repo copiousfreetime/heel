@@ -15,7 +15,7 @@ module Heel
     def initialize(app, log_file)
       @logfile = File.open(log_file, "a")
       super(app)
-      at_exit { @logfile.close }
+      at_exit { @logfile.close unless @logfile.closed? }
     end
 
     def <<(str)
