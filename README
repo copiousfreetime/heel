@@ -67,12 +67,12 @@ Or run it in the background
 * {launchy}[http://copiousfreetime.rubyforge.org/launchy/] >= 0.1.1
 * {mime-types}[http://mime-types.rubyforge.org/]
 * {thin}[http://thin.rubyforge.org/]
-* {rake}[http://rake.rubyforge.org/] >= 0.7.1
 
 === For development:
 
 * {rcov}[http://eigenclass.org/hiki.rb?rcov] >= 0.7.0.1
 * {rspec}[http://rspec.rubyforge.org/]  >= 0.7.3
+* {rake}[http://rake.rubyforge.org/] >= 0.7.1
 
 == INSTALL:
 
@@ -80,7 +80,8 @@ Or run it in the background
 
 == CREDITS:
 
-* Marc-Andre Cournoyer for {Thin}[http://code.macournoyer.com/thin/]
+* {Thin}[http://code.macournoyer.com/thin/]
+* {Rack}[http://rack.rubyforge.org/]
 * http://www.famfamfam.com/ for amazing icons
 
 == BSD LICENSE:

@@ -12,6 +12,7 @@ if pkg_config = Configuration.for_if_exist?("packaging") then
 
   require 'gemspec'
   require 'rake/gempackagetask'
+  require 'rake/contrib/sshpublisher'
 
   namespace :dist do
 

@@ -35,7 +35,7 @@ Configuration.for('packaging') {
     test      FileList["spec/**/*.rb"]
     data      FileList["data/**/*"]
     tasks     FileList["tasks/**/*.r{ake,b}"]
-    rdoc      FileList[proj_conf.history, proj_conf.readme, 
+    rdoc      FileList[proj_conf.readme, proj_conf.history,
                        proj_conf.license] + lib
     all       bin + lib + test + data + rdoc + tasks 
   }
@@ -88,16 +88,16 @@ Configuration.for('rdoc') {
   title       Configuration.for('project').name
   options     %w[ --line-numbers --inline-source ]
   output_dir  "doc"
-
-  # hmm... how to configure remote publishing ...
 }
 
 #-----------------------------------------------------------------------
 # Rubyforge 
 #-----------------------------------------------------------------------
 Configuration.for('rubyforge') {
-  project   "copiousfreetime"
-  user      "jjh"
+  project       "copiousfreetime"
+  user          "jjh"
+  host          "rubyforge.org"
+  rdoc_location "#{user}@#{host}:/var/www/gforge-projects/copiousfreetime/heel"
 }
 
 
