@@ -40,18 +40,5 @@ module Heel
 
       return [ status, header.to_hash, ErrorResponse.template.result(binding) ]
     end
-
-    def process(request,response)
-      status = response.status
-      if status != 200 then 
-        message = ::Mongrel::HTTP_STATUS_CODES[status]
-        base_uri = ::Mongrel::HttpRequest.unescape(request.params[Mongrel::Const::REQUEST_URI])
-
-        response.start(status) do |head,out|
-          head['Content-Type'] = 'text/html'
-          out.write(template.result(binding))
-        end
-      end
-    end
   end
 end
