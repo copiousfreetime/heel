@@ -227,16 +227,14 @@ module Heel
       server.pid_file = pid_file
       server.log_file = log_file
 
-      # local variables for the block
-      dr = options.document_root
-      h  = options.highlighting
+      app = Heel::RackApp.new({ :document_root => options.document_root,
+                                :highlighting  => options.highlighting})
 
       Heel::Logger.log_file = log_file
       server.app = Rack::Builder.new {
         use Heel::Logger
         map "/" do 
-          run Heel::RackApp.new({ :document_root => dr,
-                                  :highlighting  => h})
+          run app
         end
         map "/heel_css" do 
           run Rack::File.new(Heel::Configuration.data_path( "css" )) 

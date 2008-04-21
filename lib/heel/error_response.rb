@@ -6,7 +6,6 @@
 require 'heel'
 require 'rack'
 require 'erb'
-require 'tasks/config'
 
 module Heel
 
@@ -24,7 +23,7 @@ module Heel
       end
 
       def homepage
-        @homepage ||= ::Configuration.for("project").homepage
+        @homepage ||= Heel::Configuration::HOMEPAGE
       end
     end
 

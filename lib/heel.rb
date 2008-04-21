@@ -4,7 +4,6 @@
 #++
 
 module Heel
-
   # recursively descend the directory with the same name as this file and do a
   # require 'heel/path/to/file'
   #

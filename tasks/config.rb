@@ -1,6 +1,7 @@
 require 'configuration'
 
 require 'rake'
+require 'heel'
 require 'heel/configuration'
 require 'heel/version'
 
@@ -14,7 +15,7 @@ Configuration.for('project') {
   version       Heel::VERSION
   author        "Jeremy Hinegardner"
   email         "jeremy at hinegardner dot org"
-  homepage      "http://copiousfreetime.rubyforge.org/heel/"
+  homepage      Heel::Configuration::HOMEPAGE
   description   Utils.section_of("README", "description")
   summary       description.split(".").first
   history       "HISTORY"

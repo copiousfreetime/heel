@@ -22,7 +22,7 @@ Heel::GEM_SPEC = Gem::Specification.new do |spec|
   spec.add_dependency("mime-types", ">= 1.15")
   spec.add_dependency("launchy", ">= 0.3.1")
   spec.add_dependency("coderay", ">= 0.7.4.215")
- 
+
   if rdoc = Configuration.for_if_exist?('rdoc') then
     spec.has_rdoc         = true
     spec.extra_rdoc_files = pkg.files.rdoc

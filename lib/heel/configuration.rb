@@ -53,6 +53,8 @@ module Heel
       self.sub_path("lib", *args)
     end
 
+    HOMEPAGE = "http://copiousfreetime.rubyforge.org/heel/"
+
     private
     def self.sub_path(sub,*args)
       sp = ::File.join(root_dir, sub) + File::SEPARATOR

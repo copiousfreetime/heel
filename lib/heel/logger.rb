@@ -16,11 +16,16 @@ module Heel
   class Logger < ::Rack::CommonLogger
     class << self
       def log
+        # the log can get closed if daemonized, the at_exit will close it.
+        if @log.closed? then
+          @log = File.open(@log_file, "a")
+        end
         @log
       end
 
       def log_file=(lf)
-        @log = File.open(lf, "a")
+        @log_file = lf
+        @log = File.open(@log_file, "a")
         at_exit { @log.close unless @log.closed? }
       end
     end
