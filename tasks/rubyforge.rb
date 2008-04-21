@@ -11,7 +11,7 @@ require 'tasks/config'
 if rf_conf = Configuration.for_if_exist?('rubyforge') then
   require 'rubyforge'
   
-  prof_conf = Configuration.for('project')
+  proj_conf = Configuration.for('project')
 
   namespace :dist do
     desc "Release files to rubyforge"
@@ -21,25 +21,25 @@ if rf_conf = Configuration.for_if_exist?('rubyforge') then
 
       # make sure this release doesn't already exist
       releases = rubyforge.autoconfig['release_ids']
-      if releases.has_key?(prof_conf.name) and releases[prof_conf.name][Heel::VERSION] then
+      if releases.has_key?(proj_conf.name) and releases[proj_conf.name][Heel::VERSION] then
         abort("Release #{Heel::VERSION} already exists! Unable to release.")
       end
 
       config = rubyforge.userconfig
-      config["release_notes"]     = prof_conf.description
+      config["release_notes"]     = proj_conf.description
       config["release_changes"]   = Utils.release_notes_from(proj_conf.history)[Heel::VERSION]
       config["Prefomatted"]       = true
 
       puts "Uploading to rubyforge..."
-      files = FileList[File.join("pkg","#{prof_conf.name}-#{Heel::VERSION}*.*")].to_a
+      files = FileList[File.join("pkg","#{proj_conf.name}-#{Heel::VERSION}*.*")].to_a
       rubyforge.login
-      rubyforge.add_release(rf_conf.project, prof_conf.name, Heel::VERSION, *files)
+      rubyforge.add_release(rf_conf.project, proj_conf.name, Heel::VERSION, *files)
       puts "done."
     end
   end
 
   namespace :announce do
-    desc "Post news of #{prof_conf.name} to #{rf_conf.project} on rubyforge"
+    desc "Post news of #{proj_conf.name} to #{rf_conf.project} on rubyforge"
     task :rubyforge do
       subject, title, body, urls = announcement
       rubyforge = RubyForge.new
