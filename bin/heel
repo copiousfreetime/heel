@@ -1,9 +1,13 @@
 #!/usr/bin/env ruby
 
+#--
+# Copyright (c) 2007, 2008 Jeremy Hinegardner
+# All rights reserved. Licensed under the BSD license.  See LICENSE for details
+#++
+
 $: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
 
 require 'rubygems'
-require 'mongrel'
 require 'heel'
 
 Heel::Server.new(ARGV).run

@@ -6,44 +6,45 @@
 
 == DESCRIPTION:
 
-Heel is a small static file web server based on {mongrel}[http://mongrel.rubyforge.org] 
-for use when you need a quick web server for a directory.  Once the server is running heel will use
-{launchy}[http://copiousfreetime.rubyforge.org/launchy/] to open your browser at the URL of your document root.
+Heel is a small static web server for use when you need a quick web server for a
+directory.  Once the server is running, heel will use
+{launchy}[http://copiousfreetime.rubyforge.org/launchy/] to open your browser at
+the URL of your document root.
 
-    % heel 
-    ** Signals ready.  TERM => stop.  USR2 => restart.  INT => stop (no restart).
-    ** heel running at http://127.0.0.1:4331 with document root /Users/jeremy/Projects/heel
-    ** Use Ctrl-C to stop.
-    ** Launching your browser...
-    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET / HTTP/1.1" 200 8374
-    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET /css/listing.css HTTP/1.1" 200 984
-    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET /icons/application.png HTTP/1.1" 200 464
-    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET /icons/folder.png HTTP/1.1" 200 537
-    127.0.0.1 - - [19/Nov/2007:23:23:33 MST] "GET /favicon.ico HTTP/1.1" 404 0
+Heel is built using {Rack}[http://rack.rubyforge.org] and
+{Thin}[http://code.macournoyer.com/thin/]
+
+   % heel        
+   >> Thin web server (v0.8.1 codename Rebel Porpoise)
+   >> Threaded mode OFF
+   >> Maximum connections set to 1024
+   >> Listening on 0.0.0.0:4331, CTRL+C to stop
+   Launching your browser...
 
 Or run it in the background
 
-    % heel --daemonize
-    Created /Users/jeremy/.heel
-    heel's PID (/Users/jeremy/.heel/heel.pid) and log file (/Users/jeremy/.heel/heel.log) are stored here
+  % heel --daemonize
+  Created /Users/jeremy/.heel
+  heel's PID (/Users/jeremy/.heel/heel.pid) and log file (/Users/jeremy/.heel/heel.log) are stored here
+  Launching your browser at http://0.0.0.0:4331/
 
-    % heel --kill
-    Sending TERM to process 1086
-    Done.
+  % heel --kill
+  Sending TERM to process 3304
+  Done.
 
 == FEATURES
 
 * Automatic launching of your browser to the URL it is serving with {launchy}[http://copiousfreetime.rubyforge.org/launchy/]
 * Automatic syntax highlighting of source code files with {coderay}[http://coderay.rubychan.de/]
 * Run in the foreground or daemonized
-* Bind to any address and port (default is 127.0.0.1:4331)
+* Bind to any address and port (default is 0.0.0.0:4331)
 
 == SYNOPSIS:
 
 	Usage: heel [options]
 
 	    -a, --address ADDRESS            Address to bind to
-	                                       (default: 127.0.0.1)
+	                                       (default: 0.0.0.0)
 	    -d, --daemonize                  Run daemonized in the background
 	    -h, --help                       Display this text
 	    -k, --kill                       Kill an existing daemonized heel process
@@ -65,7 +66,7 @@ Or run it in the background
 * {coderay}[http://coderay.rubychan.de/]
 * {launchy}[http://copiousfreetime.rubyforge.org/launchy/] >= 0.1.1
 * {mime-types}[http://mime-types.rubyforge.org/]
-* {mongrel}[http://mongrel.rubyforge.org/]
+* {thin}[http://thin.rubyforge.org/]
 * {rake}[http://rake.rubyforge.org/] >= 0.7.1
 
 === For development:
@@ -79,12 +80,12 @@ Or run it in the background
 
 == CREDITS:
 
-* Zed Shaw for {mongrel}[http://mongrel.rubyforge.org]
+* Marc-Andre Cournoyer for {Thin}[http://code.macournoyer.com/thin/]
 * http://www.famfamfam.com/ for amazing icons
 
 == BSD LICENSE:
 
-Copyright (c) 2007, Jeremy Hinegardner
+Copyright (c) 2007, 2008, Jeremy Hinegardner
 
 All rights reserved.
 
