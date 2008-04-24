@@ -1,4 +1,9 @@
 = Changelog
+== Version 1.0.1 - 2008-04-24
+
+* Fix performance issue in serving large files
+* Fix performance issue in checking for coderay file type when coderay would not be used.
+
 == Version 1.0.0 - 2008-04-20
 
 * Convert Heel to a Rack and Thin application

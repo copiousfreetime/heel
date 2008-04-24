@@ -85,37 +85,53 @@ module Heel
     # html file.
     #
     def file_response(req)
-      code_ray_type = ::FileType[req.request_path, true]
-      response      = ::Rack::Response.new
+      response = ::Rack::Response.new
+
       response['Last-Modified'] = req.stat.mtime.rfc822
 
-      if highlighting? and req.highlighting? and code_ray_type and (code_ray_type != :html) then
-        body = <<-EOM
-        <html>
-          <head>
-          <title>#{req.path_info}</title>
-          <!-- CodeRay syntax highlighting CSS -->
-          <link rel="stylesheet" href="/heel_css/coderay-cycnus.css" type="text/css" />
-          </head>
-          <body>
-            <div class="CodeRay">
-              <pre>
-#{CodeRay.scan_file(req.request_path,:auto).html({:line_numbers => :inline})}
-              </pre>
-            </div>
-          </body>
-        </html>
-        EOM
-        response['Content-Type']    = 'text/html'
-        response['Content-Length']  = body.length.to_s
-        response.body << body
-      else
-        file_type                   = mime_map.mime_type_of(req.request_path)
-        response['Content-Type']    = file_type.to_s
-        response['Content-Length']  = req.stat.size.to_s
-        response.body = File.open(req.request_path)
+      if highlighting? and req.highlighting? then 
+        # only do a coderay type check if we are going to use coderay in the
+        # response
+        code_ray_type = ::FileType[req.request_path, true] 
+        if code_ray_type and (code_ray_type != :html) then
+          body = <<-EOM
+          <html>
+            <head>
+            <title>#{req.path_info}</title>
+            <!-- CodeRay syntax highlighting CSS -->
+            <link rel="stylesheet" href="/heel_css/coderay-cycnus.css" type="text/css" />
+            </head>
+            <body>
+              <div class="CodeRay">
+                <pre>
+  #{CodeRay.scan_file(req.request_path,:auto).html({:line_numbers => :inline})}
+                </pre>
+              </div>
+            </body>
+          </html>
+          EOM
+          response['Content-Type']    = 'text/html'
+          response['Content-Length']  = body.length.to_s
+          response.body << body
+          return response.finish
+        end
       end
-      return response.finish
+
+      # fall through to a default file return
+      # 
+
+      file_type                   = mime_map.mime_type_of(req.request_path)
+      response['Content-Type']    = file_type.to_s
+      response['Content-Length']  = req.stat.size.to_s
+
+      return response.finish do 
+        File.open(req.request_path) do |f|
+          while p = f.read(8192)
+            response.write p
+          end
+        end
+      end
+
     end
 
     # interface to rack, env is a hash
