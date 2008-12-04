@@ -18,10 +18,10 @@ Heel::GEM_SPEC = Gem::Specification.new do |spec|
   pkg = Configuration.for('packaging')
   spec.files        = pkg.files.all
   spec.executables  = pkg.files.bin.collect { |b| File.basename(b) }
-  spec.add_dependency("thin", ">= 0.7.0")
-  spec.add_dependency("mime-types", ">= 1.15")
-  spec.add_dependency("launchy", ">= 0.3.1")
-  spec.add_dependency("coderay", ">= 0.7.4.215")
+  spec.add_dependency("thin", "~> 1.0.0")
+  spec.add_dependency("mime-types", "~> 1.15")
+  spec.add_dependency("launchy", "~> 0.3.2")
+  spec.add_dependency("coderay", "~> 0.8.260")
 
   if rdoc = Configuration.for_if_exist?('rdoc') then
     spec.has_rdoc         = true

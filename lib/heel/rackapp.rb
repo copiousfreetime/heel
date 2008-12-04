@@ -8,6 +8,7 @@ require 'rack'
 require 'rack/utils'
 require 'coderay'
 require 'coderay/helpers/file_type'
+require 'time'
 
 module Heel
   class RackApp
