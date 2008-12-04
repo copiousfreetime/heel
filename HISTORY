@@ -1,4 +1,9 @@
 = Changelog
+== Version 1.0.2 - 2008-12-03
+
+* Fix FileType namespace issue (thanks defunkt)
+* various task maintenance
+
 == Version 1.0.1 - 2008-04-24
 
 * Fix performance issue in serving large files

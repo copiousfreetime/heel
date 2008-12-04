@@ -92,7 +92,7 @@ module Heel
       if highlighting? and req.highlighting? then 
         # only do a coderay type check if we are going to use coderay in the
         # response
-        code_ray_type = ::FileType[req.request_path, true] 
+        code_ray_type = CodeRay::FileType[req.request_path, true] 
         if code_ray_type and (code_ray_type != :html) then
           body = <<-EOM
           <html>
