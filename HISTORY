@@ -1,4 +1,8 @@
 = Changelog
+== Version 1.0.3 - 2009-03-02
+
+* Update for MIME::Types 1.16
+
 == Version 1.0.2 - 2008-12-03
 
 * Fix FileType namespace issue (thanks defunkt) and new version of coderay

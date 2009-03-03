@@ -26,7 +26,7 @@ describe Heel::RackApp do
     res = @request.get("/gemspec.rb?highlighting=off")
     res.should be_ok
     res.body.size.should == File.size("gemspec.rb")
-    res['Content-Type'].should == "text/plain"
+    res['Content-Type'].should == "application/x-ruby"
   end
 
   it "should return a 405 if given a non-GET request" do
