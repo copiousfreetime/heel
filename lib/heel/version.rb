@@ -5,9 +5,9 @@
 
 module Heel
   module Version
-    MAJOR   = 1 
+    MAJOR   = 2 
     MINOR   = 0 
-    BUILD   = 4
+    BUILD   = 0
 
     def to_a
       [MAJOR, MINOR, BUILD]

@@ -63,8 +63,14 @@ describe Heel::Server do
     server.options.port.should == 4242        
   end
 
-  it "should allow the highlighting option to be unset" do
-    server = Heel::Server.new(%w[--no-highlighting])
+  it "should allow the highlighting option to be set" do
+    server = Heel::Server.new(%w[--highlighting])
+    server.merge_options
+    server.options.highlighting.should == true
+  end
+
+  it "should have highlighting off as a default" do
+    server = Heel::Server.new
     server.merge_options
     server.options.highlighting.should == false
   end

@@ -62,7 +62,7 @@ module Heel
         @default_options.port            = 4331
         @default_options.document_root   = Dir.pwd
         @default_options.daemonize       = false
-        @default_options.highlighting    = true
+        @default_options.highlighting    = false
         @default_options.kill            = false
         @default_options.launch_browser  = true
       end
@@ -104,7 +104,7 @@ module Heel
         end
 
         op.on("--[no-]highlighting", "Turn on or off syntax highlighting",
-                                             "  (default: on)") do |highlighting|
+                                             "  (default: off)") do |highlighting|
           @parsed_options.highlighting = highlighting
                                              end
 

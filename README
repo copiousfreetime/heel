@@ -50,7 +50,7 @@ Or run it in the background
 	    -h, --help                       Display this text
 	    -k, --kill                       Kill an existing daemonized heel process
 	        --[no-]highlighting          Turn on or off syntax highlighting
-	                                       (default: on)
+	                                       (default: off)
 	        --[no-]launch-browser        Turn on or off automatic browser launch
 	                                       (default: on)
 	    -p, --port PORT                  Port to bind to
@@ -87,7 +87,7 @@ Or run it in the background
 
 == BSD LICENSE:
 
-Copyright (c) 2007, 2008, Jeremy Hinegardner
+Copyright (c) 2007-2009, Jeremy Hinegardner
 
 All rights reserved.
 
