@@ -13,6 +13,7 @@ if rdoc_config = Configuration.for_if_exist?('rdoc') then
 
   namespace :doc do
 
+    require 'rdoc'
     require 'rake/rdoctask'
 
     # generating documentation locally
