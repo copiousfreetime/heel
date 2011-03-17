@@ -16,7 +16,7 @@ Heel is built using {Rack}[http://rack.rubyforge.org] and
 {Thin}[http://code.macournoyer.com/thin/]
 
    % heel        
-   >> Thin web server (v1.2.2 codename I Find Your Lack of Sauce Disturbing)
+   >> Thin web server (v1.2.8 codename Black Keys)
    >> Maximum connections set to 1024
    >> Listening on 0.0.0.0:4331, CTRL+C to stop
    Launching your browser...
