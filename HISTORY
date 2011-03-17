@@ -1,4 +1,9 @@
 = Changelog
+== Version 2.1.0 - 2011-03-17
+
+* Update to Launchy 1.0.0
+* Update to Thin 1.2.8
+
 == Version 2.0.0 - 2009-06-24
 
 * Change highlighting mode default to 'off' instead of 'on'
