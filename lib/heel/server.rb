@@ -4,7 +4,6 @@
 #++
 
 require 'heel'
-require 'thin'
 require 'ostruct'
 require 'launchy'
 require 'fileutils'
@@ -39,10 +38,10 @@ module Heel
 
       set_io
 
-      @options        = default_options
-      @parsed_options = ::OpenStruct.new
-      @parser         = option_parser
-      @error_message  = nil
+      @options         = default_options
+      @parsed_options  = ::OpenStruct.new
+      @parser          = option_parser
+      @error_message   = nil
 
       begin
         @parser.parse!(argv)
@@ -54,19 +53,17 @@ module Heel
     end
 
     def default_options
-      if @default_options.nil? then
-        @default_options                 = ::OpenStruct.new
-        @default_options.show_version    = false
-        @default_options.show_help       = false
-        @default_options.address         = "0.0.0.0"
-        @default_options.port            = 4331
-        @default_options.document_root   = Dir.pwd
-        @default_options.daemonize       = false
-        @default_options.highlighting    = false
-        @default_options.kill            = false
-        @default_options.launch_browser  = true
-      end
-      return @default_options
+      defaults                 = ::OpenStruct.new
+      defaults.show_version    = false
+      defaults.show_help       = false
+      defaults.address         = "0.0.0.0"
+      defaults.port            = 4331
+      defaults.document_root   = Dir.pwd
+      defaults.daemonize       = false
+      defaults.highlighting    = false
+      defaults.kill            = false
+      defaults.launch_browser  = true
+      return defaults
     end
 
     def default_directory
