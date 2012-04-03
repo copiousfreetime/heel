@@ -8,6 +8,7 @@ require 'ostruct'
 require 'launchy'
 require 'fileutils'
 require 'heel/rackapp'
+require 'puma'
 
 module Heel
   class Server
@@ -78,6 +79,14 @@ module Heel
       File.join(default_directory,"heel.log")
     end
 
+    def win?
+      RUBY_PLATFORM =~ /mswin|mingw/
+    end
+
+    def java?
+      RUBY_PLATFORM =~ /java/
+    end
+
     def option_parser
       OptionParser.new do |op|
         op.separator ""
@@ -88,7 +97,8 @@ module Heel
                                         end
 
         op.on("-d", "--daemonize", "Run daemonized in the background") do 
-          raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if Thin.win? 
+          raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if win?
+          raise ::OptionParser::ParseError, "Daemonizing is not supported on java" if java?
           @parsed_options.daemonize = true
         end
 
@@ -171,7 +181,7 @@ module Heel
         rescue Errno::ESRCH
           @stdout.puts "Unable to kill process with pid #{pid}.  Process does not exist.  Removing stale pid file."
           File.unlink(pid_file)
-        rescue Errno::EPERM 
+        rescue Errno::EPERM
           @stdout.puts "Unable to kill process with pid #{pid}.  No permissions to kill process."
         end
       else
@@ -194,7 +204,7 @@ module Heel
     # make sure that if we are daemonizing the process is not running
     def ensure_not_running
       if options.daemonize and File.exist?(pid_file) then
-        @stdout.puts "ERROR: PID File #{pid_file} already exists.  Heel may already be running."
+        @stdout.puts "ERROR: PID File #{pid_file} already exists. Heel may already be running."
         @stdout.puts "ERROR: Check the Log file #{log_file}"
         @stdout.puts "ERROR: Heel will not start until the .pid file is cleared (`heel --kill' to clean it up)."
         exit 1
@@ -202,7 +212,7 @@ module Heel
     end
 
     def launch_browser
-      Thread.new do 
+      Thread.new do
         print "Launching your browser"
         if options.daemonize then
           puts " at http://#{options.address}:#{options.port}/"
@@ -213,24 +223,13 @@ module Heel
       end
     end
 
-    def thin_server
-      server = Thin::Server.new(options.address, options.port)
-
-      # overload the name of the process so it shows up as heel not thin
-      def server.name
-        "heel (v#{Heel::VERSION})"
-      end
-
-      server.pid_file = pid_file
-      server.log_file = log_file
-
+    def heel_app
       app = Heel::RackApp.new({ :document_root => options.document_root,
                                 :highlighting  => options.highlighting})
-
       Heel::Logger.log_file = log_file
-      server.app = Rack::Builder.new {
+      Rack::Builder.new {
         use Heel::Logger
-        map "/" do 
+        map "/" do
           run app
         end
         map "/heel_css" do 
@@ -239,40 +238,44 @@ module Heel
         map "/heel_icons" do
           run Rack::File.new(Heel::Configuration.data_path("famfamfam", "icons")) 
         end
-
       }
-      
-      server.app = Thin::Stats::Adapter.new(server.app, "/heel_stats")
-
-      return server
     end
 
-    def start_thin_server
-      server = thin_server
-
+    def start_server
+      server = Rack::Server.new( server_options )
       server_thread = Thread.new do
-        begin
-          if options.daemonize then
-            if cpid = fork then
-              # wait for the top child of the server double fork to exit
-              Process.waitpid(cpid)
-            else
-              server.daemonize
-              server.start
-            end
+        if options.daemonize then
+          if cpid = fork then
+            # wait for the server to span and then move on to launching the
+            # browser
+            Process.waitpid( cpid )
           else
-            begin
-              server.start
-            rescue RuntimeError 
-              $stderr.puts "ERROR: Unable to start server.  Heel may already be running.  Please check running processes or run `heel --kill'"
-              exit 1
-            end
+            server.start
+          end
+        else
+          begin
+            server.start
+          rescue RuntimeError
+            $stderr.puts "ERROR: Unable to start server. Heel may already be running. Please check running processes or run `heel --kill'"
+            exit 1
           end
         end
       end
+      return server_thread
     end
 
- 
+    def server_options
+      {
+        :app  => heel_app,
+        :pid  => pid_file,
+        :Port => options.port,
+        :Host => options.host,
+        :environment => 'deployment',
+        :server => 'puma',
+        :daemonize => options.daemonize
+      }
+    end
+
     # run the heel server with the current options.
     def run
 
@@ -281,7 +284,7 @@ module Heel
       setup_heel_dir
       ensure_not_running
 
-      server_thread = start_thin_server
+      server_thread = start_server
 
       if options.launch_browser then
         launch_browser.join
