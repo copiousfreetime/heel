@@ -75,10 +75,10 @@ describe Heel::Server do
     server.options.highlighting.should be_false
   end
 
-  it "should set no-launch-browser option and kill option" do
+  it "should set no-launch-browser option" do
     server = Heel::Server.new(%w[--no-launch-browser])
     server.merge_options
-    server.options.launch_browser.should be_true
+    server.options.launch_browser.should be_false
   end
 
   it "should attempt to kill the process" do

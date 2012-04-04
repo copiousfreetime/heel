@@ -16,16 +16,16 @@ describe Heel::RackApp do
   end
 
   it 'should highlight a ruby file' do
-    res = @request.get("/gemspec.rb")
+    res = @request.get("/lib/heel.rb")
     res.should be_ok
     res['Content-Type'].should eq "text/html"
     res.body.should =~ /class="CodeRay"/
   end
 
   it "should not highlight a ruby file if told not to" do
-    res = @request.get("/gemspec.rb?highlighting=off")
+    res = @request.get("/lib/heel.rb?highlighting=off")
     res.should be_ok
-    res.body.size.should eq File.size("gemspec.rb")
+    res.body.size.should eq File.size("lib/heel.rb")
     res['Content-Type'].should == "application/x-ruby"
   end
 
