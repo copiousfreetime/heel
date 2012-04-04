@@ -48,8 +48,8 @@ module Heel
         @parser.parse!(argv)
       rescue ::OptionParser::ParseError => pe
         msg = ["#{@parser.program_name}: #{pe}",
-                        "Try `#{@parser.program_name} --help` for more information"]
-                        @error_message = msg.join("\n")
+               "Try `#{@parser.program_name} --help` for more information"]
+        @error_message = msg.join("\n")
       end
     end
 
@@ -94,7 +94,7 @@ module Heel
         op.on("-a", "--address ADDRESS", "Address to bind to",
                                         "  (default: #{default_options.address})") do |add|
           @parsed_options.address = add
-                                        end
+        end
 
         op.on("-d", "--daemonize", "Run daemonized in the background") do 
           raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if win?
@@ -113,23 +113,23 @@ module Heel
         op.on("--[no-]highlighting", "Turn on or off syntax highlighting",
                                              "  (default: off)") do |highlighting|
           @parsed_options.highlighting = highlighting
-                                             end
+        end
 
         op.on("--[no-]launch-browser", "Turn on or off automatic browser launch",
                                                "  (default: on)") do |l|
           @parsed_options.launch_browser = l
-                                               end
+        end
 
         op.on("-p", "--port PORT", Integer, "Port to bind to",
                                         "  (default: #{default_options.port})") do |port|
           @parsed_options.port = port
-                                        end
+        end
 
         op.on("-r","--root ROOT", 
                       "Set the document root"," (default: #{default_options.document_root})") do |document_root|
           @parsed_options.document_root = File.expand_path(document_root)
           raise ::OptionParser::ParseError, "#{@parsed_options.document_root} is not a valid directory" if not File.directory?(@parsed_options.document_root)
-                      end
+        end
 
         op.on("-v", "--version", "Show version") do 
           @parsed_options.show_version = true
@@ -139,9 +139,7 @@ module Heel
 
     def merge_options
       options = default_options.marshal_dump
-      @parsed_options.marshal_dump.each_pair do |key,value|
-        options[key] = value
-      end
+      options.merge!( @parsed_options.marshal_dump )
 
       @options = OpenStruct.new(options)
     end
@@ -227,7 +225,7 @@ module Heel
       app = Heel::RackApp.new({ :document_root => options.document_root,
                                 :highlighting  => options.highlighting})
       Heel::Logger.log_file = log_file
-      Rack::Builder.new {
+      stack = Rack::Builder.new {
         use Heel::Logger
         map "/" do
           run app
@@ -239,9 +237,26 @@ module Heel
           run Rack::File.new(Heel::Configuration.data_path("famfamfam", "icons")) 
         end
       }
+      return stack.to_app
     end
 
     def start_server
+      server_thread = Thread.new do
+        if options.daemonize then
+          if cpid = fork then
+            Process.waitpid( cpid )
+          else
+            server = Rack::Server.new( server_options )
+            server.start
+          end
+        else
+          server = Rack::Server.new( server_options )
+          server.start
+        end
+      end
+    end
+
+    def start_server_old
       server = Rack::Server.new( server_options )
       server_thread = Thread.new do
         if options.daemonize then
@@ -269,7 +284,7 @@ module Heel
         :app  => heel_app,
         :pid  => pid_file,
         :Port => options.port,
-        :Host => options.host,
+        :Host => options.address,
         :environment => 'deployment',
         :server => 'puma',
         :daemonize => options.daemonize
