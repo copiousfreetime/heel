@@ -154,15 +154,15 @@ This.gemspec = Gem::Specification.new do |spec|
                         "--markup", "tomdoc" ]
 
   # The Runtime Dependencies
-  spec.add_runtime_dependency( 'puma'      , '~> 1.1.1' )
-  spec.add_runtime_dependency( 'mime-types', '~> 1.18'  )
-  spec.add_runtime_dependency( 'launchy'   , '~> 2.1.0' )
-  spec.add_runtime_dependency( 'coderay'   , '~> 1.0.5' )
+  spec.add_runtime_dependency( 'puma'      , '~> 1.6' )
+  spec.add_runtime_dependency( 'mime-types', '~> 1.19'  )
+  spec.add_runtime_dependency( 'launchy'   , '~> 2.1' )
+  spec.add_runtime_dependency( 'coderay'   , '~> 1.0.7' )
 
   # The Development Dependencies
   spec.add_development_dependency( 'rake'  , '~> 0.9.2.2')
   spec.add_development_dependency( 'rcov'  , '~> 1.0.0'  )
-  spec.add_development_dependency( 'rspec' , '~> 2.8.0'  )
+  spec.add_development_dependency( 'rspec' , '~> 2.11.0'  )
   spec.add_development_dependency( 'rdoc'  , '~> 3.12'   )
 
 end
