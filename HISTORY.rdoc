@@ -1,4 +1,10 @@
 = Changelog
+== Version 3.0.0 - 2012-08-xx
+
+* Switch to using puma for the webserver
+* Switch to using simplecov for coverage testing
+* Update all gem dependencies
+
 == Version 2.1.0 - 2011-03-17
 
 * Update to Launchy 1.0.0
