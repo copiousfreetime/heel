@@ -85,11 +85,14 @@ end
 #------------------------------------------------------------------------------
 # Coverage - just checking to make sure simplecov is available
 #------------------------------------------------------------------------------
-begin
-  require 'simplecov'
-rescue LoadError
-  Util.task_warning( 'simplecov' )
+if RUBY_VERSION >= "1.9.0" then
+  begin
+    require 'simplecov'
+  rescue LoadError
+    Util.task_warning( 'simplecov' )
+  end
 end
+CLOBBER << FileList['coverage']
 
 #------------------------------------------------------------------------------
 # Manifest - We want an explicit list of thos files that are to be packaged in
