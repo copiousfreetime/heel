@@ -3,12 +3,11 @@
 # All rights reserved. Licensed under the BSD license.  See LICENSE for details
 #++
 
-require 'heel'
-require 'thin'
 require 'ostruct'
 require 'launchy'
 require 'fileutils'
 require 'heel/rackapp'
+require 'puma'
 
 module Heel
   class Server
@@ -39,34 +38,32 @@ module Heel
 
       set_io
 
-      @options        = default_options
-      @parsed_options = ::OpenStruct.new
-      @parser         = option_parser
-      @error_message  = nil
+      @options         = default_options
+      @parsed_options  = ::OpenStruct.new
+      @parser          = option_parser
+      @error_message   = nil
 
       begin
         @parser.parse!(argv)
       rescue ::OptionParser::ParseError => pe
         msg = ["#{@parser.program_name}: #{pe}",
-                        "Try `#{@parser.program_name} --help` for more information"]
-                        @error_message = msg.join("\n")
+               "Try `#{@parser.program_name} --help` for more information"]
+        @error_message = msg.join("\n")
       end
     end
 
     def default_options
-      if @default_options.nil? then
-        @default_options                 = ::OpenStruct.new
-        @default_options.show_version    = false
-        @default_options.show_help       = false
-        @default_options.address         = "0.0.0.0"
-        @default_options.port            = 4331
-        @default_options.document_root   = Dir.pwd
-        @default_options.daemonize       = false
-        @default_options.highlighting    = false
-        @default_options.kill            = false
-        @default_options.launch_browser  = true
-      end
-      return @default_options
+      defaults                 = ::OpenStruct.new
+      defaults.show_version    = false
+      defaults.show_help       = false
+      defaults.address         = "0.0.0.0"
+      defaults.port            = 4331
+      defaults.document_root   = Dir.pwd
+      defaults.daemonize       = false
+      defaults.highlighting    = false
+      defaults.kill            = false
+      defaults.launch_browser  = true
+      return defaults
     end
 
     def default_directory
@@ -81,6 +78,14 @@ module Heel
       File.join(default_directory,"heel.log")
     end
 
+    def win?
+      RUBY_PLATFORM =~ /mswin|mingw/
+    end
+
+    def java?
+      RUBY_PLATFORM =~ /java/
+    end
+
     def option_parser
       OptionParser.new do |op|
         op.separator ""
@@ -88,10 +93,11 @@ module Heel
         op.on("-a", "--address ADDRESS", "Address to bind to",
                                         "  (default: #{default_options.address})") do |add|
           @parsed_options.address = add
-                                        end
+        end
 
         op.on("-d", "--daemonize", "Run daemonized in the background") do 
-          raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if Thin.win? 
+          raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if win?
+          raise ::OptionParser::ParseError, "Daemonizing is not supported on java" if java?
           @parsed_options.daemonize = true
         end
 
@@ -106,23 +112,23 @@ module Heel
         op.on("--[no-]highlighting", "Turn on or off syntax highlighting",
                                              "  (default: off)") do |highlighting|
           @parsed_options.highlighting = highlighting
-                                             end
+        end
 
         op.on("--[no-]launch-browser", "Turn on or off automatic browser launch",
                                                "  (default: on)") do |l|
           @parsed_options.launch_browser = l
-                                               end
+        end
 
         op.on("-p", "--port PORT", Integer, "Port to bind to",
                                         "  (default: #{default_options.port})") do |port|
           @parsed_options.port = port
-                                        end
+        end
 
         op.on("-r","--root ROOT", 
                       "Set the document root"," (default: #{default_options.document_root})") do |document_root|
           @parsed_options.document_root = File.expand_path(document_root)
           raise ::OptionParser::ParseError, "#{@parsed_options.document_root} is not a valid directory" if not File.directory?(@parsed_options.document_root)
-                      end
+        end
 
         op.on("-v", "--version", "Show version") do 
           @parsed_options.show_version = true
@@ -132,9 +138,7 @@ module Heel
 
     def merge_options
       options = default_options.marshal_dump
-      @parsed_options.marshal_dump.each_pair do |key,value|
-        options[key] = value
-      end
+      options.merge!( @parsed_options.marshal_dump )
 
       @options = OpenStruct.new(options)
     end
@@ -174,7 +178,7 @@ module Heel
         rescue Errno::ESRCH
           @stdout.puts "Unable to kill process with pid #{pid}.  Process does not exist.  Removing stale pid file."
           File.unlink(pid_file)
-        rescue Errno::EPERM 
+        rescue Errno::EPERM
           @stdout.puts "Unable to kill process with pid #{pid}.  No permissions to kill process."
         end
       else
@@ -197,7 +201,7 @@ module Heel
     # make sure that if we are daemonizing the process is not running
     def ensure_not_running
       if options.daemonize and File.exist?(pid_file) then
-        @stdout.puts "ERROR: PID File #{pid_file} already exists.  Heel may already be running."
+        @stdout.puts "ERROR: PID File #{pid_file} already exists. Heel may already be running."
         @stdout.puts "ERROR: Check the Log file #{log_file}"
         @stdout.puts "ERROR: Heel will not start until the .pid file is cleared (`heel --kill' to clean it up)."
         exit 1
@@ -205,7 +209,7 @@ module Heel
     end
 
     def launch_browser
-      Thread.new do 
+      Thread.new do
         print "Launching your browser"
         if options.daemonize then
           puts " at http://#{options.address}:#{options.port}/"
@@ -216,24 +220,13 @@ module Heel
       end
     end
 
-    def thin_server
-      server = Thin::Server.new(options.address, options.port)
-
-      # overload the name of the process so it shows up as heel not thin
-      def server.name
-        "heel (v#{Heel::VERSION})"
-      end
-
-      server.pid_file = pid_file
-      server.log_file = log_file
-
+    def heel_app
       app = Heel::RackApp.new({ :document_root => options.document_root,
                                 :highlighting  => options.highlighting})
-
       Heel::Logger.log_file = log_file
-      server.app = Rack::Builder.new {
+      stack = Rack::Builder.new {
         use Heel::Logger
-        map "/" do 
+        map "/" do
           run app
         end
         map "/heel_css" do 
@@ -242,40 +235,62 @@ module Heel
         map "/heel_icons" do
           run Rack::File.new(Heel::Configuration.data_path("famfamfam", "icons")) 
         end
-
       }
-      
-      server.app = Thin::Stats::Adapter.new(server.app, "/heel_stats")
-
-      return server
+      return stack.to_app
     end
 
-    def start_thin_server
-      server = thin_server
-
+    def start_server
       server_thread = Thread.new do
-        begin
-          if options.daemonize then
-            if cpid = fork then
-              # wait for the top child of the server double fork to exit
-              Process.waitpid(cpid)
-            else
-              server.daemonize
-              server.start
-            end
+        if options.daemonize then
+          if cpid = fork then
+            Process.waitpid( cpid )
           else
-            begin
-              server.start
-            rescue RuntimeError 
-              $stderr.puts "ERROR: Unable to start server.  Heel may already be running.  Please check running processes or run `heel --kill'"
-              exit 1
-            end
+            server = Rack::Server.new( server_options )
+            server.start
+          end
+        else
+          server = Rack::Server.new( server_options )
+          server.start
+        end
+      end
+      return server_thread
+    end
+
+    def start_server_old
+      server = Rack::Server.new( server_options )
+      server_thread = Thread.new do
+        if options.daemonize then
+          if cpid = fork then
+            # wait for the server to span and then move on to launching the
+            # browser
+            Process.waitpid( cpid )
+          else
+            server.start
+          end
+        else
+          begin
+            server.start
+          rescue RuntimeError
+            $stderr.puts "ERROR: Unable to start server. Heel may already be running. Please check running processes or run `heel --kill'"
+            exit 1
           end
         end
       end
+      return server_thread
     end
 
- 
+    def server_options
+      {
+        :app  => heel_app,
+        :pid  => pid_file,
+        :Port => options.port,
+        :Host => options.address,
+        :environment => 'deployment',
+        :server => 'puma',
+        :daemonize => options.daemonize
+      }
+    end
+
     # run the heel server with the current options.
     def run
 
@@ -284,7 +299,7 @@ module Heel
       setup_heel_dir
       ensure_not_running
 
-      server_thread = start_thin_server
+      server_thread = start_server
 
       if options.launch_browser then
         launch_browser.join

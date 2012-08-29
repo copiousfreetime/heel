@@ -3,7 +3,6 @@
 # All rights reserved. Licensed under the BSD license.  See LICENSE for details
 #++
 
-require 'heel'
 require 'erb'
 
 module Heel
@@ -16,18 +15,19 @@ module Heel
     attr_reader :template
 
     def initialize( template_file, options )
+      @template         = nil
       @template_file    = template_file
       @options          = options
       reload_template
     end
-    
+
     def should_ignore?(fname)
       options[:ignore_globs].each do |glob|
         return true if ::File.fnmatch(glob,fname)
       end
-      false 
+      false
     end
-    
+
     def mime_map
       @mime_map ||= Heel::MimeMap.new
     end

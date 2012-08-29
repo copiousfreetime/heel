@@ -3,7 +3,6 @@
 # All rights reserved. Licensed under the BSD license.  See LICENSE for details
 #++
 
-require 'heel'
 require 'rack'
 require 'rack/utils'
 require 'coderay'
@@ -20,7 +19,7 @@ module Heel
     attr_reader   :ignore_globs
 
 
-    def initialize(options = {}) 
+    def initialize(options = {})
       @ignore_globs               = options[:ignore_globs] ||= %w( *~ .htaccess . )
       @document_root              = options[:document_root] ||= Dir.pwd
       @directory_listing_allowed  = options[:directory_listing_allowed] ||= true
@@ -119,7 +118,6 @@ module Heel
       end
 
       # fall through to a default file return
-      # 
 
       file_type                   = mime_map.mime_type_of(req.request_path)
       response['Content-Type']    = file_type.to_s
