@@ -56,7 +56,7 @@ task :develop => "develop:default"
 begin
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new( :test ) do |t|
-    t.ruby_opts    = %w[ -w ]
+    t.ruby_opts    = %w[ -w -I.:lib ]
     t.rspec_opts   = %w[ --color --format documentation ]
   end
   task :default => :test
@@ -83,20 +83,12 @@ rescue LoadError
 end
 
 #------------------------------------------------------------------------------
-# Coverage - optional code coverage, rcov for 1.8 and simplecov for 1.9, so
-#            for the moment only rcov is listed.
+# Coverage - just checking to make sure simplecov is available
 #------------------------------------------------------------------------------
 begin
-  require 'rcov/rcovtask'
-  Rcov::RcovTask.new do |t|
-    t.libs      << 'spec'
-    t.pattern   = 'spec/**/*_spec.rb'
-    t.verbose   = true
-    t.rcov_opts << "-x ^/"           # remove all the global files
-    t.rcov_opts << "--sort coverage" # so we see the worst files at the top
-  end
+  require 'simplecov'
 rescue LoadError
-  Util.task_warning( 'rcov' )
+  Util.task_warning( 'simplecov' )
 end
 
 #------------------------------------------------------------------------------
@@ -161,7 +153,7 @@ This.gemspec = Gem::Specification.new do |spec|
 
   # The Development Dependencies
   spec.add_development_dependency( 'rake'  , '~> 0.9.2.2')
-  spec.add_development_dependency( 'rcov'  , '~> 1.0.0'  )
+  spec.add_development_dependency( 'simplecov', '~> 0.6.4' )
   spec.add_development_dependency( 'rspec' , '~> 2.11.0'  )
   spec.add_development_dependency( 'rdoc'  , '~> 3.12'   )
 
