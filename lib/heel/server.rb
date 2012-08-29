@@ -253,6 +253,7 @@ module Heel
           server.start
         end
       end
+      return server_thread
     end
 
     def start_server_old
