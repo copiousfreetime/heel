@@ -3,7 +3,6 @@
 # All rights reserved. Licensed under the BSD license.  See LICENSE for details
 #++
 
-require 'heel'
 require 'rack'
 require 'rack/utils'
 require 'coderay'
