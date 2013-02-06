@@ -1,8 +1,8 @@
 #--
-# Copyright (c) 2007, 2008 Jeremy Hinegardner
-# All rights reserved.  Licensed under the BSD license.  See LICENSE for details
+# Copyright (c) 2007 - 2013 Jeremy Hinegardner
+# All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
-#
+
 require 'rack'
 module Heel
   # nothing more than a rack request with some additional methods and overriding

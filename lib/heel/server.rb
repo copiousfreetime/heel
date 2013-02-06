@@ -1,6 +1,6 @@
 #--
-# Copyright (c) 2007, 2008 Jeremy Hinegardner
-# All rights reserved. Licensed under the BSD license.  See LICENSE for details
+# Copyright (c) 2007 - 2013 Jeremy Hinegardner
+# All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
 require 'ostruct'
