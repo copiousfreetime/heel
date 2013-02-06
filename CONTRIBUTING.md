@@ -36,7 +36,7 @@ easiest way to contribute.
 # Contributors
 
 * [Jeremy Hinegardner][https://github.com/copiousfreetime]
-* [Kevin Barnes][https://github.com/vinbarnes]
+* [Chris Wanstrath][http://github.com/defunkt]
 
 [GitHub Account]: https://github.com/signup/free "GitHub Signup"
 [GitHub Issues]:  https://github.com/copiousfreetime/heel/issues "Heel Issues"
