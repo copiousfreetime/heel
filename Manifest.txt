@@ -6,6 +6,7 @@ README.rdoc
 Rakefile
 TODO
 bin/heel
+data/css/coderay-alpha.css
 data/css/coderay-cycnus.css
 data/css/coderay-murphy.css
 data/css/error.css
