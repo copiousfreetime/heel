@@ -18,7 +18,7 @@ easiest way to contribute.
     * **Bug reports** please be as detailed as possible. Include:
         * full ruby engine and version: `ruby -e 'puts RUBY_DESCRIPTION'`
         * operating system and version
-        * version of heel `ruby -rubygems -e "require 'fixme'; puts Heel::VERSION"`
+        * version of heel `ruby -rubygems -e "require 'heel'; puts Heel::VERSION"`
         * as much detail about the bug as possible so I can replicate it. Feel free
           to link in a [gist][]
     * **New Feature**
