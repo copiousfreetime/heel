@@ -65,13 +65,11 @@ module Heel
       dir_index = File.join(req.request_path, directory_index_html) 
       if File.file?(dir_index) and File.readable?(dir_index) then
         response['Content-Type']   = mime_map.mime_type_of(dir_index).to_s
-        response['Content-Length'] = File.size(dir_index).to_s
-        response.body              = File.open(dir_index)
+        response.write( File.read( dir_index ) )
       elsif directory_listing_allowed? then
         body                       = directory_indexer.index_page_for(req)
         response['Content-Type']   = 'text/html'
-        response['Content-Length'] = body.length.to_s
-        response.body             << body
+        response.write( body )
       else
         return ::Heel::ErrorResponse.new(req.path_info,"Directory index is forbidden", 403).finish
       end
@@ -111,7 +109,7 @@ module Heel
           EOM
           response['Content-Type']    = 'text/html'
           response['Content-Length']  = body.length.to_s
-          response.body << body
+          response.write( body )
           return response.finish
         end
       end
@@ -120,16 +118,12 @@ module Heel
 
       file_type                   = mime_map.mime_type_of(req.request_path)
       response['Content-Type']    = file_type.to_s
-      response['Content-Length']  = req.stat.size.to_s
-
-      return response.finish do 
-        File.open(req.request_path) do |f|
-          while p = f.read(8192)
-            response.write p
-          end
+      File.open( req.request_path ) do |f|
+        while p = f.read( 8192 ) do
+          response.write( p )
         end
       end
-
+      return response.finish
     end
 
     # interface to rack, env is a hash
@@ -142,7 +136,7 @@ module Heel
         if req.forbidden? or should_ignore?(req.request_path) then
           return ErrorResponse.new(req.path_info,"You do not have permissionto view #{req.path_info}",403).finish 
         end
-        return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}",403).finish unless req.found?
+        return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}",404).finish unless req.found?
         return directory_index_response(req)                           if req.for_directory?
         return file_response(req)                                      if req.for_file?
       else

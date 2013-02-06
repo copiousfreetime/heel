@@ -8,7 +8,7 @@ require 'erb'
 
 module Heel
 
-  class ErrorResponse < ::Rack::Response
+  class ErrorResponse
 
     attr_reader :base_uri
 
@@ -27,16 +27,18 @@ module Heel
     end
 
     def initialize(base_uri, body, status = 404, header = {})
-      super(body, status, header)
-      self['Content-type'] = 'text/html'
+      header    = header.merge( "Content-Type" => 'text/html' )
+      @response = Rack::Response.new( body, status, header )
       @base_uri = base_uri
     end
 
     def finish
-      message  = ::Rack::Utils::HTTP_STATUS_CODES[status]
-      homepage = ErrorResponse.homepage
-
-      return [ status, header.to_hash, ErrorResponse.template.result(binding) ]
+      status   = @response.status                         # for the template
+      message  = ::Rack::Utils::HTTP_STATUS_CODES[status] # for the template
+      homepage = ErrorResponse.homepage                   # for the template
+      content  = ErrorResponse.template.result( binding )
+      @response.write( content )
+      return @response.finish
     end
   end
 end
