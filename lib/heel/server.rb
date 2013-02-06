@@ -223,9 +223,7 @@ module Heel
     def heel_app
       app = Heel::RackApp.new({ :document_root => options.document_root,
                                 :highlighting  => options.highlighting})
-      Heel::Logger.log_file = log_file
       stack = Rack::Builder.new {
-        use Heel::Logger
         map "/" do
           run app
         end

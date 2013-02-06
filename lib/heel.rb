@@ -10,7 +10,6 @@ end
 require 'heel/configuration'
 require 'heel/directory_indexer'
 require 'heel/error_response'
-require 'heel/logger'
 require 'heel/mime_map'
 require 'heel/rackapp'
 require 'heel/request'
