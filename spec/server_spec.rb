@@ -1,4 +1,5 @@
-require "spec/spec_helper"
+require "spec_helper"
+
 describe Heel::Server do
   before(:each) do 
     @stdin = StringIO.new
@@ -18,8 +19,8 @@ describe Heel::Server do
     begin
       server.run
     rescue SystemExit => se
-      se.status.should eq 0
-      @stdout.string.should =~ /version #{Heel::VERSION}/
+      se.status.must_equal 0
+      @stdout.string.must_match( /version #{Heel::VERSION}/ )
     end
   end
 
@@ -29,8 +30,8 @@ describe Heel::Server do
     begin
       server.run
     rescue SystemExit => se
-      se.status.should eq 0
-      @stdout.string.should =~ /Usage/m
+      se.status.must_equal 0
+      @stdout.string.must_match( /Usage/m )
     end
   end
 
@@ -40,8 +41,8 @@ describe Heel::Server do
     begin
       server.run
     rescue SystemExit => se
-      se.status.should eq 1
-      @stdout.string.should =~ /Try .*--help/m
+      se.status.must_equal 1
+      @stdout.string.must_match( /Try .*--help/m )
     end
   end
 
@@ -51,34 +52,34 @@ describe Heel::Server do
     begin
       server.run
     rescue SystemExit => se
-      se.status.should eq 1
-      @stdout.string.should =~ /Try .*--help/m
+      se.status.must_equal 1
+      @stdout.string.must_match( /Try .*--help/m )
     end
   end
 
   it "should allow port and address to be set" do
     server = Heel::Server.new(%w[--port 4242 --address 192.168.1.1])
     server.merge_options
-    server.options.address.should eq "192.168.1.1"
-    server.options.port.should eq 4242
+    server.options.address.must_equal "192.168.1.1"
+    server.options.port.must_equal 4242
   end
 
   it "should allow the highlighting option to be set" do
     server = Heel::Server.new(%w[--highlighting])
     server.merge_options
-    server.options.highlighting.should be_true
+    server.options.highlighting.must_equal true
   end
 
   it "should have highlighting off as a default" do
     server = Heel::Server.new
     server.merge_options
-    server.options.highlighting.should be_false
+    server.options.highlighting.must_equal false
   end
 
   it "should set no-launch-browser option" do
     server = Heel::Server.new(%w[--no-launch-browser])
     server.merge_options
-    server.options.launch_browser.should be_false
+    server.options.launch_browser.must_equal false
   end
 
   it "should attempt to kill the process" do
@@ -89,18 +90,18 @@ describe Heel::Server do
       server.run
       violated("Should have thrown SystemExit")
     rescue SystemExit => se
-      se.status.should eq 0
-      @stdout.string.should =~ /Done/m
+      se.status.must_equal 0
+      @stdout.string.must_match( /Done/m )
     end
   end
 
   it "should setup a heel directory" do
     server = Heel::Server.new(%w[--daemonize])
     server.set_io(@stdin,@stdout)
-    File.directory?(server.default_directory).should be_false
+    File.directory?(server.default_directory).must_equal false
     server.setup_heel_dir
-    File.directory?(server.default_directory).should be_true
-    @stdout.string.should =~ /Created/m
+    File.directory?(server.default_directory).must_equal true
+    @stdout.string.must_match( /Created/m )
   end
 
   it "should send a signal to a pid" do
@@ -113,8 +114,8 @@ describe Heel::Server do
       server.run
       violated("Should have exited")
     rescue SystemExit => se
-      se.status.should eq 0
-      @stdout.string.should =~ /Sending TERM to process -42/m
+      se.status.must_equal 0
+      @stdout.string.must_match( /Sending TERM to process -42/m )
     end
   end
 end

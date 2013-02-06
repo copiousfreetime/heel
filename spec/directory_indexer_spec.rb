@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Heel::DirectoryIndexer do
   before(:each) do
@@ -7,28 +7,28 @@ describe Heel::DirectoryIndexer do
 
   it "should ignore .htaccess files" do
     @indexer.options[:ignore_globs] = %w( *~ .htaccess . )
-    @indexer.should_ignore?(".htaccess").should == true
+    @indexer.should_ignore?(".htaccess").must_equal true
   end
 
   it "should not ignore .html files " do
     @indexer.options[:ignore_globs] = %w( *~ .htaccess . )
-    @indexer.should_ignore?("something.html").should == false
+    @indexer.should_ignore?("something.html").must_equal false
   end
 
   it "can tell if highlighting is to be performed" do
-    @indexer.should be_highlighting
+    @indexer.must_be :highlighting?
   end
   
   it "knows if the template should be reloaded on changes" do
-    @indexer.should_not be_reload_on_template_change
+    @indexer.reload_on_template_change?.must_equal false
   end
   
-  it "may or maynot use icons" do
-    @indexer.should_not be_using_icons
+  it "uses icons" do
+    @indexer.using_icons?.must_equal false
   end
 
   it "uses a mime map" do
-    @indexer.mime_map.should be_instance_of(Heel::MimeMap)
+    @indexer.mime_map.must_be_instance_of(Heel::MimeMap)
   end
 
 end
