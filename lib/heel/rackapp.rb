@@ -47,7 +47,6 @@ module Heel
     end
 
     def directory_indexer
-      indexer_ignore = ( ignore_globs + [ document_root] ).flatten
       @directory_indexer ||= DirectoryIndexer.new( directory_index_template_file, @options )
     end
 
