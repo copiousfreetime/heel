@@ -1,5 +1,5 @@
 = Changelog
-== Version 3.0.0 - 2013-02-06
+== Version 3.0.1 - 2013-02-06
 
 * Switch to using puma for the webserver
 * Switch to using simplecov for coverage testing
