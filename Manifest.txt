@@ -1,3 +1,4 @@
+CONTRIBUTING.md
 HISTORY.rdoc
 LICENSE
 Manifest.txt
@@ -40,3 +41,5 @@ spec/directory_indexer_spec.rb
 spec/rackapp_spec.rb
 spec/server_spec.rb
 spec/spec_helper.rb
+tasks/default.rake
+tasks/this.rb
