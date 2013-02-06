@@ -31,7 +31,6 @@ lib/heel.rb
 lib/heel/configuration.rb
 lib/heel/directory_indexer.rb
 lib/heel/error_response.rb
-lib/heel/logger.rb
 lib/heel/mime_map.rb
 lib/heel/rackapp.rb
 lib/heel/request.rb
