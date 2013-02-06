@@ -33,15 +33,15 @@ module Heel
     end
 
     def highlighting?
-      @options[:highlighting]
+      @options.fetch( :highlighting, false)
     end
 
     def reload_on_template_change?
-      @options[:reload_template_on_change]
+      @options.fetch( :reload_template_on_change, false )
     end
 
     def using_icons?
-      @options[:using_icons]
+      @options.fetch( :using_icons, false )
     end
 
     def reload_template
