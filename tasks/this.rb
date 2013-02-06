@@ -112,7 +112,7 @@ class ThisProject
 
   # Internal: Returns the gemspace associated with the current ruby platform
   def platform_gemspec
-    gemspecs[platform]
+    gemspecs.fetch( platform, ruby_gemspec )
   end
 
   def core_gemspec
