@@ -1,7 +1,6 @@
 == Heel
 
-* Homepage[http://copiousfreetime.rubyforge.org/heel/]
-* {Rubyforge Project}[http://rubyforge.org/projects/copiousfreetime/]
+* Homepage[http://github.com/copiousfreetime/heel/]
 * email jeremy at hinegardner dot org
 * git clone git://github.com/copiousfreetime/heel.git
 
@@ -9,23 +8,22 @@
 
 Heel is a small static web server for use when you need a quick web server for a
 directory.  Once the server is running, heel will use
-{launchy}[http://copiousfreetime.rubyforge.org/launchy/] to open your browser at
+{launchy}[http://rubygems.org/gems/launchy/] to open your browser at
 the URL of your document root.
 
-Heel is built using {Rack}[http://rack.rubyforge.org] and
-{Thin}[http://code.macournoyer.com/thin/]
+Heel is built using {Rack}[http://rack.github.com] and
+{Puma}[http://puma.io]
 
-   % heel        
-   >> Thin web server (v1.2.8 codename Black Keys)
-   >> Maximum connections set to 1024
-   >> Listening on 0.0.0.0:4331, CTRL+C to stop
-   Launching your browser...
+  % heel
+  Launching your browser...
+  Puma 1.6.3 starting...
+  * Min threads: 0, max threads: 16
+  * Environment: deployment
+  * Listening on tcp://0.0.0.0:4331
 
 Or run it in the background
 
   % heel --daemonize
-  Created /Users/jeremy/.heel
-  heel's PID (/Users/jeremy/.heel/heel.pid) and log file (/Users/jeremy/.heel/heel.log) are stored here
   Launching your browser at http://0.0.0.0:4331/
 
   % heel --kill
@@ -34,7 +32,7 @@ Or run it in the background
 
 == FEATURES
 
-* Automatic launching of your browser to the URL it is serving with {launchy}[http://copiousfreetime.rubyforge.org/launchy/]
+* Automatic launching of your browser to the URL it is serving with {launchy}[http://github.com/copiousfreetime/launchy/]
 * Automatic syntax highlighting of source code files with {coderay}[http://coderay.rubychan.de/]
 * Run in the foreground or daemonized
 * Bind to any address and port (default is 0.0.0.0:4331)
@@ -66,13 +64,13 @@ Or run it in the background
 * {coderay}[http://coderay.rubychan.de/]
 * {launchy}[http://copiousfreetime.rubyforge.org/launchy/] >= 0.1.1
 * {mime-types}[http://mime-types.rubyforge.org/]
-* {thin}[http://thin.rubyforge.org/]
+* {puma}[http://puma.io]
 
 === For development:
 
-* {rcov}[http://eigenclass.org/hiki.rb?rcov] >= 0.7.0.1
-* {rspec}[http://rspec.rubyforge.org/]  >= 0.7.3
-* {rake}[http://rake.rubyforge.org/] >= 0.7.1
+* {minitest}[http://rubygems.org/gems/minitest]
+* {rake}[http://rubygems.org/gems/rake]
+* {rdoc}[http://rubygems.org/gems/rdoc]
 
 == INSTALL:
 
@@ -80,7 +78,7 @@ Or run it in the background
 
 == CREDITS:
 
-* {Thin}[http://code.macournoyer.com/thin/]
+* {puma}[http://puma.io]
 * {Rack}[http://rack.rubyforge.org/]
 * http://www.famfamfam.com/ for amazing icons
 
