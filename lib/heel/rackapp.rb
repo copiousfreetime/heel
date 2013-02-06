@@ -96,14 +96,10 @@ module Heel
             <head>
             <title>#{req.path_info}</title>
             <!-- CodeRay syntax highlighting CSS -->
-            <link rel="stylesheet" href="/heel_css/coderay-cycnus.css" type="text/css" />
+            <link rel="stylesheet" href="/heel_css/coderay-alpha.css" type="text/css" />
             </head>
             <body>
-              <div class="CodeRay">
-                <pre>
-  #{CodeRay.scan_file(req.request_path,:auto).html({:line_numbers => :inline})}
-                </pre>
-              </div>
+  #{CodeRay.scan_file(req.request_path,:auto).html({ :wrap => :div, :line_numbers => :inline })}
             </body>
           </html>
           EOM
