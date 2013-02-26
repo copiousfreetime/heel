@@ -1,4 +1,8 @@
 = Changelog
+== Version Next
+
+* Fix formatting of usage section of documentation
+
 == Version 3.0.1 - 2013-02-06
 
 * Switch to using puma for the webserver

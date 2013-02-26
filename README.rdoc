@@ -39,23 +39,22 @@ Or run it in the background
 
 == SYNOPSIS:
 
-	Usage: heel [options]
+  Usage: heel [options]
 
-	    -a, --address ADDRESS            Address to bind to
-	                                       (default: 0.0.0.0)
-	    -d, --daemonize                  Run daemonized in the background
-	    -h, --help                       Display this text
-	    -k, --kill                       Kill an existing daemonized heel process
-	        --[no-]highlighting          Turn on or off syntax highlighting
-	                                       (default: off)
-	        --[no-]launch-browser        Turn on or off automatic browser launch
-	                                       (default: on)
-	    -p, --port PORT                  Port to bind to
-	                                       (default: 4331)
-	    -r, --root ROOT                  Set the document root
-	                                       (default: current working directory)
-	    -v, --version                    Show version
-
+      -a, --address ADDRESS            Address to bind to
+                                         (default: 0.0.0.0)
+      -d, --daemonize                  Run daemonized in the background
+      -h, --help                       Display this text
+      -k, --kill                       Kill an existing daemonized heel process
+          --[no-]highlighting          Turn on or off syntax highlighting
+                                         (default: off)
+          --[no-]launch-browser        Turn on or off automatic browser launch
+                                         (default: on)
+      -p, --port PORT                  Port to bind to
+                                         (default: 4331)
+      -r, --root ROOT                  Set the document root
+                                        (default: <current working directory>)
+      -v, --version                    Show version
 
 == REQUIREMENTS:
 
