@@ -42,7 +42,7 @@ module Heel
           ["images/svg+xml", ["svg"]],
           ["video/x-flv", ["flv"]],
           ["application/x-shockwave-flash", ["swf"]],
-          ["text/plain", ["rb", "rhtml"]],
+          ["text/plain", ["rb", "rhtml", "md", "markdown"]],
         ]
       end
     end
