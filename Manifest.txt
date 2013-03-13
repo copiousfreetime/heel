@@ -1,10 +1,9 @@
 CONTRIBUTING.md
-HISTORY.rdoc
+HISTORY.md
 LICENSE
 Manifest.txt
-README.rdoc
+README.md
 Rakefile
-TODO
 bin/heel
 data/css/coderay-alpha.css
 data/css/coderay-cycnus.css
