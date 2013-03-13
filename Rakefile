@@ -15,6 +15,8 @@ This.ruby_gemspec do |spec|
   spec.add_development_dependency( 'rake'     , '~> 10.0.3')
   spec.add_development_dependency( 'minitest' , '~> 4.5.0' )
   spec.add_development_dependency( 'rdoc'     , '~> 3.12'  )
+
+  spec.license = "BSD"
 end
 
 load 'tasks/default.rake'
