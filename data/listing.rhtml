@@ -1,41 +1,42 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-    <head>
-        <title>Index of <%= base_uri %></title>
-		<link rel="stylesheet" href="/heel_css/listing.css" type="text/css" />
-    </head>
-    <body>
-        <div class="header">
-            <h1>Index of <%= base_uri %></h1>
-        </div>
-        <div class="content">
-            <table summary="Directory Listing">
-                <thead>
-                    <tr><th class="n">File Name</th><th class="l" >Last Modified Timestamp</th><th class="m">File Size</th><th class="t">File Type</th></tr> 
-                </thead>
-                <tbody>
-                    <% entries.each_with_index do |entry,i| %>
-                    <tr<%= i % 2 > 0 ? ' class="odd" ' : '' %>>
-                        <td>
-                            <% if entry.icon_url then %>
-                            <img src="<%= entry.icon_url %>" width="16" height="16" alt="icon for type <%= entry.content_type %>" />
-                            <% end %>
-                            <a href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>"><%= entry.name %></a>
-						    <% if highlighting? and entry.content_type != 'Directory' then %>
-						     (<a href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting=false" %>">download</a>)
-						    <% end %>
-                        </td>
-                        <td><%= entry.last_modified %></td>
-                        <td class="<%= entry.content_type == "Directory" ? 'c' : 'n' %>" ><%= entry.size %></td>
-                        <td><%= entry.content_type %></td>
-                    </tr>
-                    <% end %>
-                </tbody>
-            </table>
-        </div>
-        <div class="footer">
-            <a href="http://copiousfreetime.rubyforge.org/heel/">heel</a>/v<%= Heel::VERSION %>
-        </div>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Index of <%= base_uri %></title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/heel_css/listing.css" type="text/css" />
+  </head>
+  <body>
+    <div class="header">
+      <h1>Index of <%= base_uri %></h1>
+    </div>
+    <div class="content">
+      <table>
+        <caption>Directory Listing</caption>
+        <thead>
+          <tr><th class="n">File Name</th><th class="l" >Last Modified Timestamp</th><th class="m">File Size</th><th class="t">File Type</th></tr>
+        </thead>
+        <tbody>
+          <% entries.each_with_index do |entry,i| %>
+          <tr<%= i % 2 > 0 ? ' class="odd" ' : '' %>>
+            <td>
+              <% if entry.icon_url then %>
+              <img src="<%= entry.icon_url %>" width="16" height="16" alt="icon for type <%= entry.content_type %>" />
+              <% end %>
+              <a href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>"><%= entry.name %></a>
+              <% if highlighting? and entry.content_type != 'Directory' then %>
+              (<a href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting=false" %>">download</a>)
+              <% end %>
+            </td>
+            <td><%= entry.last_modified %></td>
+            <td class="<%= entry.content_type == "Directory" ? 'c' : 'n' %>" ><%= entry.size %></td>
+            <td><%= entry.content_type %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer">
+      <a href="http://copiousfreetime.rubyforge.org/heel/">heel</a>/v<%= Heel::VERSION %>
+    </div>
+  </body>
 </html>

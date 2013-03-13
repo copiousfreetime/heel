@@ -1,29 +1,29 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-    <head>
-        <title>Error <%= status %> </title>
-		<link rel="stylesheet" href="/heel_css/error.css" type="text/css" />
-    </head>
-    <body>
-        <div class="wrap">
-            <div class="header">
-                Requested URL: <%= base_uri %>
-            </div>
-            <div class="curved">
-                <b class="c1"></b><b class="c2"></b><b class="c3"></b><b class="c4"></b> 
-                <div class="box">
-                    <div class="content">
-                        <img src="/heel_icons/error.png"><h1>Error <%= status %></h1>
-                        <br />
-                        <h2><%= message %></h2>
-                    </div>
-                </div>
-                <b class="c4"></b><b class="c3"></b><b class="c2"></b><b class="c1"></b>
-            </div>
-            <div class="footer">
-                <a href="<%= homepage %>">heel</a>/v<%= ::Heel::VERSION %>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Error <%= status %> </title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/heel_css/error.css" type="text/css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="header">
+        Requested URL: <%= base_uri %>
+      </div>
+      <div class="curved">
+        <b class="c1"></b><b class="c2"></b><b class="c3"></b><b class="c4"></b> 
+        <div class="box">
+          <div class="content">
+            <img src="/heel_icons/error.png" alt=""/><h1>Error <%= status %></h1>
+            <br />
+            <h2><%= message %></h2>
+          </div>
         </div>
-    </body>
+        <b class="c4"></b><b class="c3"></b><b class="c2"></b><b class="c1"></b>
+      </div>
+      <div class="footer">
+        <a href="<%= homepage %>">heel</a>/v<%= ::Heel::VERSION %>
+      </div>
+    </div>
+  </body>
 </html>
