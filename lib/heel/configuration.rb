@@ -51,7 +51,7 @@ module Heel
       self.sub_path("lib", *args)
     end
 
-    HOMEPAGE = "http://copiousfreetime.rubyforge.org/heel/"
+    HOMEPAGE = "http://github.com/copiousfreetime/heel/"
 
     private
     def self.sub_path(sub,*args)
