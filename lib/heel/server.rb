@@ -254,29 +254,6 @@ module Heel
       return server_thread
     end
 
-    def start_server_old
-      server = Rack::Server.new( server_options )
-      server_thread = Thread.new do
-        if options.daemonize then
-          if cpid = fork then
-            # wait for the server to span and then move on to launching the
-            # browser
-            Process.waitpid( cpid )
-          else
-            server.start
-          end
-        else
-          begin
-            server.start
-          rescue RuntimeError
-            $stderr.puts "ERROR: Unable to start server. Heel may already be running. Please check running processes or run `heel --kill'"
-            exit 1
-          end
-        end
-      end
-      return server_thread
-    end
-
     def server_options
       {
         :app  => heel_app,
