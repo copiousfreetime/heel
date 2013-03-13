@@ -1,8 +1,8 @@
 # Changelog
 ## Version 3.0.2 - 2013-03-13
 
-* Fix formatting of usage section of documentation
 * Fix generated pages to say they are utf-8 [#4]
+* Fix formatting of usage section of documentation
 * Update dependencies
 * Convert to RDoc 4.0
 
