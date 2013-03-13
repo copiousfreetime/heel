@@ -28,7 +28,7 @@ module Heel
 
     def initialize(base_uri, body, status = 404, header = {})
       header    = header.merge( "Content-Type" => 'text/html' )
-      @response = Rack::Response.new( body, status, header )
+      @response = Rack::Response.new('', status, header )
       @base_uri = base_uri
     end
 
