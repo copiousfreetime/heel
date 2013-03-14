@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Error <%= status %> </title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/heel_css/error.css" type="text/css" />
+    <title>Error <%= status %></title>
+    <meta charset='utf-8'>
+    <link href='/heel_css/error.css' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <!--[if IE]>
+      <script src='//html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
   </head>
   <body>
-    <div class="wrap">
-      <div class="header">
-        Requested URL: <%= base_uri %>
+    <div role='wrapper'>
+      <header>
+        <h1>Requested URL: <%= base_uri %></h1>
+      </header>
+      <div role='content'>
+        <article role='message'><p><%= message %></p></article>
       </div>
-      <div class="curved">
-        <b class="c1"></b><b class="c2"></b><b class="c3"></b><b class="c4"></b> 
-        <div class="box">
-          <div class="content">
-            <img src="/heel_icons/error.png" alt=""/><h1>Error <%= status %></h1>
-            <br />
-            <h2><%= message %></h2>
-          </div>
-        </div>
-        <b class="c4"></b><b class="c3"></b><b class="c2"></b><b class="c1"></b>
-      </div>
-      <div class="footer">
-        <a href="<%= homepage %>">heel</a>/v<%= ::Heel::VERSION %>
-      </div>
+      <footer>
+        <p>
+          <a href="http://github.com/copiousfreetime/heel/">heel</a> v<%= Heel::VERSION %>
+        </p>
+      </footer>
     </div>
   </body>
 </html>
