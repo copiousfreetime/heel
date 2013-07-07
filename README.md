@@ -62,7 +62,7 @@ Or run it in the background
 ### For running: 
 
 * [coderay](http://coderay.rubychan.de/)
-* [launchy](http://copiousfreetime.rubyforge.org/launchy/) >= 0.1.1
+* [launchy](http://github.com/copiousfreetime/launchy/) >= 0.1.1
 * [mime-types](http://mime-types.rubyforge.org/)
 * [puma](http://puma.io)
 
@@ -79,7 +79,7 @@ Or run it in the background
 ## CREDITS:
 
 * [puma](http://puma.io)
-* [Rack](http://rack.rubyforge.org/)
+* [Rack](http://rack.github.io/)
 * http://www.famfamfam.com/ for amazing icons
 
 ## BSD LICENSE:
