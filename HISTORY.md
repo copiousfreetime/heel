@@ -1,4 +1,9 @@
 # Changelog
+## Version 3.1.0 - 2013-07-07
+* Update dependencies
+* Switch to template contributed by brianflanagan [#8]
+* Add support for multiple independent heel servers [#9]
+
 ## Version 3.0.2 - 2013-03-13
 
 * Fix generated pages to say they are utf-8 [#4]

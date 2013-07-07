@@ -9,7 +9,7 @@ data/css/coderay-alpha.css
 data/css/coderay-cycnus.css
 data/css/coderay-murphy.css
 data/css/error.css
-data/css/listing.css
+data/css/index.css
 data/error.rhtml
 data/famfamfam/icons/application.png
 data/famfamfam/icons/compress.png
@@ -35,10 +35,12 @@ lib/heel/mime_map.rb
 lib/heel/rackapp.rb
 lib/heel/request.rb
 lib/heel/server.rb
+lib/heel/template_vars.rb
 spec/configuration_spec.rb
 spec/directory_indexer_spec.rb
 spec/rackapp_spec.rb
 spec/server_spec.rb
 spec/spec_helper.rb
+spec/template_vars_spec.rb
 tasks/default.rake
 tasks/this.rb
