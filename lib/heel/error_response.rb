@@ -35,6 +35,7 @@ module Heel
     def finish
       template_vars = TemplateVars.new( :status   => @response.status,
                                         :message  => Rack::Utils::HTTP_STATUS_CODES[@response.status],
+                                        :base_uri => base_uri,
                                         :homepage => ErrorResponse.homepage )
 
       content  = ErrorResponse.template.result( template_vars.binding_for_template )

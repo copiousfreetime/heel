@@ -115,7 +115,7 @@ else
 end
 
 #------------------------------------------------------------------------------
-# Manifest - We want an explicit list of thos files that are to be packaged in
+# Manifest - We want an explicit list of those files that are to be packaged in
 #            the gem. Most of this is from Hoe.
 #------------------------------------------------------------------------------
 namespace 'manifest' do

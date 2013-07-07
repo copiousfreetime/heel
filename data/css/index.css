@@ -52,19 +52,10 @@ body {
     -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.125);
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.125);
     width: 100%;
-    max-width: 360px;
+    max-width: 960px;
     margin: 0 auto; }
     body > [role='wrapper'] > header, body > [role='wrapper'] > footer {
       padding: 7px; }
-    body > [role='wrapper'] > header {
-      background: #df5256;
-      color: white;
-      -webkit-border-top-left-radius: 3px;
-      -webkit-border-top-right-radius: 3px;
-      -moz-border-radius-topleft: 3px;
-      -moz-border-radius-topright: 3px;
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px; }
     body > [role='wrapper'] > footer p {
       font-size: 11.2px;
       line-height: 14.56px;
@@ -74,6 +65,13 @@ body {
       -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
       -moz-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
       box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1); }
-      body > [role='wrapper'] > [role='content'] > [role='message'] {
-        padding: 28px 14px;
-        text-align: center; }
+      body > [role='wrapper'] > [role='content'] > table {
+        width: 100%; }
+        body > [role='wrapper'] > [role='content'] > table thead {
+          border-bottom: 2px solid #f3f3f3; }
+        body > [role='wrapper'] > [role='content'] > table th, body > [role='wrapper'] > [role='content'] > table td {
+          text-align: left;
+          padding: 3.5px 7px;
+          color: #71695e; }
+        body > [role='wrapper'] > [role='content'] > table tr:nth-child(even) {
+          background: whitesmoke; }

@@ -1,42 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
   <head>
     <title>Index of <%= base_uri %></title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/heel_css/listing.css" type="text/css" />
+    <meta charset='utf-8'>
+    <link href='/heel_css/index.css' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <!--[if IE]>
+      <script src='//html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
   </head>
   <body>
-    <div class="header">
-      <h1>Index of <%= base_uri %></h1>
-    </div>
-    <div class="content">
-      <table>
-        <caption>Directory Listing</caption>
-        <thead>
-          <tr><th class="n">File Name</th><th class="l" >Last Modified Timestamp</th><th class="m">File Size</th><th class="t">File Type</th></tr>
-        </thead>
-        <tbody>
-          <% entries.each_with_index do |entry,i| %>
-          <tr<%= i % 2 > 0 ? ' class="odd" ' : '' %>>
-            <td>
-              <% if entry.icon_url then %>
-              <img src="<%= entry.icon_url %>" width="16" height="16" alt="icon for type <%= entry.content_type %>" />
-              <% end %>
-              <a href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>"><%= entry.name %></a>
-              <% if highlighting? and entry.content_type != 'Directory' then %>
-              (<a href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting=false" %>">download</a>)
-              <% end %>
-            </td>
-            <td><%= entry.last_modified %></td>
-            <td class="<%= entry.content_type == "Directory" ? 'c' : 'n' %>" ><%= entry.size %></td>
-            <td><%= entry.content_type %></td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <div class="footer">
-      <a href="<%= homepage %>">heel</a>/v<%= Heel::VERSION %>
+    <div role='wrapper'>
+      <header>
+        <h1>Index of <%= base_uri %></h1>
+      </header>
+      <div role='content'>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Last Modified</th>
+              <th>Size</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% entries.each do |entry| %>
+            <tr>
+              <td>
+                <a href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>">
+                  <% if entry.icon_url then %>
+                    <img src="<%= entry.icon_url %>" width="16" height="16" alt="icon for type <%= entry.content_type %>" />
+                  <% end %>
+                  <%= entry.name %>
+                </a>
+                <% if highlighting? and entry.content_type != 'Directory' then %>
+                (<a href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting=false" %>">download</a>)
+                <% end %>
+              </td>
+              <td><%= entry.last_modified %></td>
+              <td class="<%= entry.content_type == "Directory" ? 'c' : 'n' %>" ><%= entry.size %></td>
+              <td><%= entry.content_type %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <footer>
+        <p>
+        <a href="<%= homepage %>">heel</a> v<%= Heel::VERSION %>
+        </p>
+      </footer>
     </div>
   </body>
 </html>
