@@ -27,10 +27,6 @@ module Heel
           (ENV["HOMEPATH"] && "#{ENV["HOMEDRIVE"]}#{ENV["HOMEPATH"]}") ||
                     "/"
       end
-
-      def kill_existing_proc
-        Heel::Server.new.kill_existing_proc
-      end
     end
 
     def initialize(argv = [])
@@ -71,11 +67,11 @@ module Heel
     end
 
     def pid_file
-      File.join(default_directory,"heel.pid")
+      File.join(default_directory,"heel.#{options.port}.pid")
     end
 
     def log_file
-      File.join(default_directory,"heel.log")
+      File.join(default_directory,"heel.#{options.port}.log")
     end
 
     def win?
@@ -182,7 +178,7 @@ module Heel
           @stdout.puts "Unable to kill process with pid #{pid}.  No permissions to kill process."
         end
       else
-        @stdout.puts "No pid file exists, no process to kill"
+        @stdout.puts "No pid file exists for server running on port #{options.port}, no process to kill"
       end
       @stdout.puts "Done."
       exit 0
@@ -200,10 +196,10 @@ module Heel
 
     # make sure that if we are daemonizing the process is not running
     def ensure_not_running
-      if options.daemonize and File.exist?(pid_file) then
+      if File.exist?(pid_file) then
         @stdout.puts "ERROR: PID File #{pid_file} already exists. Heel may already be running."
         @stdout.puts "ERROR: Check the Log file #{log_file}"
-        @stdout.puts "ERROR: Heel will not start until the .pid file is cleared (`heel --kill' to clean it up)."
+        @stdout.puts "ERROR: Heel will not start until the .pid file is cleared (`heel --kill --port #{options.port}' to clean it up)."
         exit 1
       end
     end
@@ -269,8 +265,8 @@ module Heel
     # run the heel server with the current options.
     def run
 
-      error_version_help_kill
       merge_options
+      error_version_help_kill
       setup_heel_dir
       ensure_not_running
 

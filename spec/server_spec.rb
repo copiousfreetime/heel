@@ -118,4 +118,16 @@ describe Heel::Server do
       @stdout.string.must_match( /Sending TERM to process -42/m )
     end
   end
+
+  it "records the port of the server process in the pid filename" do
+    server = Heel::Server.new( %w[ --port 4222 ] )
+    server.merge_options
+    File.basename( server.pid_file ).must_equal( "heel.4222.pid" )
+  end
+
+   it "records the port of the server process in the log filename" do
+    server = Heel::Server.new( %w[ --port 4222 ] )
+    server.merge_options
+    File.basename( server.log_file ).must_equal( "heel.4222.log" )
+  end
 end
