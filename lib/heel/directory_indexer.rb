@@ -56,8 +56,7 @@ module Heel
     #
     def index_page_for(req)
       reload_template if reload_on_template_change?
-      dir      = req.request_path
-      base_uri = req.path_info
+      dir     = req.request_path
       entries = []
       Dir.entries(dir).each do |entry|
         next if should_ignore?(entry)
@@ -88,8 +87,11 @@ module Heel
         entries << entry_data
       end
 
-      entries = entries.sort_by { |e| e.link }
-      return template.result(binding)
+      template_vars          = TemplateVars.new( :base_uri => req.path_info )
+      template_vars.entries  = entries.sort_by { |e| e.link }
+      template_vars.homepage = Heel::Configuration::HOMEPAGE
+
+      return template.result( template_vars.binding_for_template )
     end
  
     # essentially this is strfbytes from facets

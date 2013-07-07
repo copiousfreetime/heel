@@ -33,10 +33,11 @@ module Heel
     end
 
     def finish
-      status   = @response.status                         # for the template
-      message  = ::Rack::Utils::HTTP_STATUS_CODES[status] # for the template
-      homepage = ErrorResponse.homepage                   # for the template
-      content  = ErrorResponse.template.result( binding )
+      template_vars = TemplateVars.new( :status   => @response.status,
+                                        :message  => Rack::Utils::HTTP_STATUS_CODES[@response.status],
+                                        :homepage => ErrorResponse.homepage )
+
+      content  = ErrorResponse.template.result( template_vars.binding_for_template )
       @response.write( content )
       return @response.finish
     end
