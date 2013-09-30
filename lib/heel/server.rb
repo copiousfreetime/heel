@@ -219,7 +219,11 @@ module Heel
     def heel_app
       app = Heel::RackApp.new({ :document_root => options.document_root,
                                 :highlighting  => options.highlighting})
+
+      logger = Heel::Logger.new( log_file )
+
       stack = Rack::Builder.new {
+        use Rack::CommonLogger, logger
         map "/" do
           run app
         end
@@ -256,7 +260,7 @@ module Heel
         :pid  => pid_file,
         :Port => options.port,
         :Host => options.address,
-        :environment => 'deployment',
+        :environment => 'none',
         :server => 'puma',
         :daemonize => options.daemonize
       }
