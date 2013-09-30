@@ -1,5 +1,6 @@
 # vim: syntax=ruby
 require 'rake/clean'
+require 'digest'
 #------------------------------------------------------------------------------
 # If you want to Develop on this project just run 'rake develop' and you'll
 # have all you need to get going. If you want to use bundler for development,
@@ -79,7 +80,7 @@ begin
     t.rdoc_files.include( FileList['*.{rdoc,md,txt}'], FileList['ext/**/*.c'],
                           FileList['lib/**/*.rb'] )
   end
-rescue LoadError => le
+rescue StandardError, LoadError
   This.task_warning( 'rdoc' )
 end
 
@@ -115,7 +116,7 @@ else
 end
 
 #------------------------------------------------------------------------------
-# Manifest - We want an explicit list of those files that are to be packaged in
+# Manifest - We want an explicit list of thos files that are to be packaged in
 #            the gem. Most of this is from Hoe.
 #------------------------------------------------------------------------------
 namespace 'manifest' do
