@@ -1,4 +1,8 @@
 # Changelog
+
+## Version 3.1.1 - 2013-09-29
+* Fix request logging [#10]
+
 ## Version 3.1.0 - 2013-07-07
 * Update dependencies
 * Switch to template contributed by brianflanagan [#8]
