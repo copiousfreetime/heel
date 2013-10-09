@@ -50,7 +50,7 @@ module Heel
     def initialize
       MimeMap.additional_mime_types.each do |mt|
         if MIME::Types[mt.first].size == 0 then
-          type = MIME::Type.from_array(mt)
+          type = MIME::Type.from_array(mt.dup)
           MIME::Types.add(type)
         else
           type = MIME::Types[mt.first].first
