@@ -1,15 +1,15 @@
 # Changelog
 
 ## Version 3.1.2 - 2013-10-16
-* Fix usage of Mime::Types [#12](https://github.com/copiousfreetime/heel#12) [#13](https://github.com/copiousfreetime/heel#13)
+* Fix usage of Mime::Types [#12](https://github.com/copiousfreetime/heel/issues/12) [#13](https://github.com/copiousfreetime/heel/issues/13)
 
 ## Version 3.1.1 - 2013-09-29
-* Fix request logging [#10](https://github.com/copiousfreetime/heel#10)
+* Fix request logging [#10](https://github.com/copiousfreetime/heel/ssiues/10)
 
 ## Version 3.1.0 - 2013-07-07
 * Update dependencies
-* Switch to template contributed by brianflanagan [#8](https://github.com/copiousfreetime/heel#8)
-* Add support for multiple independent heel servers [#9](https://github.com/copiousfreetime/heel#9)
+* Switch to template contributed by brianflanagan [#8](https://github.com/copiousfreetime/heel/issues/8)
+* Add support for multiple independent heel servers [#9](https://github.com/copiousfreetime/heel/issues/9)
 
 ## Version 3.0.2 - 2013-03-13
 
