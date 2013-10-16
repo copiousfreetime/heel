@@ -1,7 +1,7 @@
 # Changelog
 
 ## Version 3.1.2 - 2013-10-16
-* Fix usage of Mime::Types (copiousfreetime/heel#12) (copiousfreetime/heel#13)
+* Fix usage of Mime::Types copiousfreetime/heel#12 (copiousfreetime/heel#13)
 
 ## Version 3.1.1 - 2013-09-29
 * Fix request logging (copiousfreetime/heel#10)
