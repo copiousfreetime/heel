@@ -1,19 +1,19 @@
 # Changelog
 
 ## Version 3.1.2 - 2013-10-16
-* Fix usage of Mime::Types [#12]
+* Fix usage of Mime::Types (copiousfreetime/heel/#12) (copiousfreetime/heel/#13)
 
 ## Version 3.1.1 - 2013-09-29
-* Fix request logging [#10]
+* Fix request logging (copiousfreetime/heel/#10)
 
 ## Version 3.1.0 - 2013-07-07
 * Update dependencies
-* Switch to template contributed by brianflanagan [#8]
-* Add support for multiple independent heel servers [#9]
+* Switch to template contributed by brianflanagan (copiousfreetime/heel/#8)
+* Add support for multiple independent heel servers (copiousfreetime/heel/#9)
 
 ## Version 3.0.2 - 2013-03-13
 
-* Fix generated pages to say they are utf-8 [#4]
+* Fix generated pages to say they are utf-8 (copiousfreetime/heel/#4)
 * Fix formatting of usage section of documentation
 * Update dependencies
 * Convert to RDoc 4.0
