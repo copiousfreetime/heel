@@ -38,24 +38,24 @@ module Heel
       # mime-types calls.
       def additional_mime_types
         [
-          # [ content-type , [ array, of, filename, extentions] ]
-          ["images/svg+xml", ["svg"]],
-          ["video/x-flv", ["flv"]],
-          ["application/x-shockwave-flash", ["swf"]],
-          ["text/plain", ["rb", "rhtml", "md", "markdown"]],
+          { 'Content-Type' => 'images/svg+xml', 'Extensions' => %w[ svg ] },
+          { 'Content-Type' => 'video/x-flv',    'Extensions' => %w[ flv ] },
+          { 'Content-Type' => 'application/x-shockwave-flash', 'Extensions' => %w[ swf ] },
+          { 'Content-Type' => 'text/plain', 'Extensions' => %w[ rb rhtml md markdown ] },
         ]
       end
     end
 
     def initialize
       MimeMap.additional_mime_types.each do |mt|
-        if MIME::Types[mt.first].size == 0 then
-          type = MIME::Type.from_array(mt)
+        existing_type = MIME::Types[mt['Content-Type']]
+        if existing_type.empty? then
+          type = MIME::Type.from_hash(mt)
           MIME::Types.add(type)
         else
-          type = MIME::Types[mt.first].first
-          mt[1].each do |ext|
-            type.extensions << ext unless type.extensions.include?(ext)
+          type = existing_type.first
+          mt['Extensions'].each do |ext|
+            type.extensions << ext unless type.extensions.include?( ext )
           end
           # have to reindex if new extensions added
           MIME::Types.index_extensions(type)
