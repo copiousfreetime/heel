@@ -31,7 +31,7 @@ namespace :develop do
   # Create a Gemfile that just references the gemspec
   file 'Gemfile' => :gemspec do
     File.open( "Gemfile", "w+" ) do |f|
-      f.puts 'source :rubygems'
+      f.puts 'source "https://rubygems.org/"'
       f.puts 'gemspec'
     end
   end
@@ -54,8 +54,8 @@ begin
   require 'rake/testtask'
   Rake::TestTask.new( :test ) do |t|
     t.ruby_opts    = %w[ -w -rubygems ]
-    t.libs         = %w[ lib spec ]
-    t.pattern      = "spec/**/*_spec.rb"
+    t.libs         = %w[ lib spec test ]
+    t.pattern      = "{test,spec}/**/{test_*,*_spec}.rb"
   end
 
   task :test_requirements
