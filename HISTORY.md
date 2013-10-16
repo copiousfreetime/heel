@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 3.1.2 - 2013-10-16
+* Fix usage of Mime::Types [#12]
+
 ## Version 3.1.1 - 2013-09-29
 * Fix request logging [#10]
 
