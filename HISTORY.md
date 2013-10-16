@@ -4,7 +4,7 @@
 * Fix usage of Mime::Types [#12](https://github.com/copiousfreetime/heel/issues/12) [#13](https://github.com/copiousfreetime/heel/issues/13)
 
 ## Version 3.1.1 - 2013-09-29
-* Fix request logging [#10](https://github.com/copiousfreetime/heel/ssiues/10)
+* Fix request logging [#10](https://github.com/copiousfreetime/heel/issues/10)
 
 ## Version 3.1.0 - 2013-07-07
 * Update dependencies
