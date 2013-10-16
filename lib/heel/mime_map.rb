@@ -37,7 +37,7 @@ module Heel
       # if any other mime types are needed, add them directly via the
       # mime-types calls.
       def additional_mime_types
-        @additional_mime_types ||= [
+        [
           # [ content-type , [ array, of, filename, extentions] ]
           ["images/svg+xml", ["svg"]],
           ["video/x-flv", ["flv"]],
