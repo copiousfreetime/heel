@@ -31,4 +31,17 @@ describe Heel::DirectoryIndexer do
     @indexer.mime_map.must_be_instance_of(Heel::MimeMap)
   end
 
+  [ { :ext => 'svg', :type => 'image/svg+xml' },
+    { :ext => 'flv', :type => 'video/x-flv' },
+    { :ext => 'swf', :type => 'application/x-shockwave-flash' } ].each do |m|
+      it "finds #{m[:ext]} extension in the map as #{m[:type]}" do
+        @indexer.mime_map.mime_type_of( "test.#{m[:ext]}" ).must_equal m[:type]
+      end
+    end
+
+  %w[ md markdown rdoc rb rhtml ].each do |ext|
+    it "finds #{ext} in the map as text/plain" do
+      @indexer.mime_map.mime_type_of( "test.#{ext}" ).must_equal "text/plain"
+    end
+  end
 end

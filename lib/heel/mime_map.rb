@@ -38,23 +38,19 @@ module Heel
       # mime-types calls.
       def additional_mime_types
         [
-          { 'Content-Type' => 'images/svg+xml', 'Extensions' => %w[ svg ] },
-          { 'Content-Type' => 'video/x-flv',    'Extensions' => %w[ flv ] },
-          { 'Content-Type' => 'application/x-shockwave-flash', 'Extensions' => %w[ swf ] },
-          { 'Content-Type' => 'text/plain', 'Extensions' => %w[ rb rhtml md markdown ] },
+          MIME::Type.new( 'text/plain' ) {  |t| t.extensions = %w[ rb rdoc rhtml md markdown ] },
         ]
       end
     end
 
     def initialize
       MimeMap.additional_mime_types.each do |mt|
-        existing_type = MIME::Types[mt['Content-Type']]
+        existing_type = MIME::Types[mt]
         if existing_type.empty? then
-          type = MIME::Type.from_hash(mt)
-          MIME::Types.add(type)
+          MIME::Types.add(mt)
         else
           type = existing_type.first
-          mt['Extensions'].each do |ext|
+          mt.extensions.each do |ext|
             type.extensions << ext unless type.extensions.include?( ext )
           end
           # have to reindex if new extensions added
@@ -70,7 +66,7 @@ module Heel
     # returns the mime type of the file at a given pathname
     #
     def mime_type_of(f)
-      MIME::Types.of(f).first || default_mime_type
+      MIME::Types.of(f).last || default_mime_type
     end
 
     # return the icon name for a particular mime type
