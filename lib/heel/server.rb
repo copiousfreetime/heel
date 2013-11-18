@@ -171,7 +171,7 @@ module Heel
           pid = open(pid_file).read.to_i
           @stdout.puts "Sending TERM to process #{pid}"
           Process.kill("TERM", pid)
-		  File.unlink(pid_file)
+          File.unlink(pid_file)
         rescue Errno::ESRCH
           @stdout.puts "Unable to kill process with pid #{pid}.  Process does not exist.  Removing stale pid file."
           File.unlink(pid_file)
