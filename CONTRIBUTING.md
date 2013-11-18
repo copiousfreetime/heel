@@ -37,6 +37,7 @@ easiest way to contribute.
 
 * [Jeremy Hinegardner][https://github.com/copiousfreetime]
 * [Chris Wanstrath][http://github.com/defunkt]
+* [Justin Hill][http://github.com/justindhill]
 
 [GitHub Account]: https://github.com/signup/free "GitHub Signup"
 [GitHub Issues]:  https://github.com/copiousfreetime/heel/issues "Heel Issues"
