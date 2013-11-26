@@ -237,21 +237,31 @@ module Heel
       return stack.to_app
     end
 
+    # If we are daemonizing the fork and wait for the child to launch the server
+    # If we are not daemonizing, throw the Rack::Server in a background thread
     def start_server
-      server_thread = Thread.new do
-        if options.daemonize then
-          if cpid = fork then
-            Process.waitpid( cpid )
-          else
-            server = Rack::Server.new( server_options )
-            server.start
-          end
-        else
-          server = Rack::Server.new( server_options )
-          server.start
-        end
+      if options.daemonize then
+        start_background_server
+        return nil
+      else
+        return start_foreground_server
       end
-      return server_thread
+    end
+
+    def start_background_server
+      if cpid = fork then
+        Process.waitpid( cpid )
+      else
+        server = Rack::Server.new( server_options )
+        server.start
+      end
+    end
+
+    def start_foreground_server
+      Thread.new {
+        server = Rack::Server.new( server_options )
+        server.start
+      }
     end
 
     def server_options
@@ -279,7 +289,7 @@ module Heel
       if options.launch_browser then
         launch_browser.join
       end
-      server_thread.join
+      server_thread.join if server_thread
     end
   end
 end
