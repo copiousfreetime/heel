@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 3.1.3 - 2013-11-26
+* URL encode the links to files [#14](https://github.com/copiousfreetime/heel/issues/14)
+
 ## Version 3.1.2 - 2013-10-16
 * Fix usage of Mime::Types [#12](https://github.com/copiousfreetime/heel/issues/12) [#13](https://github.com/copiousfreetime/heel/issues/13)
 
