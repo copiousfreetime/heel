@@ -66,7 +66,7 @@ module Heel
         entry_data      = OpenStruct.new 
 
         entry_data.name          = entry == ".." ? "Parent Directory" : entry
-        entry_data.link          = entry
+        entry_data.link          = ERB::Util.url_encode(entry)
         entry_data.size          = num_to_bytes(stat.size)
         entry_data.last_modified = stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
 
