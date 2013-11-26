@@ -12,7 +12,7 @@ namespace :develop do
   # gemspec.
   task :default do
     require 'rubygems/dependency_installer'
-    installer = Gem::DependencyInstaller.new
+    installer = ::Gem::DependencyInstaller.new
 
     This.set_coverage_gem
 
@@ -235,7 +235,7 @@ CLOBBER << FileList["**/*.rbc"]
 
 # The standard gem packaging task, everyone has it.
 require 'rubygems/package_task'
-Gem::PackageTask.new( This.platform_gemspec ) do
+::Gem::PackageTask.new( This.platform_gemspec ) do
   # nothing
 end
 
