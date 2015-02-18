@@ -3,5 +3,4 @@
 coverage/
 doc/
 pkg/
-*.gemspec
-Gemfile*
+Gemfile.lock
