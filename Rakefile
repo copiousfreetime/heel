@@ -8,17 +8,17 @@ This.homepage = "http://github.com/copiousfreetime/#{ This.name }"
 
 This.ruby_gemspec do |spec|
   spec.add_runtime_dependency( 'rack'      , '~> 2.0' )
-  spec.add_runtime_dependency( 'puma'      , '~> 2.0' )
-  spec.add_runtime_dependency( 'mime-types', '~> 1.25')
-  spec.add_runtime_dependency( 'launchy'   , '~> 2.3' )
+  spec.add_runtime_dependency( 'puma'      , '~> 3.11.3' )
+  spec.add_runtime_dependency( 'mime-types', '~> 3.1')
+  spec.add_runtime_dependency( 'launchy'   , '~> 2.4' )
   spec.add_runtime_dependency( 'coderay'   , '~> 1.1' )
 
-  spec.add_development_dependency( 'rake'     , '~> 10.1')
-  spec.add_development_dependency( 'minitest' , '~> 5.0' )
-  spec.add_development_dependency( 'rdoc'     , '~> 4.0' )
-  spec.add_development_dependency( 'simplecov', '~> 0.9' )
+  spec.add_development_dependency( 'rake'     , '~> 12.3')
+  spec.add_development_dependency( 'minitest' , '~> 5.11' )
+  spec.add_development_dependency( 'rdoc'     , '~> 6.0' )
+  spec.add_development_dependency( 'simplecov', '~> 0.15' )
 
-  spec.license = "BSD"
+  spec.license = "BSD-3-Clause"
 end
 
 load 'tasks/default.rake'
