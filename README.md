@@ -17,10 +17,12 @@ Heel is built using [Rack](http://rack.github.com) and
 
     % heel
     Launching your browser...
-    Puma 1.6.3 starting...
+    Puma starting in single mode...
+    * Version 3.11.3 (ruby 2.4.3-p205), codename: Love Song
     * Min threads: 0, max threads: 16
-    * Environment: deployment
+    * Environment: none
     * Listening on tcp://0.0.0.0:4331
+    Use Ctrl-C to stop
 
 Or run it in the background
 
