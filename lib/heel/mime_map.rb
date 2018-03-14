@@ -50,11 +50,7 @@ module Heel
           MIME::Types.add(mt)
         else
           type = existing_type.first
-          mt.extensions.each do |ext|
-            type.extensions << ext unless type.extensions.include?( ext )
-          end
-          # have to reindex if new extensions added
-          MIME::Types.index_extensions(type)
+          type.add_extensions(mt.extensions)
         end
       end
     end
