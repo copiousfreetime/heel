@@ -166,7 +166,7 @@ module Heel
 
     # kill an already running background heel process
     def kill_existing_proc
-      if File.exists?(pid_file) then
+      if File.exist?(pid_file) then
         begin
           pid = open(pid_file).read.to_i
           @stdout.puts "Sending TERM to process #{pid}"
@@ -187,7 +187,7 @@ module Heel
     # setup the directory that heel will use as the location to run from, where its logs will
     # be stored and its PID file if backgrounded.
     def setup_heel_dir
-      if not File.exists?(default_directory) then
+      if not File.exist?(default_directory) then
         FileUtils.mkdir_p(default_directory)
         @stdout.puts "Created #{default_directory}"
         @stdout.puts "heel's PID (#{pid_file}) and log file (#{log_file}) are stored here"
