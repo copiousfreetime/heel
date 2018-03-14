@@ -1,4 +1,8 @@
 # Changelog
+## Version 3.2.0 - 2018-03-14
+* fix missing rack dependency [#17](https://github.com/copiousfreetime/heel/pull/17)
+* across the board gem dependency updates
+* ruby 2.0 minimum dependency - because of transitive dependencies
 
 ## Version 3.1.3 - 2013-11-26
 * URL encode the links to files [#14](https://github.com/copiousfreetime/heel/issues/14)
