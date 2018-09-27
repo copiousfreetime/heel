@@ -1,4 +1,7 @@
 # Changelog
+## Version 3.2.1 - 2018-09-27
+* fix pume dependency - it was too constrainted
+
 ## Version 3.2.0 - 2018-03-14
 * fix missing rack dependency [#17](https://github.com/copiousfreetime/heel/pull/17)
 * across the board gem dependency updates
