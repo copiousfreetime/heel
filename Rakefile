@@ -8,7 +8,7 @@ This.homepage = "http://github.com/copiousfreetime/#{ This.name }"
 
 This.ruby_gemspec do |spec|
   spec.add_runtime_dependency( 'rack'      , '~> 2.0' )
-  spec.add_runtime_dependency( 'puma'      , '~> 3.11.3' )
+  spec.add_runtime_dependency( 'puma'      , '~> 3.11' )
   spec.add_runtime_dependency( 'mime-types', '~> 3.1')
   spec.add_runtime_dependency( 'launchy'   , '~> 2.4' )
   spec.add_runtime_dependency( 'coderay'   , '~> 1.1' )
