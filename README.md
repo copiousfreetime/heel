@@ -86,7 +86,7 @@ Or run it in the background
 
 ## BSD LICENSE:
 
-Copyright (c) 2007 - 2013, Jeremy Hinegardner
+Copyright (c) 2007 - 2023, Jeremy Hinegardner
 
 All rights reserved.
 
