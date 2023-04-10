@@ -20,36 +20,21 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/copiousfreetime/heel".freeze
   s.licenses = ["BSD-3-Clause".freeze]
   s.rdoc_options = ["--main".freeze, "README.md".freeze, "--markup".freeze, "tomdoc".freeze]
-  s.required_ruby_version = Gem::Requirement.new(">= 2.2.2".freeze)
-  s.rubygems_version = "3.3.26".freeze
+  s.required_ruby_version = Gem::Requirement.new(">= 2.3.0".freeze)
+  s.rubygems_version = "3.4.10".freeze
   s.summary = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use [launchy](http://rubygems.org/gems/launchy/) to open your browser at the URL of your document root.".freeze
   s.test_files = ["spec/configuration_spec.rb".freeze, "spec/directory_indexer_spec.rb".freeze, "spec/rackapp_spec.rb".freeze, "spec/server_spec.rb".freeze, "spec/spec_helper.rb".freeze, "spec/template_vars_spec.rb".freeze]
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 4
-  end
+  s.specification_version = 4
 
-  if s.respond_to? :add_runtime_dependency then
-    s.add_runtime_dependency(%q<rack>.freeze, ["~> 3.0"])
-    s.add_runtime_dependency(%q<puma>.freeze, ["~> 6.0"])
-    s.add_runtime_dependency(%q<mime-types>.freeze, ["~> 3.2"])
-    s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.5"])
-    s.add_runtime_dependency(%q<coderay>.freeze, ["~> 1.1"])
-    s.add_development_dependency(%q<rake>.freeze, ["~> 13.0"])
-    s.add_development_dependency(%q<minitest>.freeze, ["~> 5.15"])
-    s.add_development_dependency(%q<minitest-junit>.freeze, ["~> 1.0"])
-    s.add_development_dependency(%q<rdoc>.freeze, ["~> 6.0"])
-    s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.21"])
-  else
-    s.add_dependency(%q<rack>.freeze, ["~> 3.0"])
-    s.add_dependency(%q<puma>.freeze, ["~> 6.0"])
-    s.add_dependency(%q<mime-types>.freeze, ["~> 3.2"])
-    s.add_dependency(%q<launchy>.freeze, ["~> 2.5"])
-    s.add_dependency(%q<coderay>.freeze, ["~> 1.1"])
-    s.add_dependency(%q<rake>.freeze, ["~> 13.0"])
-    s.add_dependency(%q<minitest>.freeze, ["~> 5.15"])
-    s.add_dependency(%q<minitest-junit>.freeze, ["~> 1.0"])
-    s.add_dependency(%q<rdoc>.freeze, ["~> 6.0"])
-    s.add_dependency(%q<simplecov>.freeze, ["~> 0.21"])
-  end
+  s.add_runtime_dependency(%q<rack>.freeze, ["~> 3.0"])
+  s.add_runtime_dependency(%q<puma>.freeze, ["~> 6.0"])
+  s.add_runtime_dependency(%q<mime-types>.freeze, ["~> 3.4"])
+  s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.5"])
+  s.add_runtime_dependency(%q<coderay>.freeze, ["~> 1.1"])
+  s.add_development_dependency(%q<rake>.freeze, ["~> 13.0"])
+  s.add_development_dependency(%q<minitest>.freeze, ["~> 5.15"])
+  s.add_development_dependency(%q<minitest-junit>.freeze, ["~> 1.0"])
+  s.add_development_dependency(%q<rdoc>.freeze, ["~> 6.5"])
+  s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.21"])
 end
