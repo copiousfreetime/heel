@@ -13,18 +13,27 @@ GEM
   specs:
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    builder (3.2.4)
     coderay (1.1.2)
     docile (1.1.5)
+    ffi (1.15.5-java)
     json (2.1.0)
     json (2.1.0-java)
     launchy (2.4.3)
       addressable (~> 2.3)
+    launchy (2.4.3-java)
+      addressable (~> 2.3)
+      spoon (~> 0.0.1)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     minitest (5.11.3)
+    minitest-junit (1.1.0)
+      builder (~> 3.2)
+      minitest (~> 5.11)
     public_suffix (3.0.3)
     puma (3.12.0)
+    puma (3.12.0-java)
     rack (2.0.5)
     rake (12.3.0)
     rdoc (6.0.1)
@@ -33,6 +42,8 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
+    spoon (0.0.6)
+      ffi
 
 PLATFORMS
   java
@@ -41,6 +52,7 @@ PLATFORMS
 DEPENDENCIES
   heel!
   minitest (~> 5.11)
+  minitest-junit (~> 1.0)
   rake (~> 12.3)
   rdoc (~> 6.0)
   simplecov (~> 0.15)

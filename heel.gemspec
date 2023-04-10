@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeremy Hinegardner".freeze]
-  s.date = "2018-09-27"
+  s.date = "2023-04-10"
   s.description = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use (http://rubygems.org/gems/launchy/) to open your browser at the URL of your document root. Heel is built using (http://rack.github.com) and (http://puma.io)     % heel     Launching your browser...     Puma starting in single mode...     * Version 3.11.3 (ruby 2.4.3-p205), codename: Love Song     * Min threads: 0, max threads: 16     * Environment: none     * Listening on tcp://0.0.0.0:4331     Use Ctrl-C to stop Or run it in the background     % heel --daemonize     Launching your browser at http://0.0.0.0:4331/     % heel --kill     Sending TERM to process 3304     Done.".freeze
   s.email = "jeremy@copiousfreetime.org".freeze
   s.executables = ["heel".freeze]
@@ -20,34 +20,25 @@ Gem::Specification.new do |s|
   s.licenses = ["BSD-3-Clause".freeze]
   s.rdoc_options = ["--main".freeze, "README.md".freeze, "--markup".freeze, "tomdoc".freeze]
   s.required_ruby_version = Gem::Requirement.new(">= 2.2.2".freeze)
-  s.rubygems_version = "2.7.6".freeze
+  s.rubygems_version = "3.3.26".freeze
   s.summary = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use [launchy](http://rubygems.org/gems/launchy/) to open your browser at the URL of your document root.".freeze
   s.test_files = ["spec/configuration_spec.rb".freeze, "spec/directory_indexer_spec.rb".freeze, "spec/rackapp_spec.rb".freeze, "spec/server_spec.rb".freeze, "spec/spec_helper.rb".freeze, "spec/template_vars_spec.rb".freeze]
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
+  end
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rack>.freeze, ["~> 2.0"])
-      s.add_runtime_dependency(%q<puma>.freeze, ["~> 3.11"])
-      s.add_runtime_dependency(%q<mime-types>.freeze, ["~> 3.1"])
-      s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.4"])
-      s.add_runtime_dependency(%q<coderay>.freeze, ["~> 1.1"])
-      s.add_development_dependency(%q<rake>.freeze, ["~> 12.3"])
-      s.add_development_dependency(%q<minitest>.freeze, ["~> 5.11"])
-      s.add_development_dependency(%q<rdoc>.freeze, ["~> 6.0"])
-      s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.15"])
-    else
-      s.add_dependency(%q<rack>.freeze, ["~> 2.0"])
-      s.add_dependency(%q<puma>.freeze, ["~> 3.11"])
-      s.add_dependency(%q<mime-types>.freeze, ["~> 3.1"])
-      s.add_dependency(%q<launchy>.freeze, ["~> 2.4"])
-      s.add_dependency(%q<coderay>.freeze, ["~> 1.1"])
-      s.add_dependency(%q<rake>.freeze, ["~> 12.3"])
-      s.add_dependency(%q<minitest>.freeze, ["~> 5.11"])
-      s.add_dependency(%q<rdoc>.freeze, ["~> 6.0"])
-      s.add_dependency(%q<simplecov>.freeze, ["~> 0.15"])
-    end
+  if s.respond_to? :add_runtime_dependency then
+    s.add_runtime_dependency(%q<rack>.freeze, ["~> 2.0"])
+    s.add_runtime_dependency(%q<puma>.freeze, ["~> 3.11"])
+    s.add_runtime_dependency(%q<mime-types>.freeze, ["~> 3.1"])
+    s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.4"])
+    s.add_runtime_dependency(%q<coderay>.freeze, ["~> 1.1"])
+    s.add_development_dependency(%q<rake>.freeze, ["~> 12.3"])
+    s.add_development_dependency(%q<minitest>.freeze, ["~> 5.11"])
+    s.add_development_dependency(%q<minitest-junit>.freeze, ["~> 1.0"])
+    s.add_development_dependency(%q<rdoc>.freeze, ["~> 6.0"])
+    s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.15"])
   else
     s.add_dependency(%q<rack>.freeze, ["~> 2.0"])
     s.add_dependency(%q<puma>.freeze, ["~> 3.11"])
@@ -56,6 +47,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<coderay>.freeze, ["~> 1.1"])
     s.add_dependency(%q<rake>.freeze, ["~> 12.3"])
     s.add_dependency(%q<minitest>.freeze, ["~> 5.11"])
+    s.add_dependency(%q<minitest-junit>.freeze, ["~> 1.0"])
     s.add_dependency(%q<rdoc>.freeze, ["~> 6.0"])
     s.add_dependency(%q<simplecov>.freeze, ["~> 0.15"])
   end
