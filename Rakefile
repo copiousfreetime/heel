@@ -28,6 +28,8 @@ This.ruby_gemspec do |spec|
     "source_code_uri" => "https://github.com/copiousfreetime/heel",
   }
 
+  spec.required_ruby_version = ">= 3.0.0"
+
 end
 
 load 'tasks/default.rake'

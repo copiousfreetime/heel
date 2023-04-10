@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/copiousfreetime/heel".freeze
   s.licenses = ["BSD-3-Clause".freeze]
   s.rdoc_options = ["--main".freeze, "README.md".freeze, "--markup".freeze, "tomdoc".freeze]
-  s.required_ruby_version = Gem::Requirement.new(">= 2.3.0".freeze)
+  s.required_ruby_version = Gem::Requirement.new(">= 3.0.0".freeze)
   s.rubygems_version = "3.4.10".freeze
   s.summary = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use [launchy](http://rubygems.org/gems/launchy/) to open your browser at the URL of your document root.".freeze
   s.test_files = ["spec/configuration_spec.rb".freeze, "spec/directory_indexer_spec.rb".freeze, "spec/rackapp_spec.rb".freeze, "spec/server_spec.rb".freeze, "spec/spec_helper.rb".freeze, "spec/template_vars_spec.rb".freeze]
