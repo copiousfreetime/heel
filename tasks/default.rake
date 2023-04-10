@@ -36,11 +36,13 @@ task :develop => "develop:default"
 # Minitest - standard TestTask
 #------------------------------------------------------------------------------
 begin
-  require 'rake/testtask'
-  Rake::TestTask.new( :test ) do |t|
-    t.ruby_opts    = %w[ -w ]
-    t.libs         = %w[ lib spec test ]
-    t.pattern      = "{test,spec}/**/{test_*,*_spec}.rb"
+  require 'minitest/test_task'
+  Minitest::TestTask.create( :test) do |t|
+    t.libs << "lib"
+    t.libs << "spec"
+    t.libs << "test"
+    t.warning = true
+    t.test_globs = "{test,spec}/**/{test_*,*_spec}.rb"
   end
 
   task :test_requirements
@@ -143,14 +145,20 @@ namespace :fixme do
   end
 
   def local_fixme_files
-    This.manifest.select { |p| p =~ %r|^tasks/| }
+    local_files = This.manifest.select { |p| p =~ %r|^tasks/| }
+    local_files << ".semaphore/semaphore.yml"
   end
 
   def outdated_fixme_files
     local_fixme_files.select do |local|
       upstream     = fixme_project_path( local )
-      upstream.exist? &&
-        ( Digest::SHA256.file( local ) != Digest::SHA256.file( upstream ) )
+      if upstream.exist? then
+        if File.exist?( local ) then
+          ( Digest::SHA256.file( local ) != Digest::SHA256.file( upstream ) )
+        else
+          true
+        end
+      end
     end
   end
 
@@ -159,7 +167,7 @@ namespace :fixme do
   end
 
   desc "See if the fixme tools are outdated"
-  task :outdated => :release_check do
+  task :outdated do
     if fixme_up_to_date? then
       puts "Fixme files are up to date."
     else
@@ -170,7 +178,7 @@ namespace :fixme do
   end
 
   desc "Update outdated fixme files"
-  task :update => :release_check do
+  task :update do
     if fixme_up_to_date? then
       puts "Fixme files are already up to date."
     else
@@ -201,7 +209,7 @@ task :gemspec do
 end
 
 # .rbc files from ruby 2.0
-CLOBBER << FileList["**/*.rbc"]
+CLOBBER << "**/*.rbc"
 
 # The standard gem packaging task, everyone has it.
 require 'rubygems/package_task'
@@ -224,7 +232,7 @@ end
 # 7) pus the gem
 #------------------------------------------------------------------------------
 task :release_check do
-  unless `git branch` =~ /^\* main$/
+  unless `git branch` =~ /^\* main/
     abort "You must be on the main branch to release!"
   end
   unless `git status` =~ /^nothing to commit/m
