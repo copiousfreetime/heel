@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <title>Error <%= status %></title>
     <meta charset='utf-8'>
-    <link href='/heel_css/error.css' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <!--[if IE]>
-      <script src='//html5shiv.googlecode.com/svn/trunk/html5.js'></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='/heel_css/pico.min.css' rel='stylesheet' type='text/css'>
   </head>
   <body>
-    <div role='wrapper'>
-      <header>
-        <h1>Requested URL: <%= base_uri %></h1>
-      </header>
-      <div role='content'>
-        <article role='message'><p><%= message %></p></article>
-      </div>
-      <footer>
+
+    <main class="container">
+      <h1><%= message %></h1>
+
+      <p>
+        There was an Error retrieving url : <%= base_uri %>
+      </p>
+      </section>
+
+      <footer class="container">
+        <hr>
         <p>
-          <a href="http://github.com/copiousfreetime/heel/">heel</a> v<%= Heel::VERSION %>
+          <small><a href="<%= homepage %>">heel</a> v<%= Heel::VERSION %></small>
         </p>
       </footer>
-    </div>
+
+    </main>
+
   </body>
 </html>
