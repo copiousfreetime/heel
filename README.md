@@ -1,9 +1,8 @@
 ## Heel
+[![Build Status](https://copiousfreetime.semaphoreci.com/badges/heel/branches/main.svg)](https://copiousfreetime.semaphoreci.com/projects/heel)
 
 * [Homepage](http://github.com/copiousfreetime/heel/)
 * [GitHub](http://github.com/copiousfreetime/heel/)
-* email jeremy at hinegardner dot org
-* `git clone git://github.com/copiousfreetime/heel.git`
 
 ## DESCRIPTION
 
@@ -12,16 +11,18 @@ directory.  Once the server is running, heel will use
 [launchy](http://rubygems.org/gems/launchy/) to open your browser at
 the URL of your document root.
 
-Heel is built using [Rack](http://rack.github.com) and
+Heel is built using [Rack](http://github.com/rack/rack) and
 [Puma](http://puma.io)
 
     % heel
     Launching your browser...
     Puma starting in single mode...
-    * Version 3.11.3 (ruby 2.4.3-p205), codename: Love Song
-    * Min threads: 0, max threads: 16
-    * Environment: none
-    * Listening on tcp://0.0.0.0:4331
+    * Puma version: 6.2.1 (ruby 3.2.2-p53) ("Speaking of Now")
+    *  Min threads: 0
+    *  Max threads: 5
+    *  Environment: none
+    *          PID: 11322
+    * Listening on http://0.0.0.0:4331
     Use Ctrl-C to stop
 
 Or run it in the background
@@ -64,9 +65,10 @@ Or run it in the background
 ### For running: 
 
 * [coderay](http://coderay.rubychan.de/)
-* [launchy](http://github.com/copiousfreetime/launchy/) >= 0.1.1
-* [mime-types](http://mime-types.rubyforge.org/)
+* [launchy](http://github.com/copiousfreetime/launchy/)
+* [mime-types](https://github.com/mime-types/ruby-mime-types/)
 * [puma](http://puma.io)
+* [rackup](http://github.com/rack/rackup)
 
 ### For development:
 
@@ -81,7 +83,7 @@ Or run it in the background
 ## CREDITS:
 
 * [puma](http://puma.io)
-* [Rack](http://rack.github.io/)
+* [Rack](http://github.com/rack/rack)
 * http://www.famfamfam.com/ for amazing icons
 
 ## BSD LICENSE:
