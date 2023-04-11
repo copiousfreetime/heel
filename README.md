@@ -84,7 +84,8 @@ Or run it in the background
 
 * [puma](https://puma.io)
 * [Rack](https://github.com/rack/rack)
-* https://www.famfamfam.com/ for amazing icons
+* [lineicons](https://lineicons.com/)
+* [picocss](https://picocss.com/)
 
 ## BSD LICENSE:
 
