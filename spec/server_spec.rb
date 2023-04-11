@@ -65,15 +65,15 @@ describe Heel::Server do
   end
 
   it "should allow the highlighting option to be set" do
-    server = Heel::Server.new(%w[--highlighting])
-    server.merge_options
-    _(server.options.highlighting).must_equal true
-  end
-
-  it "should have highlighting off as a default" do
-    server = Heel::Server.new
+    server = Heel::Server.new(%w[--no-highlighting])
     server.merge_options
     _(server.options.highlighting).must_equal false
+  end
+
+  it "should have highlighting on as a default" do
+    server = Heel::Server.new
+    server.merge_options
+    _(server.options.highlighting).must_equal true
   end
 
   it "should set no-launch-browser option" do
