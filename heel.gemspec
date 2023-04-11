@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   s.specification_version = 4
 
   s.add_runtime_dependency(%q<rack>.freeze, ["~> 3.0"])
+  s.add_runtime_dependency(%q<rackup>.freeze, ["~> 2.1"])
   s.add_runtime_dependency(%q<puma>.freeze, ["~> 6.0"])
   s.add_runtime_dependency(%q<mime-types>.freeze, ["~> 3.4"])
   s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.5"])

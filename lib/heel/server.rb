@@ -7,6 +7,7 @@ require 'ostruct'
 require 'launchy'
 require 'fileutils'
 require 'heel/rackapp'
+require 'rackup'
 require 'puma'
 
 module Heel
@@ -228,17 +229,17 @@ module Heel
           run app
         end
         map "/heel_css" do 
-          run Rack::File.new(Heel::Configuration.data_path( "css" )) 
+          run Rack::Files.new(Heel::Configuration.data_path( "css" )) 
         end
         map "/heel_icons" do
-          run Rack::File.new(Heel::Configuration.data_path("famfamfam", "icons")) 
+          run Rack::Files.new(Heel::Configuration.data_path("famfamfam", "icons")) 
         end
       }
       return stack.to_app
     end
 
     # If we are daemonizing the fork and wait for the child to launch the server
-    # If we are not daemonizing, throw the Rack::Server in a background thread
+    # If we are not daemonizing, throw the ::Rackup::Server in a background thread
     def start_server
       if options.daemonize then
         start_background_server
@@ -252,14 +253,14 @@ module Heel
       if cpid = fork then
         Process.waitpid( cpid )
       else
-        server = Rack::Server.new( server_options )
+        server = ::Rackup::Server.new( server_options )
         server.start
       end
     end
 
     def start_foreground_server
       Thread.new {
-        server = Rack::Server.new( server_options )
+        server = ::Rackup::Server.new( server_options )
         server.start
       }
     end
