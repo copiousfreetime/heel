@@ -34,7 +34,7 @@
                   <% end %>
                   <%= entry.name %>
                 </a>
-                <% if highlighting? and entry.content_type != 'Directory' then %>
+                <% if highlighting? && (entry.content_type != 'Directory') then %>
                 (<a href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting=false" %>">download</a>)
                 <% end %>
               </td>

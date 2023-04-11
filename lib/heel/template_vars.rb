@@ -4,5 +4,9 @@ module Heel
     def binding_for_template()
       return binding()
     end
+
+    def highlighting?
+      self.highlighting
+    end
   end
 end
