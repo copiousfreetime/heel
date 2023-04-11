@@ -2,6 +2,7 @@
 ## Version 4.0.0 - 2023-04-XX
 * Update all dependencies
 * ruby 3.0 minimum dependencies
+* switch to [rouge](https://github.com/rouge-ruby/rouge) for syntax highlighting
 
 ## Version 3.2.1 - 2018-09-27
 * fix pume dependency - it was too constrainted

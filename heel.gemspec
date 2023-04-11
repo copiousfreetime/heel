@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.metadata = { "bug_tracker_uri" => "https://github.com/copiousfreetime/heel/issues", "changelog_uri" => "https://github.com/copiousfreetime/heel/blob/master/README.md", "homepage_uri" => "https://github.com/copiousfreetime/heel", "source_code_uri" => "https://github.com/copiousfreetime/heel" } if s.respond_to? :metadata=
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeremy Hinegardner".freeze]
-  s.date = "2023-04-10"
-  s.description = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use (http://rubygems.org/gems/launchy/) to open your browser at the URL of your document root. Heel is built using (http://rack.github.com) and (http://puma.io)     % heel     Launching your browser...     Puma starting in single mode...     * Version 3.11.3 (ruby 2.4.3-p205), codename: Love Song     * Min threads: 0, max threads: 16     * Environment: none     * Listening on tcp://0.0.0.0:4331     Use Ctrl-C to stop Or run it in the background     % heel --daemonize     Launching your browser at http://0.0.0.0:4331/     % heel --kill     Sending TERM to process 3304     Done.".freeze
+  s.date = "2023-04-11"
+  s.description = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use (http://rubygems.org/gems/launchy/) to open your browser at the URL of your document root. Heel is built using (http://github.com/rack/rack) and (http://puma.io)     % heel     Launching your browser...     Puma starting in single mode...     * Puma version: 6.2.1 (ruby 3.2.2-p53) (\"Speaking of Now\")     *  Min threads: 0     *  Max threads: 5     *  Environment: none     *          PID: 11322     * Listening on http://0.0.0.0:4331     Use Ctrl-C to stop Or run it in the background     % heel --daemonize     Launching your browser at http://0.0.0.0:4331/     % heel --kill     Sending TERM to process 3304     Done.".freeze
   s.email = "jeremy@copiousfreetime.org".freeze
   s.executables = ["heel".freeze]
   s.extra_rdoc_files = ["CONTRIBUTING.md".freeze, "HISTORY.md".freeze, "Manifest.txt".freeze, "README.md".freeze, "data/famfamfam/readme.txt".freeze]
@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<puma>.freeze, ["~> 6.0"])
   s.add_runtime_dependency(%q<mime-types>.freeze, ["~> 3.4"])
   s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.5"])
-  s.add_runtime_dependency(%q<coderay>.freeze, ["~> 1.1"])
+  s.add_runtime_dependency(%q<rouge>.freeze, ["~> 4.0"])
   s.add_development_dependency(%q<rake>.freeze, ["~> 13.0"])
   s.add_development_dependency(%q<minitest>.freeze, ["~> 5.15"])
   s.add_development_dependency(%q<minitest-junit>.freeze, ["~> 1.0"])

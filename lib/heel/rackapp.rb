@@ -5,8 +5,7 @@
 
 require 'rack'
 require 'rack/utils'
-require 'coderay'
-require 'coderay/helpers/file_type'
+require 'rouge'
 require 'time'
 
 module Heel
@@ -63,7 +62,7 @@ module Heel
     def directory_index_response(req)
       response = ::Rack::Response.new
       dir_index = File.join(req.request_path, directory_index_html) 
-      if File.file?(dir_index) and File.readable?(dir_index) then
+      if File.file?(dir_index) && File.readable?(dir_index) then
         response['Content-Type']   = mime_map.mime_type_of(dir_index).to_s
         response.write( File.read( dir_index ) )
       elsif directory_listing_allowed? then
@@ -76,44 +75,64 @@ module Heel
       return response.finish
     end
 
+    def slurp_path(path)
+      source = nil
+      File.open(path, 'rt:bom|utf-8') do |f|
+        source = f.read
+      end
+      return source
+    end
 
-    # formulate a file content response. Possibly a coderay highlighted file if
-    # it is a type that code ray can deal with and the file is not already an
+    def highlight_contents(req, file_type)
+      source = slurp_path(req.request_path)
+      # only do a rouge type check if we are going to use rouge in the
+      # response
+      lexer = ::Rouge::Lexer.guess(
+        filename: req.request_path,
+        source: source,
+        mime_type: file_type
+      )
+
+      formatter = ::Rouge::Formatters::HTMLPygments.new(::Rouge::Formatters::HTML.new)
+      content = formatter.format(lexer.lex(source))
+
+      body = <<-EOM
+      <html>
+        <head>
+          <title>#{req.path_info}</title>
+          <link href='/heel_css/syntax-highlighting.css' rel='stylesheet' type='text/css'>
+        </head>
+        <body>
+          #{content}
+        </body>
+      </html>
+      EOM
+
+      return body
+    end
+
+
+    # formulate a file content response. Possibly a rouge highlighted file if
+    # it is a type that rouge can deal with and the file is not already an
     # html file.
     #
     def file_response(req)
       response = ::Rack::Response.new
-
       response['Last-Modified'] = req.stat.mtime.rfc822
+      file_type = mime_map.mime_type_of(req.request_path)
 
-      if highlighting? and req.highlighting? then 
-        # only do a coderay type check if we are going to use coderay in the
-        # response
-        code_ray_type = CodeRay::FileType[req.request_path, true] 
-        if code_ray_type and (code_ray_type != :html) then
-          body = <<-EOM
-          <html>
-            <head>
-            <title>#{req.path_info}</title>
-            <!-- CodeRay syntax highlighting CSS -->
-            <link rel="stylesheet" href="/heel_css/coderay-alpha.css" type="text/css" />
-            </head>
-            <body>
-  #{CodeRay.scan_file(req.request_path,:auto).html({ :wrap => :div, :line_numbers => :inline })}
-            </body>
-          </html>
-          EOM
-          response['Content-Type']    = 'text/html'
-          response['Content-Length']  = body.length.to_s
+      if highlighting? and req.highlighting? then
+        if file_type && (file_type != 'text/html') then
+          body                       =  highlight_contents(req, file_type)
+          response['Content-Type']   = 'text/html'
+          response['Content-Length'] = body.length.to_s
           response.write( body )
           return response.finish
         end
       end
 
       # fall through to a default file return
-
-      file_type                   = mime_map.mime_type_of(req.request_path)
-      response['Content-Type']    = file_type.to_s
+      response['Content-Type'] = file_type.to_s
       File.open( req.request_path ) do |f|
         while p = f.read( 8192 ) do
           response.write( p )

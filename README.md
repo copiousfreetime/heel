@@ -37,7 +37,7 @@ Or run it in the background
 ## FEATURES
 
 * Automatic launching of your browser to the URL it is serving with [launchy](http://github.com/copiousfreetime/launchy/)
-* Automatic syntax highlighting of source code files with [coderay](http://coderay.rubychan.de/)
+* Automatic syntax highlighting of source code files with [rouge](http://github.com/ruby-rouge/rouge))
 * Run in the foreground or daemonized
 * Bind to any address and port (default is 0.0.0.0:4331)
 
@@ -64,8 +64,8 @@ Or run it in the background
 
 ### For running: 
 
-* [coderay](http://coderay.rubychan.de/)
 * [launchy](http://github.com/copiousfreetime/launchy/)
+* [rouge](https://github.com/rouge-ruby/rouge)
 * [mime-types](https://github.com/mime-types/ruby-mime-types/)
 * [puma](http://puma.io)
 * [rackup](http://github.com/rack/rackup)
