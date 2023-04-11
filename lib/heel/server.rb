@@ -232,7 +232,7 @@ module Heel
           run Rack::Files.new(Heel::Configuration.data_path( "css" )) 
         end
         map "/heel_icons" do
-          run Rack::Files.new(Heel::Configuration.data_path("famfamfam", "icons")) 
+          run Rack::Files.new(Heel::Configuration.data_path("lineicons"))
         end
       }
       return stack.to_app

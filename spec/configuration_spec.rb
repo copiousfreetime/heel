@@ -16,8 +16,8 @@ describe Heel::Configuration do
   end
 
   it "finds files in the data dir of the project" do
-    icons = Heel::Configuration.data_path('famfamfam', 'icons')
-    _(icons).must_equal @proj_root.join( "data", "famfamfam", "icons" ).to_s
+    icons = Heel::Configuration.data_path('lineicons', 'icons')
+    _(icons).must_equal @proj_root.join( "data", "lineicons", "icons" ).to_s
   end
 
   it "finds files in the lib dir of the project" do
