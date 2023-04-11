@@ -11,6 +11,10 @@ directory.  Once the server is running, heel will use
 [launchy](https://rubygems.org/gems/launchy/) to open your browser at
 the URL of your document root.
 
+Run it right now! `gem exec heel`
+
+-----
+
 Heel is built using [Rack](https://github.com/rack/rack) and
 [Puma](https://puma.io)
 
