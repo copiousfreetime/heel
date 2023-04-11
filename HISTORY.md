@@ -1,5 +1,5 @@
 # Changelog
-## Version 4.0.0 - 2023-04-XX
+## Version 4.0.0 - 2023-04-11
 * Update all dependencies
 * ruby 3.0 minimum dependencies
 * redesign the directory browser screen
