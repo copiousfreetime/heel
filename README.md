@@ -50,7 +50,7 @@ Or run it in the background
         -h, --help                       Display this text
         -k, --kill                       Kill an existing daemonized heel process
             --[no-]highlighting          Turn on or off syntax highlighting
-                                           (default: off)
+                                           (default: on)
             --[no-]launch-browser        Turn on or off automatic browser launch
                                            (default: on)
         -p, --port PORT                  Port to bind to

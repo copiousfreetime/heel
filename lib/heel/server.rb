@@ -57,7 +57,7 @@ module Heel
       defaults.port            = 4331
       defaults.document_root   = Dir.pwd
       defaults.daemonize       = false
-      defaults.highlighting    = false
+      defaults.highlighting    = true
       defaults.kill            = false
       defaults.launch_browser  = true
       return defaults
