@@ -1,18 +1,18 @@
 ## Heel
 [![Build Status](https://copiousfreetime.semaphoreci.com/badges/heel/branches/main.svg)](https://copiousfreetime.semaphoreci.com/projects/heel)
 
-* [Homepage](http://github.com/copiousfreetime/heel/)
-* [GitHub](http://github.com/copiousfreetime/heel/)
+* [Homepage](https://github.com/copiousfreetime/heel/)
+* [GitHub](https://github.com/copiousfreetime/heel/)
 
 ## DESCRIPTION
 
 Heel is a small static web server for use when you need a quick web server for a
 directory.  Once the server is running, heel will use
-[launchy](http://rubygems.org/gems/launchy/) to open your browser at
+[launchy](https://rubygems.org/gems/launchy/) to open your browser at
 the URL of your document root.
 
-Heel is built using [Rack](http://github.com/rack/rack) and
-[Puma](http://puma.io)
+Heel is built using [Rack](https://github.com/rack/rack) and
+[Puma](https://puma.io)
 
     % heel
     Launching your browser...
@@ -36,8 +36,8 @@ Or run it in the background
 
 ## FEATURES
 
-* Automatic launching of your browser to the URL it is serving with [launchy](http://github.com/copiousfreetime/launchy/)
-* Automatic syntax highlighting of source code files with [rouge](http://github.com/ruby-rouge/rouge))
+* Automatic launching of your browser to the URL it is serving with [launchy](https://github.com/copiousfreetime/launchy/)
+* Automatic syntax highlighting of source code files with [rouge](https://github.com/ruby-rouge/rouge))
 * Run in the foreground or daemonized
 * Bind to any address and port (default is 0.0.0.0:4331)
 
@@ -64,17 +64,17 @@ Or run it in the background
 
 ### For running: 
 
-* [launchy](http://github.com/copiousfreetime/launchy/)
 * [rouge](https://github.com/rouge-ruby/rouge)
+* [launchy](https://github.com/copiousfreetime/launchy/)
 * [mime-types](https://github.com/mime-types/ruby-mime-types/)
-* [puma](http://puma.io)
-* [rackup](http://github.com/rack/rackup)
+* [puma](https://puma.io)
+* [rackup](https://github.com/rack/rackup)
 
 ### For development:
 
-* [minitest](http://rubygems.org/gems/minitest)
-* [rake](http://rubygems.org/gems/rake)
-* [rdoc](http://rubygems.org/gems/rdoc)
+* [minitest](https://rubygems.org/gems/minitest)
+* [rake](https://rubygems.org/gems/rake)
+* [rdoc](https://rubygems.org/gems/rdoc)
 
 ## INSTALL:
 
@@ -82,9 +82,9 @@ Or run it in the background
 
 ## CREDITS:
 
-* [puma](http://puma.io)
-* [Rack](http://github.com/rack/rack)
-* http://www.famfamfam.com/ for amazing icons
+* [puma](https://puma.io)
+* [Rack](https://github.com/rack/rack)
+* https://www.famfamfam.com/ for amazing icons
 
 ## BSD LICENSE:
 
