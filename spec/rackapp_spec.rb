@@ -26,7 +26,7 @@ describe Heel::RackApp do
     res = @request.get("/lib/heel.rb?highlighting=off")
     _(res).must_be :ok?
     _(res.body.size).must_equal File.size("lib/heel.rb")
-    _(res['Content-Type']).must_equal "application/x-ruby"
+    _(res['Content-Type']).must_equal "text/plain"
   end
 
   it "should return a 405 if given a non-GET request" do
