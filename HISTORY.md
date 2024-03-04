@@ -1,4 +1,9 @@
 # Changelog
+## Version 4.0.1 - 2024-03-03
+* Update all dependencies
+* update test versions of ruby
+* fix a couple of tests
+
 ## Version 4.0.0 - 2023-04-11
 * Update all dependencies
 * ruby 3.0 minimum dependencies
