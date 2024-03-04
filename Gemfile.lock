@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    heel (4.0.0)
+    heel (4.0.1)
       launchy (~> 2.5)
       mime-types (~> 3.4)
       puma (~> 6.0)
