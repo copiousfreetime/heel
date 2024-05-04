@@ -38,18 +38,6 @@ Metrics/PerceivedComplexity:
   Max: 12
 
 # Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Performance/ConstantRegexp:
-  Exclude:
-    - 'spec/server_spec.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Performance/StringInclude:
-  Exclude:
-    - 'lib/heel/server.rb'
-
-# Offense count: 1
 Security/Open:
   Exclude:
     - 'lib/heel/server.rb'

@@ -20,7 +20,7 @@ describe Heel::Server do
       server.run
     rescue SystemExit => e
       _(e.status).must_equal 0
-      _(@stdout.string).must_match(/version #{Heel::VERSION}/)
+      _(@stdout.string).must_match(/version #{Heel::VERSION}/o)
     end
   end
 
