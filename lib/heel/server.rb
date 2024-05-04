@@ -143,7 +143,7 @@ module Heel
 
     # set the IO objects in a single method call.  This is really only for testing
     # instrumentation
-    def set_io(stdin = $stdin, stdout = $stdout, setderr = $stderr)
+    def set_io(stdin = $stdin, stdout = $stdout, stderr = $stderr)
       @stdin  = stdin
       @stdout = stdout
       @stderr = stderr
