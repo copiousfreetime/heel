@@ -19,11 +19,9 @@ module Heel
     attr_reader :stdout, :stderr, :stdin
 
     class << self
-      # thank you Jamis - from Capistrano
+      # Switch to more modern ways of finding the home directory
       def home_directory # :nodoc:
-        ENV["HOME"] ||
-          (ENV["HOMEPATH"] && "#{ENV["HOMEDRIVE"]}#{ENV["HOMEPATH"]}") ||
-          "/"
+        Dir.home || ENV.fetch("USERPROFILE", nil) || "/"
       end
     end
 
