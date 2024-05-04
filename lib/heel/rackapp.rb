@@ -17,7 +17,7 @@ module Heel
     attr_reader :document_root, :directory_index_html, :icon_url, :highlighting, :ignore_globs
 
     def initialize(options = {})
-      @ignore_globs               = options[:ignore_globs] ||= %w(*~ .htaccess .)
+      @ignore_globs               = options[:ignore_globs] ||= %w[*~ .htaccess .]
       @document_root              = options[:document_root] ||= Dir.pwd
       @directory_listing_allowed  = options[:directory_listing_allowed] ||= true
       @directory_index_html       = options[:directory_index_html] ||= "index.html"

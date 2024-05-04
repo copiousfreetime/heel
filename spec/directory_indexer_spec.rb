@@ -8,12 +8,12 @@ describe Heel::DirectoryIndexer do
   end
 
   it "should ignore .htaccess files" do
-    @indexer.options[:ignore_globs] = %w(*~ .htaccess .)
+    @indexer.options[:ignore_globs] = %w[*~ .htaccess .]
     _(@indexer.should_ignore?(".htaccess")).must_equal true
   end
 
   it "should not ignore .html files " do
-    @indexer.options[:ignore_globs] = %w(*~ .htaccess .)
+    @indexer.options[:ignore_globs] = %w[*~ .htaccess .]
     _(@indexer.should_ignore?("something.html")).must_equal false
   end
 
