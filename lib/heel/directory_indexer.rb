@@ -94,16 +94,15 @@ module Heel
     # essentially this is strfbytes from facets
     #
     def num_to_bytes(num, fmt = "%.2f")
-      case
-      when num < 1024
+      if num < 1024
         "#{num} bytes"
-      when num < 1024**2
+      elsif num < 1024**2
         "#{fmt % (num.to_f / 1024)} KB"
-      when num < 1024**3
+      elsif num < 1024**3
         "#{fmt % (num.to_f / (1024**2))} MB"
-      when num < 1024**4
+      elsif num < 1024**4
         "#{fmt % (num.to_f / (1024**3))} GB"
-      when num < 1024**5
+      elsif num < 1024**5
         "#{fmt % (num.to_f / (1024**4))} TB"
       else
         "#{num} bytes"

@@ -39,12 +39,6 @@ Metrics/PerceivedComplexity:
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
-Style/EmptyCaseCondition:
-  Exclude:
-    - 'lib/heel/directory_indexer.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
 Style/FileWrite:
   Exclude:
     - 'spec/server_spec.rb'
