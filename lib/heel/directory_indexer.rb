@@ -86,7 +86,7 @@ module Heel
         entries << entry_data
       end
 
-      template_vars          = TemplateVars.new(:base_uri => req.path_info, :highlighting => highlighting?)
+      template_vars          = TemplateVars.new(base_uri: req.path_info, highlighting: highlighting?)
       template_vars.entries  = entries.sort_by { |e| e.link }
       template_vars.homepage = Heel::Configuration::HOMEPAGE
 

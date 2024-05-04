@@ -18,8 +18,8 @@ This.ruby_gemspec do |spec|
 
   spec.metadata = {
     "bug_tracker_uri" => "https://github.com/copiousfreetime/heel/issues",
-    "changelog_uri"   => "https://github.com/copiousfreetime/heel/blob/master/README.md",
-    "homepage_uri"    => "https://github.com/copiousfreetime/heel",
+    "changelog_uri" => "https://github.com/copiousfreetime/heel/blob/master/README.md",
+    "homepage_uri" => "https://github.com/copiousfreetime/heel",
     "source_code_uri" => "https://github.com/copiousfreetime/heel",
   }
 

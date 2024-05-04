@@ -16,18 +16,18 @@ module Heel
       def icons_by_mime_type
         @icons_by_mime_type ||= {
           "text/plain" => "file.svg",
-            "image"                     => "image.svg",
-            "pdf"                       => "pdf.svg",
-            "x-zip-compressed"          => "zip.svg",
-            "x-gtar"                    => "zip.svg",
-            "x-gzip"                    => "zip.svg",
-            "application/x-word"        => "word.svg",
-            "application/powerpoint"    => "presentation.svg",
-            "text/html"                 => "html5.svg",
-            "application"               => "file.svg",
-            "text"                      => "file.svg",
-            :directory                  => "folder-alt.svg",
-            :default                    => "file.svg",
+          "image" => "image.svg",
+          "pdf" => "pdf.svg",
+          "x-zip-compressed" => "zip.svg",
+          "x-gtar" => "zip.svg",
+          "x-gzip" => "zip.svg",
+          "application/x-word" => "word.svg",
+          "application/powerpoint" => "presentation.svg",
+          "text/html" => "html5.svg",
+          "application" => "file.svg",
+          "text" => "file.svg",
+          :directory => "folder-alt.svg",
+          :default => "file.svg",
         }
       end
 

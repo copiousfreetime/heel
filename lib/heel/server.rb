@@ -26,7 +26,7 @@ module Heel
       def home_directory # :nodoc:
         ENV["HOME"] ||
           (ENV["HOMEPATH"] && "#{ENV["HOMEDRIVE"]}#{ENV["HOMEPATH"]}") ||
-                    "/"
+          "/"
       end
     end
 
@@ -44,7 +44,7 @@ module Heel
         @parser.parse!(argv)
       rescue ::OptionParser::ParseError => pe
         msg = ["#{@parser.program_name}: #{pe}",
-               "Try `#{@parser.program_name} --help` for more information"]
+               "Try `#{@parser.program_name} --help` for more information",]
         @error_message = msg.join("\n")
       end
     end
@@ -219,8 +219,8 @@ module Heel
     end
 
     def heel_app
-      app = Heel::RackApp.new({ :document_root => options.document_root,
-                                :highlighting  => options.highlighting})
+      app = Heel::RackApp.new({ document_root: options.document_root,
+                                highlighting: options.highlighting, })
 
       logger = Heel::Logger.new(log_file)
 
@@ -268,13 +268,13 @@ module Heel
 
     def server_options
       {
-        :app  => heel_app,
-        :pid  => pid_file,
-        :Port => options.port,
-        :Host => options.address,
-        :environment => 'none',
-        :server => 'puma',
-        :daemonize => options.daemonize
+        app: heel_app,
+        pid: pid_file,
+        Port: options.port,
+        Host: options.address,
+        environment: 'none',
+        server: 'puma',
+        daemonize: options.daemonize,
       }
     end
 

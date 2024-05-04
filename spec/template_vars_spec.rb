@@ -7,7 +7,7 @@ describe Heel::TemplateVars do
   end
 
   it "exposes all its data members in a binding" do
-    t = Heel::TemplateVars.new(:foo => 'foo', :bar => 'bar')
+    t = Heel::TemplateVars.new(foo: 'foo', bar: 'bar')
     s = @template.result(t.binding_for_template)
     _(s).must_equal("foo && bar")
   end
