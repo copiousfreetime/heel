@@ -6,23 +6,23 @@ describe Heel::DirectoryIndexer do
   end
 
   it "should ignore .htaccess files" do
-    @indexer.options[:ignore_globs] = %w( *~ .htaccess . )
+    @indexer.options[:ignore_globs] = %w(*~ .htaccess .)
     _(@indexer.should_ignore?(".htaccess")).must_equal true
   end
 
   it "should not ignore .html files " do
-    @indexer.options[:ignore_globs] = %w( *~ .htaccess . )
+    @indexer.options[:ignore_globs] = %w(*~ .htaccess .)
     _(@indexer.should_ignore?("something.html")).must_equal false
   end
 
   it "can tell if highlighting is to be performed" do
     _(@indexer).must_be :highlighting?
   end
-  
+
   it "knows if the template should be reloaded on changes" do
     _(@indexer.reload_on_template_change?).must_equal false
   end
-  
+
   it "uses icons" do
     _(@indexer.using_icons?).must_equal false
   end
@@ -38,13 +38,13 @@ describe Heel::DirectoryIndexer do
     { :ext => 'rhtml', :type => 'text/plain' }
   ].each do |m|
     it "finds #{m[:ext]} extension in the map as #{m[:type]}" do
-      _(@indexer.mime_map.mime_type_of( "test.#{m[:ext]}" )).must_equal m[:type]
+      _(@indexer.mime_map.mime_type_of("test.#{m[:ext]}")).must_equal m[:type]
     end
   end
 
-  %w[ md markdown rdoc ].each do |ext|
+  %w[md markdown rdoc].each do |ext|
     it "finds #{ext} in the map as text/plain" do
-      _(@indexer.mime_map.mime_type_of( "test.#{ext}" )).must_equal "text/plain"
+      _(@indexer.mime_map.mime_type_of("test.#{ext}")).must_equal "text/plain"
     end
   end
 end

@@ -12,16 +12,14 @@ module Heel
   # Internal: The Rack application that is Heel.
   #
   class RackApp
-
     attr_reader   :document_root
     attr_reader   :directory_index_html
     attr_reader   :icon_url
     attr_reader   :highlighting
     attr_reader   :ignore_globs
 
-
     def initialize(options = {})
-      @ignore_globs               = options[:ignore_globs] ||= %w( *~ .htaccess . )
+      @ignore_globs               = options[:ignore_globs] ||= %w(*~ .htaccess .)
       @document_root              = options[:document_root] ||= Dir.pwd
       @directory_listing_allowed  = options[:directory_listing_allowed] ||= true
       @directory_index_html       = options[:directory_index_html] ||= "index.html"
@@ -48,31 +46,30 @@ module Heel
     end
 
     def directory_indexer
-      @directory_indexer ||= DirectoryIndexer.new( directory_index_template_file, @options )
+      @directory_indexer ||= DirectoryIndexer.new(directory_index_template_file, @options)
     end
-
 
     def should_ignore?(fname)
       ignore_globs.each do |glob|
-        return true if ::File.fnmatch(glob,fname)
+        return true if ::File.fnmatch(glob, fname)
       end
-      false 
+      false
     end
 
     # formulate a directory index response
     #
     def directory_index_response(req)
       response = ::Rack::Response.new
-      dir_index = File.join(req.request_path, directory_index_html) 
+      dir_index = File.join(req.request_path, directory_index_html)
       if File.file?(dir_index) && File.readable?(dir_index) then
-        response['Content-Type']   = mime_map.mime_type_of(dir_index).to_s
-        response.write( File.read( dir_index ) )
+        response['Content-Type'] = mime_map.mime_type_of(dir_index).to_s
+        response.write(File.read(dir_index))
       elsif directory_listing_allowed? then
         body                       = directory_indexer.index_page_for(req)
         response['Content-Type']   = 'text/html'
-        response.write( body )
+        response.write(body)
       else
-        return ::Heel::ErrorResponse.new(req.path_info,"Directory index is forbidden", 403).finish
+        return ::Heel::ErrorResponse.new(req.path_info, "Directory index is forbidden", 403).finish
       end
       return response.finish
     end
@@ -113,7 +110,6 @@ module Heel
       return body
     end
 
-
     # formulate a file content response. Possibly a rouge highlighted file if
     # it is a type that rouge can deal with and the file is not already an
     # html file.
@@ -125,19 +121,19 @@ module Heel
 
       if highlighting? and req.highlighting? then
         if file_type && (file_type != 'text/html') then
-          body                       =  highlight_contents(req, file_type)
+          body = highlight_contents(req, file_type)
           response['Content-Type']   = 'text/html'
           response['Content-Length'] = body.length.to_s
-          response.write( body )
+          response.write(body)
           return response.finish
         end
       end
 
       # fall through to a default file return
       response['Content-Type'] = file_type.to_s
-      File.open( req.request_path ) do |f|
-        while p = f.read( 8192 ) do
-          response.write( p )
+      File.open(req.request_path) do |f|
+        while p = f.read(8192) do
+          response.write(p)
         end
       end
       return response.finish
@@ -151,15 +147,15 @@ module Heel
       req = Heel::Request.new(env, document_root)
       if req.get? then
         if req.forbidden? or should_ignore?(req.request_path) then
-          return ErrorResponse.new(req.path_info,"You do not have permissionto view #{req.path_info}",403).finish 
+          return ErrorResponse.new(req.path_info, "You do not have permissionto view #{req.path_info}", 403).finish
         end
-        return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}",404).finish unless req.found?
+        return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}", 404).finish unless req.found?
         return directory_index_response(req)                           if req.for_directory?
         return file_response(req)                                      if req.for_file?
       else
         return ErrorResponse.new(req.path_info,
-                                 "Method #{req.request_method} Not Allowed. Only GET is honored.", 
-                                 405, 
+                                 "Method #{req.request_method} Not Allowed. Only GET is honored.",
+                                 405,
                                  { "Allow" => "GET" }).finish
       end
     end

@@ -9,12 +9,11 @@ module Heel
   # Internal: Generate a directory index
   #
   class DirectoryIndexer
-
     attr_reader :options
     attr_reader :template_file
     attr_reader :template
 
-    def initialize( template_file, options )
+    def initialize(template_file, options)
       @template         = nil
       @template_file    = template_file
       @options          = options
@@ -23,7 +22,7 @@ module Heel
 
     def should_ignore?(fname)
       options[:ignore_globs].each do |glob|
-        return true if ::File.fnmatch(glob,fname)
+        return true if ::File.fnmatch(glob, fname)
       end
       false
     end
@@ -33,15 +32,15 @@ module Heel
     end
 
     def highlighting?
-      @options.fetch( :highlighting, false)
+      @options.fetch(:highlighting, false)
     end
 
     def reload_on_template_change?
-      @options.fetch( :reload_template_on_change, false )
+      @options.fetch(:reload_template_on_change, false)
     end
 
     def using_icons?
-      @options.fetch( :using_icons, false )
+      @options.fetch(:using_icons, false)
     end
 
     def reload_template
@@ -62,8 +61,8 @@ module Heel
         next if should_ignore?(entry)
         next if dir == @options[:document_root] and entry == ".."
 
-        stat            = File.stat(File.join(dir,entry))
-        entry_data      = OpenStruct.new 
+        stat            = File.stat(File.join(dir, entry))
+        entry_data      = OpenStruct.new
 
         entry_data.name          = entry == ".." ? "Parent Directory" : entry
         entry_data.link          = ERB::Util.url_encode(entry)
@@ -87,29 +86,29 @@ module Heel
         entries << entry_data
       end
 
-      template_vars          = TemplateVars.new( :base_uri => req.path_info, :highlighting => highlighting? )
+      template_vars          = TemplateVars.new(:base_uri => req.path_info, :highlighting => highlighting?)
       template_vars.entries  = entries.sort_by { |e| e.link }
       template_vars.homepage = Heel::Configuration::HOMEPAGE
 
-      return template.result( template_vars.binding_for_template )
+      return template.result(template_vars.binding_for_template)
     end
- 
+
     # essentially this is strfbytes from facets
     #
-    def num_to_bytes(num,fmt="%.2f")
+    def num_to_bytes(num, fmt = "%.2f")
       case
       when num < 1024
-              "#{num} bytes"
+        "#{num} bytes"
       when num < 1024**2
-              "#{fmt % (num.to_f / 1024)} KB"
+        "#{fmt % (num.to_f / 1024)} KB"
       when num < 1024**3
-              "#{fmt % (num.to_f / 1024**2)} MB"
+        "#{fmt % (num.to_f / 1024**2)} MB"
       when num < 1024**4
-              "#{fmt % (num.to_f / 1024**3)} GB"
+        "#{fmt % (num.to_f / 1024**3)} GB"
       when num < 1024**5
-              "#{fmt % (num.to_f / 1024**4)} TB"
+        "#{fmt % (num.to_f / 1024**4)} TB"
       else
-              "#{num} bytes"
+        "#{num} bytes"
       end
     end
   end

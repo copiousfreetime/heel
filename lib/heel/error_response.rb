@@ -10,7 +10,6 @@ module Heel
   # Internal: Wrapper for the http error code responses
   #
   class ErrorResponse
-
     attr_reader :base_uri
 
     class << self
@@ -28,19 +27,19 @@ module Heel
     end
 
     def initialize(base_uri, body, status = 404, header = {})
-      header    = header.merge( "Content-Type" => 'text/html' )
-      @response = Rack::Response.new('', status, header )
+      header    = header.merge("Content-Type" => 'text/html')
+      @response = Rack::Response.new('', status, header)
       @base_uri = base_uri
     end
 
     def finish
-      template_vars = TemplateVars.new( :status   => @response.status,
-                                        :message  => Rack::Utils::HTTP_STATUS_CODES[@response.status],
-                                        :base_uri => base_uri,
-                                        :homepage => ErrorResponse.homepage )
+      template_vars = TemplateVars.new(:status => @response.status,
+                                       :message  => Rack::Utils::HTTP_STATUS_CODES[@response.status],
+                                       :base_uri => base_uri,
+                                       :homepage => ErrorResponse.homepage)
 
-      content  = ErrorResponse.template.result( template_vars.binding_for_template )
-      @response.write( content )
+      content = ErrorResponse.template.result(template_vars.binding_for_template)
+      @response.write(content)
       return @response.finish
     end
   end

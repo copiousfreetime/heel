@@ -4,7 +4,7 @@ require 'heel/rackapp'
 
 describe Heel::RackApp do
   before(:each) do
-    @app = Heel::RackApp.new( { :highlighting => 'true' } )
+    @app = Heel::RackApp.new({ :highlighting => 'true' })
     @request = Rack::MockRequest.new(@app)
   end
 
@@ -12,14 +12,14 @@ describe Heel::RackApp do
     res = @request.get("/")
     _(res).must_be :ok?
     _(res['Content-Type']).must_equal "text/html"
-    _(res.body).must_match( /Rakefile/ )
+    _(res.body).must_match(/Rakefile/)
   end
 
   it 'should highlight a ruby file' do
     res = @request.get("/lib/heel.rb")
     _(res).must_be :ok?
     _(res['Content-Type']).must_equal "text/html"
-    _(res.body).must_match( /class="highlight"/ )
+    _(res.body).must_match(/class="highlight"/)
   end
 
   it "should not highlight a ruby file if told not to" do

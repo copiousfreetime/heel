@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Heel::Server do
-  before(:each) do 
+  before(:each) do
     @stdin = StringIO.new
     @stdout = StringIO.new
     @stderr = StringIO.new
@@ -20,7 +20,7 @@ describe Heel::Server do
       server.run
     rescue SystemExit => se
       _(se.status).must_equal 0
-      _(@stdout.string).must_match( /version #{Heel::VERSION}/ )
+      _(@stdout.string).must_match(/version #{Heel::VERSION}/)
     end
   end
 
@@ -31,29 +31,29 @@ describe Heel::Server do
       server.run
     rescue SystemExit => se
       _(se.status).must_equal 0
-      _(@stdout.string).must_match( /Usage/m )
+      _(@stdout.string).must_match(/Usage/m)
     end
   end
 
   it "should have an error when invoked with invalid parameters" do
     server = Heel::Server.new(["--junk"])
-    server.set_io(@stdin,@stdout)
+    server.set_io(@stdin, @stdout)
     begin
       server.run
     rescue SystemExit => se
       _(se.status).must_equal 1
-      _(@stdout.string).must_match( /Try .*--help/m )
+      _(@stdout.string).must_match(/Try .*--help/m)
     end
   end
 
   it "should raise print an error if the directory to serve does not exist" do
     server = Heel::Server.new(%w[--root /not/valid])
-    server.set_io(@stdin,@stdout)
+    server.set_io(@stdin, @stdout)
     begin
       server.run
     rescue SystemExit => se
       _(se.status).must_equal 1
-      _(@stdout.string).must_match( /Try .*--help/m )
+      _(@stdout.string).must_match(/Try .*--help/m)
     end
   end
 
@@ -84,50 +84,50 @@ describe Heel::Server do
 
   it "should attempt to kill the process" do
     server = Heel::Server.new(%w[--kill])
-    server.set_io(@stdin,@stdout)
+    server.set_io(@stdin, @stdout)
 
     begin
       server.run
       violated("Should have thrown SystemExit")
     rescue SystemExit => se
       _(se.status).must_equal 0
-      _(@stdout.string).must_match( /Done/m )
+      _(@stdout.string).must_match(/Done/m)
     end
   end
 
   it "should setup a heel directory" do
     server = Heel::Server.new(%w[--daemonize])
-    server.set_io(@stdin,@stdout)
+    server.set_io(@stdin, @stdout)
     _(File.directory?(server.default_directory)).must_equal false
     server.setup_heel_dir
     _(File.directory?(server.default_directory)).must_equal true
-    _(@stdout.string).must_match( /Created/m )
+    _(@stdout.string).must_match(/Created/m)
   end
 
   it "should send a signal to a pid" do
     server = Heel::Server.new(%w[--kil])
-    server.set_io(@stdin,@stdout)
+    server.set_io(@stdin, @stdout)
     server.setup_heel_dir
 
-    File.open(server.pid_file,"w+") { |f| f.write("-42") }
+    File.open(server.pid_file, "w+") { |f| f.write("-42") }
     begin
       server.run
       violated("Should have exited")
     rescue SystemExit => se
       _(se.status).must_equal 0
-      _(@stdout.string).must_match( /Sending TERM to process -42/m )
+      _(@stdout.string).must_match(/Sending TERM to process -42/m)
     end
   end
 
   it "records the port of the server process in the pid filename" do
-    server = Heel::Server.new( %w[ --port 4222 ] )
+    server = Heel::Server.new(%w[--port 4222])
     server.merge_options
-    _(File.basename( server.pid_file )).must_equal( "heel.4222.pid" )
+    _(File.basename(server.pid_file)).must_equal("heel.4222.pid")
   end
 
-   it "records the port of the server process in the log filename" do
-     server = Heel::Server.new( %w[ --port 4222 ] )
+  it "records the port of the server process in the log filename" do
+    server = Heel::Server.new(%w[--port 4222])
     server.merge_options
-    _(File.basename( server.log_file )).must_equal( "heel.4222.log" )
-   end
+    _(File.basename(server.log_file)).must_equal("heel.4222.log")
+  end
 end

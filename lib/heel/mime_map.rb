@@ -6,7 +6,6 @@
 require 'mime/types'
 
 module Heel
-
   # Internal: MimeMap is a Heel specific mime mapping utility.
   #
   # It is based upon MIME::Type and adds some additional mime types.  It can
@@ -16,7 +15,7 @@ module Heel
     class << self
       def icons_by_mime_type
         @icons_by_mime_type ||= {
-            "text/plain"                => "file.svg",
+          "text/plain" => "file.svg",
             "image"                     => "image.svg",
             "pdf"                       => "pdf.svg",
             "x-zip-compressed"          => "zip.svg",
@@ -36,7 +35,7 @@ module Heel
       # mime-types calls.
       def additional_mime_types
         [
-          MIME::Type.new( 'text/plain' ) {  |t| t.extensions = %w[ rb rdoc rhtml md markdown ] },
+          MIME::Type.new('text/plain') { |t| t.extensions = %w[rb rdoc rhtml md markdown] },
         ]
       end
     end
@@ -67,7 +66,7 @@ module Heel
     #
     def icon_for(mime_type)
       icon = nil
-      [:content_type, :sub_type, :media_type].each do |t| 
+      [:content_type, :sub_type, :media_type].each do |t|
         icon = MimeMap.icons_by_mime_type[mime_type.send(t)]
         return icon if icon
       end

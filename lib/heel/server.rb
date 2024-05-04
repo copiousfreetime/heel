@@ -14,14 +14,12 @@ module Heel
   # Internal: The heel server
   #
   class Server
-
     attr_accessor :options
     attr_accessor :parsed_options
 
     attr_reader :stdout
     attr_reader :stderr
     attr_reader :stdin
-
 
     class << self
       # thank you Jamis - from Capistrano
@@ -66,15 +64,15 @@ module Heel
     end
 
     def default_directory
-      ENV["HEEL_DEFAULT_DIRECTORY"] || File.join(::Heel::Server.home_directory,".heel")
+      ENV["HEEL_DEFAULT_DIRECTORY"] || File.join(::Heel::Server.home_directory, ".heel")
     end
 
     def pid_file
-      File.join(default_directory,"heel.#{options.port}.pid")
+      File.join(default_directory, "heel.#{options.port}.pid")
     end
 
     def log_file
-      File.join(default_directory,"heel.#{options.port}.log")
+      File.join(default_directory, "heel.#{options.port}.log")
     end
 
     def win?
@@ -94,13 +92,14 @@ module Heel
           @parsed_options.address = add
         end
 
-        op.on("-d", "--daemonize", "Run daemonized in the background") do 
+        op.on("-d", "--daemonize", "Run daemonized in the background") do
           raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if win?
           raise ::OptionParser::ParseError, "Daemonizing is not supported on java" if java?
+
           @parsed_options.daemonize = true
         end
 
-        op.on("-h", "--help", "Display this text") do 
+        op.on("-h", "--help", "Display this text") do
           @parsed_options.show_help = true
         end
 
@@ -123,13 +122,13 @@ module Heel
           @parsed_options.port = port
         end
 
-        op.on("-r","--root ROOT", 
-              "Set the document root"," (default: #{default_options.document_root})") do |document_root|
+        op.on("-r", "--root ROOT",
+              "Set the document root", " (default: #{default_options.document_root})") do |document_root|
           @parsed_options.document_root = File.expand_path(document_root)
           raise ::OptionParser::ParseError, "#{@parsed_options.document_root} is not a valid directory" if not File.directory?(@parsed_options.document_root)
         end
 
-        op.on("-v", "--version", "Show version") do 
+        op.on("-v", "--version", "Show version") do
           @parsed_options.show_version = true
         end
       end
@@ -137,20 +136,20 @@ module Heel
 
     def merge_options
       options = default_options.marshal_dump
-      options.merge!( @parsed_options.marshal_dump )
+      options.merge!(@parsed_options.marshal_dump)
 
       @options = OpenStruct.new(options)
     end
 
-    # set the IO objects in a single method call.  This is really only for testing 
+    # set the IO objects in a single method call.  This is really only for testing
     # instrumentation
-    def set_io(stdin = $stdin, stdout = $stdout ,setderr = $stderr)
+    def set_io(stdin = $stdin, stdout = $stdout, setderr = $stderr)
       @stdin  = stdin
       @stdout = stdout
       @stderr = stderr
     end
 
-    # if Version or Help options are set, then output the appropriate information instead of 
+    # if Version or Help options are set, then output the appropriate information instead of
     # running the server.
     def error_version_help_kill
       if @parsed_options.show_version then
@@ -223,15 +222,15 @@ module Heel
       app = Heel::RackApp.new({ :document_root => options.document_root,
                                 :highlighting  => options.highlighting})
 
-      logger = Heel::Logger.new( log_file )
+      logger = Heel::Logger.new(log_file)
 
       stack = Rack::Builder.new {
         use Rack::CommonLogger, logger
         map "/" do
           run app
         end
-        map "/heel_css" do 
-          run Rack::Files.new(Heel::Configuration.data_path( "css" )) 
+        map "/heel_css" do
+          run Rack::Files.new(Heel::Configuration.data_path("css"))
         end
         map "/heel_icons" do
           run Rack::Files.new(Heel::Configuration.data_path("lineicons"))
@@ -253,16 +252,16 @@ module Heel
 
     def start_background_server
       if cpid = fork then
-        Process.waitpid( cpid )
+        Process.waitpid(cpid)
       else
-        server = ::Rackup::Server.new( server_options )
+        server = ::Rackup::Server.new(server_options)
         server.start
       end
     end
 
     def start_foreground_server
       Thread.new {
-        server = ::Rackup::Server.new( server_options )
+        server = ::Rackup::Server.new(server_options)
         server.start
       }
     end
@@ -281,7 +280,6 @@ module Heel
 
     # run the heel server with the current options.
     def run
-
       merge_options
       error_version_help_kill
       setup_heel_dir
