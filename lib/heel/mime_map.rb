@@ -68,7 +68,7 @@ module Heel
     #
     def icon_for(mime_type)
       icon = nil
-      [:content_type, :sub_type, :media_type].each do |t|
+      %i[content_type sub_type media_type].each do |t|
         icon = MimeMap.icons_by_mime_type[mime_type.send(t)]
         return icon if icon
       end
