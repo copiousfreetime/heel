@@ -10,6 +10,7 @@ module Heel
 end
 
 require "heel/configuration"
+require "heel/directory_entry"
 require "heel/directory_indexer"
 require "heel/error_response"
 require "heel/logger"

@@ -62,16 +62,16 @@ module Heel
         next if (dir == @options[:document_root]) && (entry == "..")
 
         stat            = File.stat(File.join(dir, entry))
-        entry_data      = OpenStruct.new
+        entry_data      = DirectoryEntry.new
 
         entry_data.name          = (entry == "..") ? "Parent Directory" : entry
         entry_data.link          = ERB::Util.url_encode(entry)
-        entry_data.size          = num_to_bytes(stat.size)
+        entry_data.display_size  = num_to_bytes(stat.size)
         entry_data.last_modified = stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
 
         if stat.directory?
           entry_data.content_type = "Directory"
-          entry_data.size         = "-"
+          entry_data.display_size = "-"
           entry_data.name        += "/"
           entry_data.icon_url = File.join(options[:icon_url], MimeMap.icons_by_mime_type[:directory]) if using_icons?
         else

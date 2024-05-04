@@ -38,7 +38,7 @@
                   <% end %>
                 </td>
                 <td><%= entry.last_modified %></td>
-                <td class="<%= entry.content_type == "Directory" ? 'c' : 'n' %>" ><%= entry.size %></td>
+                <td class="<%= entry.content_type == "Directory" ? 'c' : 'n' %>" ><%= entry.display_size%></td>
                 <td><%= entry.content_type %></td>
               </tr>
             <% end %>
