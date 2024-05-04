@@ -61,7 +61,7 @@ module Heel
       return "#{fmt % (num.to_f / 1024)} KB" if num < (1024**2)
       return "#{fmt % (num.to_f / (1024**2))} MB" if num < (1024**3)
       return "#{fmt % (num.to_f / (1024**3))} GB" if num < (1024**4)
-      return "#{fmt % (num.to_f / (1024**4))} TB" if num < (1024**4)
+      return "#{fmt % (num.to_f / (1024**4))} TB" if num < (1024**5)
 
       "#{fmt % (num.to_f / (1024**5))} PB"
     end
