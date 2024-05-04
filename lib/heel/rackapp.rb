@@ -12,11 +12,7 @@ module Heel
   # Internal: The Rack application that is Heel.
   #
   class RackApp
-    attr_reader   :document_root
-    attr_reader   :directory_index_html
-    attr_reader   :icon_url
-    attr_reader   :highlighting
-    attr_reader   :ignore_globs
+    attr_reader :document_root, :directory_index_html, :icon_url, :highlighting, :ignore_globs
 
     def initialize(options = {})
       @ignore_globs               = options[:ignore_globs] ||= %w(*~ .htaccess .)

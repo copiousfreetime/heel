@@ -9,9 +9,7 @@ module Heel
   # Internal: Generate a directory index
   #
   class DirectoryIndexer
-    attr_reader :options
-    attr_reader :template_file
-    attr_reader :template
+    attr_reader :options, :template_file, :template
 
     def initialize(template_file, options)
       @template         = nil

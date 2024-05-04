@@ -14,12 +14,9 @@ module Heel
   # Internal: The heel server
   #
   class Server
-    attr_accessor :options
-    attr_accessor :parsed_options
+    attr_accessor :options, :parsed_options
 
-    attr_reader :stdout
-    attr_reader :stderr
-    attr_reader :stdin
+    attr_reader :stdout, :stderr, :stdin
 
     class << self
       # thank you Jamis - from Capistrano
