@@ -77,7 +77,7 @@ module Heel
     end
 
     def java?
-      RUBY_PLATFORM =~ /java/
+      RUBY_PLATFORM.include?('java')
     end
 
     def option_parser
