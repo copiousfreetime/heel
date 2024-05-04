@@ -44,7 +44,7 @@ module Heel
     def reload_template
       fstat = File.stat(@template_file)
       @template_mtime ||= fstat.mtime
-      if @template.nil? or fstat.mtime > @template_mtime then
+      if @template.nil? || (fstat.mtime > @template_mtime) then
         @template = ::ERB.new(File.read(@template_file))
       end
     end
@@ -57,7 +57,7 @@ module Heel
       entries = []
       Dir.entries(dir).each do |entry|
         next if should_ignore?(entry)
-        next if dir == @options[:document_root] and entry == ".."
+        next if (dir == @options[:document_root]) && (entry == "..")
 
         stat            = File.stat(File.join(dir, entry))
         entry_data      = OpenStruct.new

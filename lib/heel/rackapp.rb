@@ -115,7 +115,7 @@ module Heel
       response['Last-Modified'] = req.stat.mtime.rfc822
       file_type = mime_map.mime_type_of(req.request_path)
 
-      if highlighting? and req.highlighting? then
+      if highlighting? && req.highlighting? then
         if file_type && (file_type != 'text/html') then
           body = highlight_contents(req, file_type)
           response['Content-Type']   = 'text/html'
@@ -142,7 +142,7 @@ module Heel
     def call(env)
       req = Heel::Request.new(env, document_root)
       if req.get? then
-        if req.forbidden? or should_ignore?(req.request_path) then
+        if req.forbidden? || should_ignore?(req.request_path) then
           return ErrorResponse.new(req.path_info, "You do not have permissionto view #{req.path_info}", 403).finish
         end
         return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}", 404).finish unless req.found?
