@@ -20,6 +20,7 @@ module Heel
 
     attr_reader :stdout, :stderr, :stdin
 
+    # Class holding the results of the commandline options
     Options = Struct.new(:show_version, :show_help, :address, :port,
                          :document_root, :daemonize, :highlighting,
                          :kill, :launch_browser, keyword_init: true)
@@ -29,6 +30,32 @@ module Heel
       def home_directory # :nodoc:
         Dir.home || ENV.fetch("USERPROFILE", nil) || "/"
       end
+
+      def default_options
+        Options.new.tap do |defaults|
+          defaults.show_version    = false
+          defaults.show_help       = false
+          defaults.address         = "0.0.0.0"
+          defaults.port            = 4331
+          defaults.document_root   = Dir.pwd
+          defaults.daemonize       = false
+          defaults.highlighting    = true
+          defaults.kill            = false
+          defaults.launch_browser  = true
+        end
+      end
+
+      def default_directory
+        ENV["HEEL_DEFAULT_DIRECTORY"] || File.join(::Heel::Server.home_directory, ".heel")
+      end
+
+      def win?
+        RUBY_PLATFORM =~ /mswin|mingw/
+      end
+
+      def java?
+        RUBY_PLATFORM.include?("java")
+      end
     end
 
     def initialize(argv = [])
@@ -36,7 +63,7 @@ module Heel
 
       set_io
 
-      @options         = default_options
+      @options         = Server.default_options
       @parser          = option_parser
       @error_message   = nil
 
@@ -49,22 +76,8 @@ module Heel
       end
     end
 
-    def default_options
-      Options.new.tap do |defaults|
-        defaults.show_version    = false
-        defaults.show_help       = false
-        defaults.address         = "0.0.0.0"
-        defaults.port            = 4331
-        defaults.document_root   = Dir.pwd
-        defaults.daemonize       = false
-        defaults.highlighting    = true
-        defaults.kill            = false
-        defaults.launch_browser  = true
-      end
-    end
-
     def default_directory
-      ENV["HEEL_DEFAULT_DIRECTORY"] || File.join(::Heel::Server.home_directory, ".heel")
+      self.class.default_directory
     end
 
     def pid_file
@@ -75,26 +88,18 @@ module Heel
       File.join(default_directory, "heel.#{options.port}.log")
     end
 
-    def win?
-      RUBY_PLATFORM =~ /mswin|mingw/
-    end
-
-    def java?
-      RUBY_PLATFORM.include?("java")
-    end
-
     def option_parser
       OptionParser.new do |op|
         op.separator ""
 
         op.on("-a", "--address ADDRESS", "Address to bind to",
-              "  (default: #{default_options.address})") do |add|
-          @options.address = add
-        end
+              "  (default: #{Server.default_options.address})") do |add|
+                @options.address = add
+              end
 
         op.on("-d", "--daemonize", "Run daemonized in the background") do
-          raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if win?
-          raise ::OptionParser::ParseError, "Daemonizing is not supported on java" if java?
+          raise ::OptionParser::ParseError, "Daemonizing is not supported on windows" if Server.win?
+          raise ::OptionParser::ParseError, "Daemonizing is not supported on java" if Server.java?
 
           @options.daemonize = true
         end
@@ -109,27 +114,27 @@ module Heel
 
         op.on("--[no-]highlighting", "Turn on or off syntax highlighting",
               "  (default: off)") do |highlighting|
-          @options.highlighting = highlighting
-        end
+                @options.highlighting = highlighting
+              end
 
         op.on("--[no-]launch-browser", "Turn on or off automatic browser launch",
-              "  (default: on)") do |l|
-          @options.launch_browser = l
-        end
+              "  (default: on)") do |launch|
+                @options.launch_browser = launch
+              end
 
         op.on("-p", "--port PORT", Integer, "Port to bind to",
-              "  (default: #{default_options.port})") do |port|
-          @options.port = port
-        end
+              "  (default: #{Server.default_options.port})") do |port|
+                @options.port = port
+              end
 
         op.on("-r", "--root ROOT",
-              "Set the document root", " (default: #{default_options.document_root})") do |document_root|
-          @options.document_root = File.expand_path(document_root)
-          unless File.directory?(@options.document_root)
-            raise ::OptionParser::ParseError,
-                  "#{@options.document_root} is not a valid directory"
-          end
-        end
+              "Set the document root", " (default: #{Server.default_options.document_root})") do |document_root|
+                @options.document_root = File.expand_path(document_root)
+                unless File.directory?(@options.document_root)
+                  raise ::OptionParser::ParseError,
+                        "#{@options.document_root} is not a valid directory"
+                end
+              end
 
         op.on("-v", "--version", "Show version") do
           @options.show_version = true
