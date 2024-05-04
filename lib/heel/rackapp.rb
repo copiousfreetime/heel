@@ -5,10 +5,10 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require 'rack'
-require 'rack/utils'
-require 'rouge'
-require 'time'
+require "rack"
+require "rack/utils"
+require "rouge"
+require "time"
 
 module Heel
   # Internal: The Rack application that is Heel.
@@ -60,11 +60,11 @@ module Heel
       response = ::Rack::Response.new
       dir_index = File.join(req.request_path, directory_index_html)
       if File.file?(dir_index) && File.readable?(dir_index)
-        response['Content-Type'] = mime_map.mime_type_of(dir_index).to_s
+        response["Content-Type"] = mime_map.mime_type_of(dir_index).to_s
         response.write(File.read(dir_index))
       elsif directory_listing_allowed?
         body                       = directory_indexer.index_page_for(req)
-        response['Content-Type']   = 'text/html'
+        response["Content-Type"]   = "text/html"
         response.write(body)
       else
         return ::Heel::ErrorResponse.new(req.path_info, "Directory index is forbidden", 403).finish
@@ -74,7 +74,7 @@ module Heel
 
     def slurp_path(path)
       source = nil
-      File.open(path, 'rt:bom|utf-8') do |f|
+      File.open(path, "rt:bom|utf-8") do |f|
         source = f.read
       end
       source
@@ -112,19 +112,19 @@ module Heel
     #
     def file_response(req)
       response = ::Rack::Response.new
-      response['Last-Modified'] = req.stat.mtime.rfc822
+      response["Last-Modified"] = req.stat.mtime.rfc822
       file_type = mime_map.mime_type_of(req.request_path)
 
-      if highlighting? && req.highlighting? && (file_type && (file_type != 'text/html'))
+      if highlighting? && req.highlighting? && (file_type && (file_type != "text/html"))
         body = highlight_contents(req, file_type)
-        response['Content-Type']   = 'text/html'
-        response['Content-Length'] = body.length.to_s
+        response["Content-Type"]   = "text/html"
+        response["Content-Length"] = body.length.to_s
         response.write(body)
         return response.finish
       end
 
       # fall through to a default file return
-      response['Content-Type'] = file_type.to_s
+      response["Content-Type"] = file_type.to_s
       File.open(req.request_path) do |f|
         while (p = f.read(8192)) do
           response.write(p)

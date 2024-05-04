@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 describe Heel::DirectoryIndexer do
   before(:each) do
@@ -34,10 +34,10 @@ describe Heel::DirectoryIndexer do
   end
 
   [
-    { ext: 'svg', type: 'image/svg+xml' },
-    { ext: 'flv', type: 'video/x-flv' },
-    { ext: 'rb', type: 'text/plain' },
-    { ext: 'rhtml', type: 'text/plain' },
+    { ext: "svg", type: "image/svg+xml" },
+    { ext: "flv", type: "video/x-flv" },
+    { ext: "rb", type: "text/plain" },
+    { ext: "rhtml", type: "text/plain" },
   ].each do |m|
     it "finds #{m[:ext]} extension in the map as #{m[:type]}" do
       _(@indexer.mime_map.mime_type_of("test.#{m[:ext]}")).must_equal m[:type]

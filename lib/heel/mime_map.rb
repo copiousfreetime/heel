@@ -5,7 +5,7 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require 'mime/types'
+require "mime/types"
 
 module Heel
   # Internal: MimeMap is a Heel specific mime mapping utility.
@@ -37,7 +37,7 @@ module Heel
       # mime-types calls.
       def additional_mime_types
         [
-          MIME::Type.new('text/plain') { |t| t.extensions = %w[rb rdoc rhtml md markdown] },
+          MIME::Type.new("text/plain") { |t| t.extensions = %w[rb rdoc rhtml md markdown] },
         ]
       end
     end

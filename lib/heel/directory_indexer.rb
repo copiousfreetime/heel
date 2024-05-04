@@ -5,7 +5,7 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require 'erb'
+require "erb"
 
 module Heel
   # Internal: Generate a directory index

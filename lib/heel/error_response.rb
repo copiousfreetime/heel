@@ -5,8 +5,8 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require 'rack'
-require 'erb'
+require "rack"
+require "erb"
 
 module Heel
   # Internal: Wrapper for the http error code responses
@@ -29,8 +29,8 @@ module Heel
     end
 
     def initialize(base_uri, _body, status = 404, header = {})
-      header    = header.merge("Content-Type" => 'text/html')
-      @response = Rack::Response.new('', status, header)
+      header    = header.merge("Content-Type" => "text/html")
+      @response = Rack::Response.new("", status, header)
       @base_uri = base_uri
     end
 

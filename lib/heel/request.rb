@@ -5,7 +5,7 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require 'rack'
+require "rack"
 module Heel
   # Internal: A RackRequest with some additional methods and error handling
   #
@@ -59,7 +59,7 @@ module Heel
     # was the highlighting parameter true or false?
     #
     def highlighting?
-      !(%w[off false].include? self.GET['highlighting'].to_s.downcase)
+      !(%w[off false].include? self.GET["highlighting"].to_s.downcase)
     end
   end
 end

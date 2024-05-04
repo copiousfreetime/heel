@@ -5,12 +5,12 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require 'ostruct'
-require 'launchy'
-require 'fileutils'
-require 'heel/rackapp'
-require 'rackup'
-require 'puma'
+require "ostruct"
+require "launchy"
+require "fileutils"
+require "heel/rackapp"
+require "rackup"
+require "puma"
 
 module Heel
   # Internal: The heel server
@@ -77,7 +77,7 @@ module Heel
     end
 
     def java?
-      RUBY_PLATFORM.include?('java')
+      RUBY_PLATFORM.include?("java")
     end
 
     def option_parser
@@ -267,8 +267,8 @@ module Heel
         pid: pid_file,
         Port: options.port,
         Host: options.address,
-        environment: 'none',
-        server: 'puma',
+        environment: "none",
+        server: "puma",
         daemonize: options.daemonize,
       }
     end
