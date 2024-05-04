@@ -44,10 +44,6 @@ Style/OpenStructUse:
     - 'lib/heel/server.rb'
     - 'lib/heel/template_vars.rb'
 
-# Offense count: 2
-ThreadSafety/NewThread:
-  Exclude:
-    - 'lib/heel/server.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).

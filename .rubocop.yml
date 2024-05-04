@@ -83,3 +83,6 @@ Style/TrailingCommaInHashLiteral:
 
 ThreadSafety/InstanceVariableInClassMethod:
   Enabled: false
+ThreadSafety/NewThread:
+  Exclude:
+    - 'lib/heel/server.rb'
