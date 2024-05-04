@@ -53,6 +53,7 @@ module Heel
 
     # generate the directory index html page of a directory
     #
+    # rubocop:disable Metrics
     def index_page_for(req)
       reload_template if reload_on_template_change?
       dir     = req.request_path
@@ -88,6 +89,7 @@ module Heel
                                                homepage: Heel::Configuration::HOMEPAGE)
       template.result(template_vars.binding_for_template)
     end
+    # rubocop:enable Metrics
 
     # essentially this is strfbytes from facets
     #
