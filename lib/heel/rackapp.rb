@@ -91,7 +91,7 @@ module Heel
       formatter = ::Rouge::Formatters::HTMLPygments.new(::Rouge::Formatters::HTML.new)
       content = formatter.format(lexer.lex(source))
 
-      body = <<-EOM
+      body = <<-BODY
       <html>
         <head>
           <title>#{req.path_info}</title>
@@ -101,7 +101,7 @@ module Heel
           #{content}
         </body>
       </html>
-      EOM
+      BODY
 
       return body
     end

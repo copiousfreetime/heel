@@ -58,8 +58,8 @@ module Heel
 
     # returns the mime type of the file at a given pathname
     #
-    def mime_type_of(f)
-      MIME::Types.of(f).last || default_mime_type
+    def mime_type_of(filename)
+      MIME::Types.of(filename).last || default_mime_type
     end
 
     # return the icon name for a particular mime type
