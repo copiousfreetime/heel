@@ -69,7 +69,7 @@ module Heel
       else
         return ::Heel::ErrorResponse.new(req.path_info, "Directory index is forbidden", 403).finish
       end
-      return response.finish
+      response.finish
     end
 
     def slurp_path(path)
@@ -77,7 +77,7 @@ module Heel
       File.open(path, 'rt:bom|utf-8') do |f|
         source = f.read
       end
-      return source
+      source
     end
 
     def highlight_contents(req, file_type)
@@ -93,7 +93,7 @@ module Heel
       formatter = ::Rouge::Formatters::HTMLPygments.new(::Rouge::Formatters::HTML.new)
       content = formatter.format(lexer.lex(source))
 
-      body = <<-BODY
+      <<-BODY
       <html>
         <head>
           <title>#{req.path_info}</title>
@@ -104,8 +104,6 @@ module Heel
         </body>
       </html>
       BODY
-
-      return body
     end
 
     # formulate a file content response. Possibly a rouge highlighted file if
@@ -134,7 +132,7 @@ module Heel
           response.write(p)
         end
       end
-      return response.finish
+      response.finish
     end
 
     # interface to rack, env is a hash
@@ -148,13 +146,14 @@ module Heel
           return ErrorResponse.new(req.path_info, "You do not have permissionto view #{req.path_info}", 403).finish
         end
         return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}", 404).finish unless req.found?
-        return directory_index_response(req)                           if req.for_directory?
-        return file_response(req)                                      if req.for_file?
+        return directory_index_response(req) if req.for_directory?
+
+        file_response(req) if req.for_file?
       else
-        return ErrorResponse.new(req.path_info,
-                                 "Method #{req.request_method} Not Allowed. Only GET is honored.",
-                                 405,
-                                 { "Allow" => "GET" }).finish
+        ErrorResponse.new(req.path_info,
+                          "Method #{req.request_method} Not Allowed. Only GET is honored.",
+                          405,
+                          { "Allow" => "GET" }).finish
       end
     end
   end

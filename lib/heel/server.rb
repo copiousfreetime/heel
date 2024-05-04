@@ -57,7 +57,7 @@ module Heel
       defaults.highlighting    = true
       defaults.kill            = false
       defaults.launch_browser  = true
-      return defaults
+      defaults
     end
 
     def default_directory
@@ -233,7 +233,7 @@ module Heel
           run Rack::Files.new(Heel::Configuration.data_path("lineicons"))
         end
       end
-      return stack.to_app
+      stack.to_app
     end
 
     # If we are daemonizing the fork and wait for the child to launch the server
@@ -242,7 +242,7 @@ module Heel
       return start_foreground_server unless options.daemonize
 
       start_background_server
-      return nil
+      nil
     end
 
     def start_background_server

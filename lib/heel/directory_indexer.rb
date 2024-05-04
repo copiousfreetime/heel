@@ -86,7 +86,7 @@ module Heel
       template_vars.entries  = entries.sort_by { |e| e.link }
       template_vars.homepage = Heel::Configuration::HOMEPAGE
 
-      return template.result(template_vars.binding_for_template)
+      template.result(template_vars.binding_for_template)
     end
 
     # essentially this is strfbytes from facets

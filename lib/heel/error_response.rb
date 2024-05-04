@@ -42,7 +42,7 @@ module Heel
 
       content = ErrorResponse.template.result(template_vars.binding_for_template)
       @response.write(content)
-      return @response.finish
+      @response.finish
     end
   end
 end

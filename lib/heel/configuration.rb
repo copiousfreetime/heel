@@ -20,8 +20,7 @@ module Heel
     def self.root_dir
       path_parts = ::File.expand_path(__FILE__).split(::File::SEPARATOR)
       lib_index  = path_parts.rindex("lib")
-      root_dir   = path_parts[0...lib_index].join(::File::SEPARATOR) + ::File::SEPARATOR
-      return root_dir
+      path_parts[0...lib_index].join(::File::SEPARATOR) + ::File::SEPARATOR
     end
 
     # returns:: [String] The full expanded path of the +config+ directory
@@ -30,7 +29,7 @@ module Heel
     #           *not* present.
     #
     def self.config_path(*args)
-      self.sub_path("config", *args)
+      sub_path("config", *args)
     end
 
     # returns:: [String] The full expanded path of the +data+ directory below
@@ -39,7 +38,7 @@ module Heel
     #           _*args_ are *not* present.
     #
     def self.data_path(*args)
-      self.sub_path("data", *args)
+      sub_path("data", *args)
     end
 
     # returns:: [String] The full expanded path of the +lib+ directory below
@@ -48,7 +47,7 @@ module Heel
     #           _*args_ are *not* present.
     #
     def self.lib_path(*args)
-      self.sub_path("lib", *args)
+      sub_path("lib", *args)
     end
 
     HOMEPAGE = "http://github.com/copiousfreetime/heel/"
