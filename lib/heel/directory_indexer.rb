@@ -102,11 +102,11 @@ module Heel
       when num < 1024**2
         "#{fmt % (num.to_f / 1024)} KB"
       when num < 1024**3
-        "#{fmt % (num.to_f / 1024**2)} MB"
+        "#{fmt % (num.to_f / (1024**2))} MB"
       when num < 1024**4
-        "#{fmt % (num.to_f / 1024**3)} GB"
+        "#{fmt % (num.to_f / (1024**3))} GB"
       when num < 1024**5
-        "#{fmt % (num.to_f / 1024**4)} TB"
+        "#{fmt % (num.to_f / (1024**4))} TB"
       else
         "#{num} bytes"
       end
