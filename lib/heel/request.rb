@@ -5,8 +5,8 @@
 
 require 'rack'
 module Heel
-  # nothing more than a rack request with some additional methods and overriding
-  # where the erros get written
+  # Internal: A RackRequest with some additional methods and error handling
+  #
   class Request < ::Rack::Request
 
     attr_reader :root_dir

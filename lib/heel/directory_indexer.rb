@@ -6,7 +6,7 @@
 require 'erb'
 
 module Heel
-  # generate html index pages of a directory
+  # Internal: Generate a directory index
   #
   class DirectoryIndexer
 

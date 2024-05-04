@@ -7,9 +7,10 @@ require 'mime/types'
 
 module Heel
 
-  # MimeMap is a Heel specific mime mapping utility.  It is based upon
-  # MIME::Type and adds some additional mime types.  It can also say what the
-  # icon name for a particular mime type is.
+  # Internal: MimeMap is a Heel specific mime mapping utility.
+  #
+  # It is based upon MIME::Type and adds some additional mime types.  It can
+  # also say what the icon name for a particular mime type is.
   #
   class MimeMap
     class << self

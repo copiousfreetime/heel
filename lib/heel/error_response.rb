@@ -7,7 +7,8 @@ require 'rack'
 require 'erb'
 
 module Heel
-
+  # Internal: Wrapper for the http error code responses
+  #
   class ErrorResponse
 
     attr_reader :base_uri

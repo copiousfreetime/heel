@@ -1,4 +1,6 @@
 module Heel
+  # Internal: Logger class
+  #
   class Logger
     attr_reader :filename
     def initialize( filename )

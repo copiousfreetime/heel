@@ -11,6 +11,8 @@ require 'rackup'
 require 'puma'
 
 module Heel
+  # Internal: The heel server
+  #
   class Server
 
     attr_accessor :options

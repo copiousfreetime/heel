@@ -5,7 +5,7 @@
 
 module Heel
 
-  # Configuration module used by all the other modules and classes for
+  # Internal: Configuration module used by all the other modules and classes for
   # determining paths and default values.
   #
   module Configuration
