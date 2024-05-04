@@ -11,19 +11,18 @@ Gem::Specification.new do |s|
   s.metadata = { "bug_tracker_uri" => "https://github.com/copiousfreetime/heel/issues", "changelog_uri" => "https://github.com/copiousfreetime/heel/blob/master/README.md", "homepage_uri" => "https://github.com/copiousfreetime/heel", "source_code_uri" => "https://github.com/copiousfreetime/heel" } if s.respond_to? :metadata=
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeremy Hinegardner".freeze]
-  s.date = "2024-03-04"
+  s.bindir = "exe".freeze
+  s.date = "2024-05-04"
   s.description = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use (https://rubygems.org/gems/launchy/) to open your browser at the URL of your document root. Run it right now! `gem exec heel` ----- Heel is built using (https://github.com/rack/rack) and (https://puma.io)     % heel     Launching your browser...     Puma starting in single mode...     * Puma version: 6.2.1 (ruby 3.2.2-p53) (\"Speaking of Now\")     *  Min threads: 0     *  Max threads: 5     *  Environment: none     *          PID: 11322     * Listening on http://0.0.0.0:4331     Use Ctrl-C to stop Or run it in the background     % heel --daemonize     Launching your browser at http://0.0.0.0:4331/     % heel --kill     Sending TERM to process 3304     Done.".freeze
   s.email = "jeremy@copiousfreetime.org".freeze
-  s.executables = ["heel".freeze]
   s.extra_rdoc_files = ["CONTRIBUTING.md".freeze, "HISTORY.md".freeze, "Manifest.txt".freeze, "README.md".freeze]
   s.files = ["CONTRIBUTING.md".freeze, "HISTORY.md".freeze, "LICENSE".freeze, "Manifest.txt".freeze, "README.md".freeze, "Rakefile".freeze, "bin/heel".freeze, "data/css/error.css".freeze, "data/css/pico.min.css".freeze, "data/css/syntax-highlighting.css".freeze, "data/error.rhtml".freeze, "data/lineicons/code-browser.svg".freeze, "data/lineicons/file.svg".freeze, "data/lineicons/folder-alt.svg".freeze, "data/lineicons/html5.svg".freeze, "data/lineicons/image.svg".freeze, "data/lineicons/pdf.svg".freeze, "data/lineicons/presentation.svg".freeze, "data/lineicons/word.svg".freeze, "data/lineicons/zip.svg".freeze, "data/listing.rhtml".freeze, "lib/heel.rb".freeze, "lib/heel/configuration.rb".freeze, "lib/heel/directory_indexer.rb".freeze, "lib/heel/error_response.rb".freeze, "lib/heel/logger.rb".freeze, "lib/heel/mime_map.rb".freeze, "lib/heel/rackapp.rb".freeze, "lib/heel/request.rb".freeze, "lib/heel/server.rb".freeze, "lib/heel/template_vars.rb".freeze, "spec/configuration_spec.rb".freeze, "spec/directory_indexer_spec.rb".freeze, "spec/rackapp_spec.rb".freeze, "spec/server_spec.rb".freeze, "spec/spec_helper.rb".freeze, "spec/template_vars_spec.rb".freeze, "tasks/default.rake".freeze, "tasks/this.rb".freeze]
   s.homepage = "http://github.com/copiousfreetime/heel".freeze
   s.licenses = ["BSD-3-Clause".freeze]
   s.rdoc_options = ["--main".freeze, "README.md".freeze, "--markup".freeze, "tomdoc".freeze]
   s.required_ruby_version = Gem::Requirement.new(">= 3.0.0".freeze)
-  s.rubygems_version = "3.5.3".freeze
+  s.rubygems_version = "3.5.9".freeze
   s.summary = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use [launchy](https://rubygems.org/gems/launchy/) to open your browser at the URL of your document root.".freeze
-  s.test_files = ["spec/configuration_spec.rb".freeze, "spec/directory_indexer_spec.rb".freeze, "spec/rackapp_spec.rb".freeze, "spec/server_spec.rb".freeze, "spec/spec_helper.rb".freeze, "spec/template_vars_spec.rb".freeze]
 
   s.specification_version = 4
 
@@ -33,9 +32,4 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<mime-types>.freeze, ["~> 3.4".freeze])
   s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.5".freeze])
   s.add_runtime_dependency(%q<rouge>.freeze, ["~> 4.0".freeze])
-  s.add_development_dependency(%q<rake>.freeze, ["~> 13.0".freeze])
-  s.add_development_dependency(%q<minitest>.freeze, ["~> 5.15".freeze])
-  s.add_development_dependency(%q<minitest-junit>.freeze, ["~> 1.0".freeze])
-  s.add_development_dependency(%q<rdoc>.freeze, ["~> 6.5".freeze])
-  s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.21".freeze])
 end
