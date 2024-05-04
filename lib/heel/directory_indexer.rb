@@ -64,7 +64,7 @@ module Heel
         stat            = File.stat(File.join(dir, entry))
         entry_data      = OpenStruct.new
 
-        entry_data.name          = entry == ".." ? "Parent Directory" : entry
+        entry_data.name          = (entry == "..") ? "Parent Directory" : entry
         entry_data.link          = ERB::Util.url_encode(entry)
         entry_data.size          = num_to_bytes(stat.size)
         entry_data.last_modified = stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
@@ -83,7 +83,7 @@ module Heel
       end
 
       template_vars          = TemplateVars.new(base_uri: req.path_info, highlighting: highlighting?)
-      template_vars.entries  = entries.sort_by { |e| e.link }
+      template_vars.entries  = entries.sort_by(&:link)
       template_vars.homepage = Heel::Configuration::HOMEPAGE
 
       template.result(template_vars.binding_for_template)
