@@ -44,13 +44,6 @@ Style/OpenStructUse:
     - 'lib/heel/server.rb'
     - 'lib/heel/template_vars.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowModifier.
-Style/SoleNestedConditional:
-  Exclude:
-    - 'lib/heel/rackapp.rb'
-
 # Offense count: 92
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.

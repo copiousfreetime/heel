@@ -115,14 +115,12 @@ module Heel
       response['Last-Modified'] = req.stat.mtime.rfc822
       file_type = mime_map.mime_type_of(req.request_path)
 
-      if highlighting? && req.highlighting?
-        if file_type && (file_type != 'text/html')
-          body = highlight_contents(req, file_type)
-          response['Content-Type']   = 'text/html'
-          response['Content-Length'] = body.length.to_s
-          response.write(body)
-          return response.finish
-        end
+      if highlighting? && req.highlighting? && (file_type && (file_type != 'text/html'))
+        body = highlight_contents(req, file_type)
+        response['Content-Type']   = 'text/html'
+        response['Content-Length'] = body.length.to_s
+        response.write(body)
+        return response.finish
       end
 
       # fall through to a default file return
