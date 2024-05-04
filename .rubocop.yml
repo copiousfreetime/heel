@@ -28,35 +28,41 @@ Lint/DuplicateBranch:
   IgnoreLiteralBranches: true
   IgnoreConstantBranches: true
 
-# Metrics/AbcSize:
-#   CountRepeatedAttributes: false
-#   Max: 25
-#   Exclude:
-#     - 'spec/**/*'
-#     - 'tasks/**/*'
+Metrics/AbcSize:
+  CountRepeatedAttributes: false
+  Max: 25
+  Exclude:
+    - 'spec/**/*'
+    - 'tasks/**/*'
+    - 'lib/heel/server.rb'
 
-# Metrics/BlockLength:
-#   CountAsOne:
-#     - heredoc
-#   Exclude:
-#     - 'tasks/**/*'
+Metrics/BlockLength:
+  CountAsOne:
+    - heredoc
+  Exclude:
+    - 'tasks/**/*'
+    - 'spec/**/*'
+    - 'lib/heel/server.rb'
 
-# Metrics/ClassLength:
-#   Max: 175
-#   CountAsOne:
-#     - heredoc
-#     - array
+Metrics/ClassLength:
+  Max: 175
+  CountAsOne:
+    - heredoc
+    - array
+  Exclude:
+    - 'lib/heel/server.rb'
 
-# Metrics/CyclomaticComplexity:
-#   Max: 10
+Metrics/CyclomaticComplexity:
+  Max: 10
 
-# Metrics/MethodLength:
-#   Max: 20
-#   CountAsOne:
-#     - heredoc
-#     - array
-#   Exclude:
-#     - 'spec/**/*'
+Metrics/MethodLength:
+  Max: 20
+  CountAsOne:
+    - heredoc
+    - array
+  Exclude:
+    - 'spec/**/*'
+    - 'lib/heel/server.rb'
 
 Metrics/ParameterLists:
   CountKeywordArgs: false
