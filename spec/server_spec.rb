@@ -109,7 +109,7 @@ describe Heel::Server do
     server.set_io(@stdin, @stdout)
     server.setup_heel_dir
 
-    File.open(server.pid_file, "w+") { |f| f.write("-42") }
+    File.write(server.pid_file, "-42")
     begin
       server.run
       violated("Should have exited")
