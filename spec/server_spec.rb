@@ -61,26 +61,22 @@ describe Heel::Server do
 
   it "should allow port and address to be set" do
     server = Heel::Server.new(%w[--port 4242 --address 192.168.1.1])
-    server.merge_options
     _(server.options.address).must_equal "192.168.1.1"
     _(server.options.port).must_equal 4242
   end
 
   it "should allow the highlighting option to be set" do
     server = Heel::Server.new(%w[--no-highlighting])
-    server.merge_options
     _(server.options.highlighting).must_equal false
   end
 
   it "should have highlighting on as a default" do
     server = Heel::Server.new
-    server.merge_options
     _(server.options.highlighting).must_equal true
   end
 
   it "should set no-launch-browser option" do
     server = Heel::Server.new(%w[--no-launch-browser])
-    server.merge_options
     _(server.options.launch_browser).must_equal false
   end
 
@@ -123,13 +119,11 @@ describe Heel::Server do
 
   it "records the port of the server process in the pid filename" do
     server = Heel::Server.new(%w[--port 4222])
-    server.merge_options
     _(File.basename(server.pid_file)).must_equal("heel.4222.pid")
   end
 
   it "records the port of the server process in the log filename" do
     server = Heel::Server.new(%w[--port 4222])
-    server.merge_options
     _(File.basename(server.log_file)).must_equal("heel.4222.log")
   end
 end
