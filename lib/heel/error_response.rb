@@ -35,9 +35,11 @@ module Heel
     end
 
     def finish
+      status = @response.status
+
       template_vars = ErrorResponseVars.new(
-        status: @response.status,
-        message: Rack::Utils::HTTP_STATUS_CODES[@response.status],
+        status: status,
+        message: Rack::Utils::HTTP_STATUS_CODES[status],
         base_uri: base_uri,
         homepage: ErrorResponse.homepage
       )

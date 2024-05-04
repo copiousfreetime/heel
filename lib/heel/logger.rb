@@ -11,8 +11,8 @@ module Heel
     end
 
     def write(msg)
-      File.open(filename, "ab") do |f|
-        f.write(msg)
+      File.open(filename, "ab") do |file|
+        file.write(msg)
       end
     end
   end
