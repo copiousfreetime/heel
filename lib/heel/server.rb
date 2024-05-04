@@ -221,7 +221,7 @@ module Heel
 
       logger = Heel::Logger.new(log_file)
 
-      stack = Rack::Builder.new {
+      stack = Rack::Builder.new do
         use Rack::CommonLogger, logger
         map "/" do
           run app
@@ -232,7 +232,7 @@ module Heel
         map "/heel_icons" do
           run Rack::Files.new(Heel::Configuration.data_path("lineicons"))
         end
-      }
+      end
       return stack.to_app
     end
 
@@ -257,10 +257,10 @@ module Heel
     end
 
     def start_foreground_server
-      Thread.new {
+      Thread.new do
         server = ::Rackup::Server.new(server_options)
         server.start
-      }
+      end
     end
 
     def server_options
