@@ -167,7 +167,7 @@ module Heel
     def kill_existing_proc
       if File.exist?(pid_file)
         begin
-          pid = Fie.open(pid_file).read.to_i
+          pid = File.open(pid_file).read.to_i
           @stdout.puts "Sending TERM to process #{pid}"
           Process.kill("TERM", pid)
         rescue Errno::ESRCH
