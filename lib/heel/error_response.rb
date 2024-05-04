@@ -26,7 +26,7 @@ module Heel
       end
     end
 
-    def initialize(base_uri, body, status = 404, header = {})
+    def initialize(base_uri, _body, status = 404, header = {})
       header    = header.merge("Content-Type" => 'text/html')
       @response = Rack::Response.new('', status, header)
       @base_uri = base_uri
