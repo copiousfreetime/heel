@@ -46,9 +46,9 @@ module Heel
     def reload_template
       fstat = File.stat(@template_file)
       @template_mtime ||= fstat.mtime
-      if @template.nil? || (fstat.mtime > @template_mtime) then
-        @template = ::ERB.new(File.read(@template_file))
-      end
+      return unless @template.nil? || (fstat.mtime > @template_mtime)
+
+      @template = ::ERB.new(File.read(@template_file))
     end
 
     # generate the directory index html page of a directory
@@ -69,19 +69,15 @@ module Heel
         entry_data.size          = num_to_bytes(stat.size)
         entry_data.last_modified = stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
 
-        if stat.directory? then
+        if stat.directory?
           entry_data.content_type = "Directory"
           entry_data.size         = "-"
           entry_data.name        += "/"
-          if using_icons? then
-            entry_data.icon_url = File.join(options[:icon_url], MimeMap.icons_by_mime_type[:directory])
-          end
+          entry_data.icon_url = File.join(options[:icon_url], MimeMap.icons_by_mime_type[:directory]) if using_icons?
         else
           entry_data.mime_type = mime_map.mime_type_of(entry)
           entry_data.content_type = entry_data.mime_type.content_type
-          if using_icons? then
-            entry_data.icon_url = File.join(options[:icon_url], mime_map.icon_for(entry_data.mime_type))
-          end
+          entry_data.icon_url = File.join(options[:icon_url], mime_map.icon_for(entry_data.mime_type)) if using_icons?
         end
         entries << entry_data
       end

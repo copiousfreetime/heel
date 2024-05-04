@@ -37,36 +37,12 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 12
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
-Style/GuardClause:
-  Exclude:
-    - 'lib/heel/directory_indexer.rb'
-    - 'lib/heel/server.rb'
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-Style/IfUnlessModifier:
-  Exclude:
-    - 'lib/heel/directory_indexer.rb'
-    - 'lib/heel/server.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Style/MethodCallWithoutArgsParentheses:
   Exclude:
     - 'lib/heel/template_vars.rb'
-
-# Offense count: 22
-# This cop supports safe autocorrection (--autocorrect).
-Style/MultilineIfThen:
-  Exclude:
-    - 'lib/heel/directory_indexer.rb'
-    - 'lib/heel/mime_map.rb'
-    - 'lib/heel/rackapp.rb'
-    - 'lib/heel/server.rb'
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -76,20 +52,6 @@ Style/MutableConstant:
   Exclude:
     - 'lib/heel.rb'
     - 'lib/heel/configuration.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: both, prefix, postfix
-Style/NegatedIf:
-  Exclude:
-    - 'lib/heel/server.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/Not:
-  Exclude:
-    - 'lib/heel/server.rb'
 
 # Offense count: 5
 Style/OpenStructUse:

@@ -45,7 +45,7 @@ module Heel
     def initialize
       MimeMap.additional_mime_types.each do |mt|
         existing_type = MIME::Types[mt]
-        if existing_type.empty? then
+        if existing_type.empty?
           MIME::Types.add(mt)
         else
           type = existing_type.first

@@ -59,10 +59,10 @@ module Heel
     def directory_index_response(req)
       response = ::Rack::Response.new
       dir_index = File.join(req.request_path, directory_index_html)
-      if File.file?(dir_index) && File.readable?(dir_index) then
+      if File.file?(dir_index) && File.readable?(dir_index)
         response['Content-Type'] = mime_map.mime_type_of(dir_index).to_s
         response.write(File.read(dir_index))
-      elsif directory_listing_allowed? then
+      elsif directory_listing_allowed?
         body                       = directory_indexer.index_page_for(req)
         response['Content-Type']   = 'text/html'
         response.write(body)
@@ -117,8 +117,8 @@ module Heel
       response['Last-Modified'] = req.stat.mtime.rfc822
       file_type = mime_map.mime_type_of(req.request_path)
 
-      if highlighting? && req.highlighting? then
-        if file_type && (file_type != 'text/html') then
+      if highlighting? && req.highlighting?
+        if file_type && (file_type != 'text/html')
           body = highlight_contents(req, file_type)
           response['Content-Type']   = 'text/html'
           response['Content-Length'] = body.length.to_s
@@ -143,8 +143,8 @@ module Heel
     #
     def call(env)
       req = Heel::Request.new(env, document_root)
-      if req.get? then
-        if req.forbidden? || should_ignore?(req.request_path) then
+      if req.get?
+        if req.forbidden? || should_ignore?(req.request_path)
           return ErrorResponse.new(req.path_info, "You do not have permissionto view #{req.path_info}", 403).finish
         end
         return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}", 404).finish unless req.found?

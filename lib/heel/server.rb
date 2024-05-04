@@ -122,7 +122,7 @@ module Heel
         op.on("-r", "--root ROOT",
               "Set the document root", " (default: #{default_options.document_root})") do |document_root|
           @parsed_options.document_root = File.expand_path(document_root)
-          raise ::OptionParser::ParseError, "#{@parsed_options.document_root} is not a valid directory" if not File.directory?(@parsed_options.document_root)
+          raise ::OptionParser::ParseError, "#{@parsed_options.document_root} is not a valid directory" unless File.directory?(@parsed_options.document_root)
         end
 
         op.on("-v", "--version", "Show version") do
@@ -149,23 +149,23 @@ module Heel
     # if Version or Help options are set, then output the appropriate information instead of
     # running the server.
     def error_version_help_kill
-      if @parsed_options.show_version then
+      if @parsed_options.show_version
         @stdout.puts "#{@parser.program_name}: version #{Heel::VERSION}"
         exit 0
-      elsif @parsed_options.show_help then
+      elsif @parsed_options.show_help
         @stdout.puts @parser.to_s
         exit 0
-      elsif @error_message then
+      elsif @error_message
         @stdout.puts @error_message
         exit 1
-      elsif @parsed_options.kill then
+      elsif @parsed_options.kill
         kill_existing_proc
       end
     end
 
     # kill an already running background heel process
     def kill_existing_proc
-      if File.exist?(pid_file) then
+      if File.exist?(pid_file)
         begin
           pid = Fie.open(pid_file).read.to_i
           @stdout.puts "Sending TERM to process #{pid}"
@@ -186,27 +186,27 @@ module Heel
     # setup the directory that heel will use as the location to run from, where its logs will
     # be stored and its PID file if backgrounded.
     def setup_heel_dir
-      if not File.exist?(default_directory) then
-        FileUtils.mkdir_p(default_directory)
-        @stdout.puts "Created #{default_directory}"
-        @stdout.puts "heel's PID (#{pid_file}) and log file (#{log_file}) are stored here"
-      end
+      return if File.exist?(default_directory)
+
+      FileUtils.mkdir_p(default_directory)
+      @stdout.puts "Created #{default_directory}"
+      @stdout.puts "heel's PID (#{pid_file}) and log file (#{log_file}) are stored here"
     end
 
     # make sure that if we are daemonizing the process is not running
     def ensure_not_running
-      if File.exist?(pid_file) then
-        @stdout.puts "ERROR: PID File #{pid_file} already exists. Heel may already be running."
-        @stdout.puts "ERROR: Check the Log file #{log_file}"
-        @stdout.puts "ERROR: Heel will not start until the .pid file is cleared (`heel --kill --port #{options.port}' to clean it up)."
-        exit 1
-      end
+      return unless File.exist?(pid_file)
+
+      @stdout.puts "ERROR: PID File #{pid_file} already exists. Heel may already be running."
+      @stdout.puts "ERROR: Check the Log file #{log_file}"
+      @stdout.puts "ERROR: Heel will not start until the .pid file is cleared (`heel --kill --port #{options.port}' to clean it up)."
+      exit 1
     end
 
     def launch_browser
       Thread.new do
         print "Launching your browser"
-        if options.daemonize then
+        if options.daemonize
           puts " at http://#{options.address}:#{options.port}/"
         else
           puts "..."
@@ -239,16 +239,14 @@ module Heel
     # If we are daemonizing the fork and wait for the child to launch the server
     # If we are not daemonizing, throw the ::Rackup::Server in a background thread
     def start_server
-      if options.daemonize then
-        start_background_server
-        return nil
-      else
-        return start_foreground_server
-      end
+      return start_foreground_server unless options.daemonize
+
+      start_background_server
+      return nil
     end
 
     def start_background_server
-      if (cpid = fork) then
+      if (cpid = fork)
         Process.waitpid(cpid)
       else
         server = ::Rackup::Server.new(server_options)
@@ -284,9 +282,7 @@ module Heel
 
       server_thread = start_server
 
-      if options.launch_browser then
-        launch_browser.join
-      end
+      launch_browser.join if options.launch_browser
       server_thread.join if server_thread
     end
   end
