@@ -126,7 +126,7 @@ module Heel
       # fall through to a default file return
       response["Content-Type"] = file_type.to_s
       File.open(req.request_path) do |f|
-        while (p = f.read(8192)) do
+        while (p = f.read(8192))
           response.write(p)
         end
       end
