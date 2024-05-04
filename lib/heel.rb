@@ -11,11 +11,12 @@ end
 
 require "heel/configuration"
 require "heel/directory_entry"
+require "heel/directory_listing_vars"
 require "heel/directory_indexer"
+require "heel/error_response_vars"
 require "heel/error_response"
 require "heel/logger"
 require "heel/mime_map"
 require "heel/rackapp"
 require "heel/request"
 require "heel/server"
-require "heel/template_vars"

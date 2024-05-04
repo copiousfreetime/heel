@@ -37,11 +37,4 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 12
 
-# Offense count: 5
-Style/OpenStructUse:
-  Exclude:
-    - 'lib/heel/directory_indexer.rb'
-    - 'lib/heel/server.rb'
-    - 'lib/heel/template_vars.rb'
-
 

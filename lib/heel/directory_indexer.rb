@@ -82,10 +82,10 @@ module Heel
         entries << entry_data
       end
 
-      template_vars          = TemplateVars.new(base_uri: req.path_info, highlighting: highlighting?)
-      template_vars.entries  = entries.sort_by(&:link)
-      template_vars.homepage = Heel::Configuration::HOMEPAGE
-
+      template_vars = DirectoryListingVars.new(base_uri: req.path_info,
+                                               highlighting: highlighting?,
+                                               directory_entries: entries.sort_by(&:link),
+                                               homepage: Heel::Configuration::HOMEPAGE)
       template.result(template_vars.binding_for_template)
     end
 
