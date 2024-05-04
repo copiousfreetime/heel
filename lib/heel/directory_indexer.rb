@@ -49,7 +49,6 @@ module Heel
 
     # generate the directory index html page of a directory
     #
-    # rubocop:disable Metrics
     def index_page_for(req)
       reload_template if reload_on_template_change?
       dir     = req.request_path
@@ -58,24 +57,8 @@ module Heel
         next if should_ignore?(entry)
         next if (dir == @options[:document_root]) && (entry == "..")
 
-        stat            = File.stat(File.join(dir, entry))
-        entry_data      = DirectoryEntry.new
-
-        entry_data.name          = (entry == "..") ? "Parent Directory" : entry
-        entry_data.link          = ERB::Util.url_encode(entry)
-        entry_data.display_size  = num_to_bytes(stat.size)
-        entry_data.last_modified = stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
-
-        if stat.directory?
-          entry_data.content_type = "Directory"
-          entry_data.display_size = "-"
-          entry_data.name        += "/"
-          entry_data.icon_url = File.join(options[:icon_url], MimeMap.icons_by_mime_type[:directory]) if using_icons?
-        else
-          entry_data.mime_type = MimeMap.mime_type_of(entry)
-          entry_data.content_type = entry_data.mime_type.content_type
-          entry_data.icon_url = File.join(options[:icon_url], MimeMap.icon_for(entry_data.mime_type)) if using_icons?
-        end
+        entry_data      = DirectoryEntry.new(parent_path: dir, entry: entry,
+                                             using_icons: using_icons?, icon_base_url: options[:icon_url])
         entries << entry_data
       end
 
@@ -84,19 +67,6 @@ module Heel
                                                directory_entries: entries.sort_by(&:link),
                                                homepage: Heel::Configuration::HOMEPAGE)
       template.result(template_vars.binding_for_template)
-    end
-    # rubocop:enable Metrics
-
-    # essentially this is strfbytes from facets
-    #
-    def num_to_bytes(num, fmt = "%.2f")
-      return "#{num} bytes" if num < 1024
-      return "#{fmt % (num.to_f / 1024)} KB" if num < (1024**2)
-      return "#{fmt % (num.to_f / (1024**2))} MB" if num < (1024**3)
-      return "#{fmt % (num.to_f / (1024**3))} GB" if num < (1024**4)
-      return "#{fmt % (num.to_f / (1024**4))} TB" if num < (1024**4)
-
-      "#{fmt % (num.to_f / (1024**5))} PB"
     end
   end
 end
