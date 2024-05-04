@@ -37,42 +37,38 @@ module Heel
       # mime-types calls.
       def additional_mime_types
         [
-          MIME::Type.new("text/plain") { |t| t.extensions = %w[rb rdoc rhtml md markdown] },
+          MIME::Type.new("text/plain") { |text| text.extensions = %w[rb rdoc rhtml md markdown] },
         ]
       end
-    end
 
-    def initialize
-      MimeMap.additional_mime_types.each do |mt|
-        existing_type = MIME::Types[mt]
-        if existing_type.empty?
-          MIME::Types.add(mt)
-        else
-          type = existing_type.first
-          type.add_extensions(mt.extensions)
+      # return the icon name for a particular mime type
+      #
+      def icon_for(mime_type)
+        %i[content_type sub_type media_type default].each do |field|
+          icon = MimeMap.icons_by_mime_type[mime_type.send(field)]
+          return icon if icon
         end
       end
-    end
 
-    def default_mime_type
-      @default_mime_type ||= MIME::Types["application/octet-stream"].first
-    end
-
-    # returns the mime type of the file at a given pathname
-    #
-    def mime_type_of(filename)
-      MIME::Types.of(filename).last || default_mime_type
-    end
-
-    # return the icon name for a particular mime type
-    #
-    def icon_for(mime_type)
-      icon = nil
-      %i[content_type sub_type media_type].each do |t|
-        icon = MimeMap.icons_by_mime_type[mime_type.send(t)]
-        return icon if icon
+      # returns the mime type of the file at a given pathname
+      #
+      def mime_type_of(filename)
+        MIME::Types.of(filename).last || default_mime_type
       end
-      icon = MimeMap.icons_by_mime_type[:default]
+
+      def default_mime_type
+        @default_mime_type ||= MIME::Types["application/octet-stream"].first
+      end
+    end
+
+    MimeMap.additional_mime_types.each do |mt|
+      existing_type = MIME::Types[mt]
+      if existing_type.empty?
+        MIME::Types.add(mt)
+      else
+        type = existing_type.first
+        type.add_extensions(mt.extensions)
+      end
     end
   end
 end

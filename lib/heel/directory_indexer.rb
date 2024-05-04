@@ -27,10 +27,6 @@ module Heel
       false
     end
 
-    def mime_map
-      @mime_map ||= Heel::MimeMap.new
-    end
-
     def highlighting?
       @options.fetch(:highlighting, false)
     end
@@ -76,9 +72,9 @@ module Heel
           entry_data.name        += "/"
           entry_data.icon_url = File.join(options[:icon_url], MimeMap.icons_by_mime_type[:directory]) if using_icons?
         else
-          entry_data.mime_type = mime_map.mime_type_of(entry)
+          entry_data.mime_type = MimeMap.mime_type_of(entry)
           entry_data.content_type = entry_data.mime_type.content_type
-          entry_data.icon_url = File.join(options[:icon_url], mime_map.icon_for(entry_data.mime_type)) if using_icons?
+          entry_data.icon_url = File.join(options[:icon_url], MimeMap.icon_for(entry_data.mime_type)) if using_icons?
         end
         entries << entry_data
       end

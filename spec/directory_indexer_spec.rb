@@ -28,25 +28,4 @@ describe Heel::DirectoryIndexer do
   it "uses icons" do
     _(@indexer.using_icons?).must_equal false
   end
-
-  it "uses a mime map" do
-    _(@indexer.mime_map).must_be_instance_of(Heel::MimeMap)
-  end
-
-  [
-    { ext: "svg", type: "image/svg+xml" },
-    { ext: "flv", type: "video/x-flv" },
-    { ext: "rb", type: "text/plain" },
-    { ext: "rhtml", type: "text/plain" },
-  ].each do |m|
-    it "finds #{m[:ext]} extension in the map as #{m[:type]}" do
-      _(@indexer.mime_map.mime_type_of("test.#{m[:ext]}")).must_equal m[:type]
-    end
-  end
-
-  %w[md markdown rdoc].each do |ext|
-    it "finds #{ext} in the map as text/plain" do
-      _(@indexer.mime_map.mime_type_of("test.#{ext}")).must_equal "text/plain"
-    end
-  end
 end

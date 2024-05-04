@@ -35,10 +35,6 @@ module Heel
       @highlighting
     end
 
-    def mime_map
-      @mime_map ||= Heel::MimeMap.new
-    end
-
     def directory_index_template_file
       @directory_index_template_file ||= Heel::Configuration.data_path("listing.rhtml")
     end
@@ -60,7 +56,7 @@ module Heel
       response = ::Rack::Response.new
       dir_index = File.join(req.request_path, directory_index_html)
       if File.file?(dir_index) && File.readable?(dir_index)
-        response["Content-Type"] = mime_map.mime_type_of(dir_index).to_s
+        response["Content-Type"] = MimeMap.mime_type_of(dir_index).to_s
         response.write(File.read(dir_index))
       elsif directory_listing_allowed?
         body                       = directory_indexer.index_page_for(req)
@@ -113,7 +109,7 @@ module Heel
     def file_response(req)
       response = ::Rack::Response.new
       response["Last-Modified"] = req.stat.mtime.rfc822
-      file_type = mime_map.mime_type_of(req.request_path)
+      file_type = MimeMap.mime_type_of(req.request_path)
 
       if highlighting? && req.highlighting? && (file_type && (file_type != "text/html"))
         body = highlight_contents(req, file_type)
