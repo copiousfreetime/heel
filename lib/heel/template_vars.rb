@@ -6,7 +6,7 @@ module Heel
   #
   class TemplateVars < OpenStruct
     def binding_for_template
-      return binding()
+      return binding
     end
 
     def highlighting?
