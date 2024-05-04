@@ -18,8 +18,8 @@ describe Heel::Server do
     server.set_io(@stdin, @stdout)
     begin
       server.run
-    rescue SystemExit => se
-      _(se.status).must_equal 0
+    rescue SystemExit => e
+      _(e.status).must_equal 0
       _(@stdout.string).must_match(/version #{Heel::VERSION}/)
     end
   end
@@ -29,8 +29,8 @@ describe Heel::Server do
     server.set_io(@stdin, @stdout)
     begin
       server.run
-    rescue SystemExit => se
-      _(se.status).must_equal 0
+    rescue SystemExit => e
+      _(e.status).must_equal 0
       _(@stdout.string).must_match(/Usage/m)
     end
   end
@@ -40,8 +40,8 @@ describe Heel::Server do
     server.set_io(@stdin, @stdout)
     begin
       server.run
-    rescue SystemExit => se
-      _(se.status).must_equal 1
+    rescue SystemExit => e
+      _(e.status).must_equal 1
       _(@stdout.string).must_match(/Try .*--help/m)
     end
   end
@@ -51,8 +51,8 @@ describe Heel::Server do
     server.set_io(@stdin, @stdout)
     begin
       server.run
-    rescue SystemExit => se
-      _(se.status).must_equal 1
+    rescue SystemExit => e
+      _(e.status).must_equal 1
       _(@stdout.string).must_match(/Try .*--help/m)
     end
   end
@@ -89,8 +89,8 @@ describe Heel::Server do
     begin
       server.run
       violated("Should have thrown SystemExit")
-    rescue SystemExit => se
-      _(se.status).must_equal 0
+    rescue SystemExit => e
+      _(e.status).must_equal 0
       _(@stdout.string).must_match(/Done/m)
     end
   end
@@ -113,8 +113,8 @@ describe Heel::Server do
     begin
       server.run
       violated("Should have exited")
-    rescue SystemExit => se
-      _(se.status).must_equal 0
+    rescue SystemExit => e
+      _(e.status).must_equal 0
       _(@stdout.string).must_match(/Sending TERM to process -42/m)
     end
   end

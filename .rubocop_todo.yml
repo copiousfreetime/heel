@@ -38,28 +38,6 @@ Metrics/PerceivedComplexity:
   Max: 12
 
 # Offense count: 1
-# Configuration parameters: ForbiddenDelimiters.
-# ForbiddenDelimiters: (?i-mx:(^|\s)(EO[A-Z]{1}|END)(\s|$))
-Naming/HeredocDelimiterNaming:
-  Exclude:
-    - 'lib/heel/rackapp.rb'
-
-# Offense count: 1
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: as, at, by, cc, db, id, if, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Exclude:
-    - 'lib/heel/mime_map.rb'
-
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: PreferredName.
-Naming/RescuedExceptionsVariableName:
-  Exclude:
-    - 'lib/heel/server.rb'
-    - 'spec/server_spec.rb'
-
-# Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Performance/ConstantRegexp:
   Exclude:

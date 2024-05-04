@@ -42,8 +42,8 @@ module Heel
 
       begin
         @parser.parse!(argv)
-      rescue ::OptionParser::ParseError => pe
-        msg = ["#{@parser.program_name}: #{pe}",
+      rescue ::OptionParser::ParseError => e
+        msg = ["#{@parser.program_name}: #{e}",
                "Try `#{@parser.program_name} --help` for more information",]
         @error_message = msg.join("\n")
       end
