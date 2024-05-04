@@ -251,7 +251,7 @@ module Heel
     end
 
     def start_background_server
-      if cpid = fork then
+      if (cpid = fork) then
         Process.waitpid(cpid)
       else
         server = ::Rackup::Server.new(server_options)
