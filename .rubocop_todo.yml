@@ -37,15 +37,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 12
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'lib/heel.rb'
-    - 'lib/heel/configuration.rb'
-
 # Offense count: 5
 Style/OpenStructUse:
   Exclude:
