@@ -66,7 +66,7 @@ Or run it in the background
 
 ## REQUIREMENTS:
 
-### For running: 
+### For running:
 
 * [rouge](https://github.com/rouge-ruby/rouge)
 * [launchy](https://github.com/copiousfreetime/launchy/)

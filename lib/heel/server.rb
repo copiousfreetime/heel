@@ -88,7 +88,7 @@ module Heel
         op.separator ""
 
         op.on("-a", "--address ADDRESS", "Address to bind to",
-                                        "  (default: #{default_options.address})") do |add|
+              "  (default: #{default_options.address})") do |add|
           @parsed_options.address = add
         end
 
@@ -107,22 +107,22 @@ module Heel
         end
 
         op.on("--[no-]highlighting", "Turn on or off syntax highlighting",
-                                             "  (default: off)") do |highlighting|
+              "  (default: off)") do |highlighting|
           @parsed_options.highlighting = highlighting
         end
 
         op.on("--[no-]launch-browser", "Turn on or off automatic browser launch",
-                                               "  (default: on)") do |l|
+              "  (default: on)") do |l|
           @parsed_options.launch_browser = l
         end
 
         op.on("-p", "--port PORT", Integer, "Port to bind to",
-                                        "  (default: #{default_options.port})") do |port|
+              "  (default: #{default_options.port})") do |port|
           @parsed_options.port = port
         end
 
         op.on("-r","--root ROOT", 
-                      "Set the document root"," (default: #{default_options.document_root})") do |document_root|
+              "Set the document root"," (default: #{default_options.document_root})") do |document_root|
           @parsed_options.document_root = File.expand_path(document_root)
           raise ::OptionParser::ParseError, "#{@parsed_options.document_root} is not a valid directory" if not File.directory?(@parsed_options.document_root)
         end

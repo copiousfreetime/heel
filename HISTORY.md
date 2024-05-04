@@ -80,7 +80,7 @@
 ## Version 0.6.0 - 2007-11-21
 
 * Fixed bug where an exception was thrown if a 0 byte file was served.
-* Changed change 'resources' directory to 'data' 
+* Changed change 'resources' directory to 'data'
 * Renamed internal constants
 * Changed operating URL's to avoid conflict with directories heel may be serving
 
@@ -128,5 +128,5 @@
 
 ## Version 0.0.1 - 2007-05-03
 
-* initial development release 
+* initial development release
 

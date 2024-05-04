@@ -126,8 +126,8 @@ describe Heel::Server do
   end
 
    it "records the port of the server process in the log filename" do
-    server = Heel::Server.new( %w[ --port 4222 ] )
+     server = Heel::Server.new( %w[ --port 4222 ] )
     server.merge_options
     _(File.basename( server.log_file )).must_equal( "heel.4222.log" )
-  end
+   end
 end
