@@ -122,7 +122,10 @@ module Heel
         op.on("-r", "--root ROOT",
               "Set the document root", " (default: #{default_options.document_root})") do |document_root|
           @parsed_options.document_root = File.expand_path(document_root)
-          raise ::OptionParser::ParseError, "#{@parsed_options.document_root} is not a valid directory" unless File.directory?(@parsed_options.document_root)
+          unless File.directory?(@parsed_options.document_root)
+            raise ::OptionParser::ParseError,
+                  "#{@parsed_options.document_root} is not a valid directory"
+          end
         end
 
         op.on("-v", "--version", "Show version") do
@@ -199,7 +202,8 @@ module Heel
 
       @stdout.puts "ERROR: PID File #{pid_file} already exists. Heel may already be running."
       @stdout.puts "ERROR: Check the Log file #{log_file}"
-      @stdout.puts "ERROR: Heel will not start until the .pid file is cleared (`heel --kill --port #{options.port}' to clean it up)."
+      @stdout.puts "ERROR: Heel will not start until the .pid file is cleared."
+      @stdout.puts "ERROR: Execute `heel --kill --port #{options.port}' to clean it up."
       exit 1
     end
 

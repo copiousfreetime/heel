@@ -45,10 +45,3 @@ Style/OpenStructUse:
     - 'lib/heel/template_vars.rb'
 
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns, IgnoredPatterns.
-# URISchemes: http, https
-# IgnoredPatterns: (?-mix:^\#)
-Layout/LineLength:
-  Max: 157
