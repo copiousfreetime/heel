@@ -37,17 +37,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 12
 
-# Offense count: 5
-# Configuration parameters: AllowedConstants.
-Style/Documentation:
-  Exclude:
-    - 'spec/**/*'
-    - 'lib/heel/error_response.rb'
-    - 'lib/heel/logger.rb'
-    - 'lib/heel/rackapp.rb'
-    - 'lib/heel/server.rb'
-    - 'lib/heel/template_vars.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Style/EmptyCaseCondition:
