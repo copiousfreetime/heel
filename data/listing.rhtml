@@ -8,63 +8,59 @@
 
     <link href='/heel_css/pico.min.css' rel='stylesheet' type='text/css'>
   </head>
-  <body>
-    <main class="container">
+  <body class="container">
+    <header>
       <h1>Index of: <%= base_uri %></h1>
+    </header>
+    <main>
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Last Modified</th>
+            <th>Size</th>
+            <th>Type</th>
+          </tr>
+        </thead>
 
-      <figure>
-        <table>
-          <thead>
+        <tbody>
+          <% directory_entries.each do |entry| %>
             <tr>
-              <th>Name</th>
-              <th>Last Modified</th>
-              <th>Size</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% directory_entries.each do |entry| %>
-              <tr>
-                <td>
+              <td>
                 <% link = "#{base_uri.chomp('/')}/#{entry.link}" %>
                 <% link += "?highlighting_allowed=true" unless entry.directory? %>
-                  <a href="<%= link %>">
-                    <% if entry.icon_url then %>
-                      <img src="<%= entry.icon_url %>" width="32" height="32" alt="icon for type <%= entry.content_type %>">
-                    <% end %>
-                    <%= entry.name %>
-                  </a>
+                <a href="<%= link %>">
+                  <%= entry.name %>
+                </a>
 
-                  <% unless entry.directory? %>
-                    (<a download="<%= entry.name %>" href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>">download</a>)
-                  <% end %>
+                <% unless entry.directory? %>
+                  (<a download="<%= entry.name %>" href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>">download</a>)
+                <% end %>
 
-                </td>
-                <td><%= entry.last_modified %></td>
-                <td class="<%= entry.directory? ? 'c' : 'n' %>" ><%= entry.display_size%></td>
-                <td><%= entry.content_type %></td>
-              </tr>
-            <% end %>
-          </tbody>
-
-          <tfoot>
-            <tr>
-              <th>Name</th>
-              <th>Last Modified</th>
-              <th>Size</th>
-              <th>Type</th>
+              </td>
+              <td><%= entry.last_modified %></td>
+              <td class="<%= entry.directory? ? 'c' : 'n' %>" ><%= entry.display_size%></td>
+              <td><%= entry.content_type %></td>
             </tr>
-          </tfoot>
-        </table>
-      </figure>
+          <% end %>
+        </tbody>
 
-      <footer class="container">
-        <hr>
-        <p>
-          <small><a href="<%= homepage %>" target="_blank">heel</a> v<%= Heel::VERSION %></small>
-        </p>
-      </footer>
+        <tfoot>
+          <tr>
+            <th>Name</th>
+            <th>Last Modified</th>
+            <th>Size</th>
+            <th>Type</th>
+          </tr>
+        </tfoot>
+      </table>
     </main>
+
+    <footer>
+      <hr>
+      <p>
+        <small><a href="<%= homepage %>" target="_blank">heel</a> v<%= Heel::VERSION %></small>
+      </p>
+    </footer>
   </body>
 </html>
