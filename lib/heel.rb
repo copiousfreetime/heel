@@ -8,7 +8,9 @@
 module Heel
   VERSION = "4.0.1"
 end
+
 require "heel/configuration"
+require "heel/mime_utils"
 require "heel/resource"
 require "heel/directory_entry"
 require "heel/template"

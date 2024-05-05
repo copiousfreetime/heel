@@ -11,24 +11,6 @@ module Heel
   # Internal: Resource representing a single file or directory that is being served
   #
   class Resource
-    class << self
-      def icons_by_content_type
-        @icons_by_content_type ||= Hash.new("file.svg").tap do |hash|
-          hash.update({
-                        "image" => "image.svg",
-                        "pdf" => "pdf.svg",
-                        "x-zip-compressed" => "zip.svg",
-                        "x-gtar" => "zip.svg",
-                        "x-gzip" => "zip.svg",
-                        "application/x-word" => "word.svg",
-                        "application/powerpoint" => "presentation.svg",
-                        "text/html" => "html5.svg",
-                        :directory => "folder-alt.svg",
-                      })
-        end
-      end
-    end
-
     attr_reader :path, :magic, :stat
 
     def initialize(path:)
@@ -49,17 +31,22 @@ module Heel
       stat.directory?
     end
 
-    def icon_slug
-      key = directory? ? :directory : content_type
-      self.class.icons_by_mime_type[key]
-    end
-
-    def content_type
-      directory? ? "Directory" : (magic&.type&.downcase || "application/octet-stream")
+    def web_content?
+      MimeUtils.web_content?(magic)
     end
 
     def text?
       magic&.text?
+    end
+
+    def icon_slug
+      key = directory? ? :directory : magic
+      slug = MimeUtils.icon_for(key)
+      slug
+    end
+
+    def content_type
+      directory? ? "Directory" : (magic&.type&.downcase || "application/octet-stream")
     end
 
     def lexer(source = File.read(path, 8192))
@@ -71,11 +58,7 @@ module Heel
     end
 
     def highlightable?
-      lexer && !web_content?
-    end
-
-    def web_content?
-      %w[text/html text/css text/javascript].include?(content_type)
+      lexer && !MimeUtils.web_content?(magic)
     end
 
     def calculate_magic(path)
