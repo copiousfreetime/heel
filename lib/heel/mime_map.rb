@@ -7,7 +7,7 @@
 
 require "marcel"
 
-Marcel::MimeType.extend "text/markdown", extensions: %w(rdoc), parents: "text/x-web-markdown"
+Marcel::MimeType.extend "text/markdown", extensions: %w[rdoc], parents: "text/x-web-markdown"
 
 module Heel
   # Internal: MimeMap is a Heel specific mime mapping utility.

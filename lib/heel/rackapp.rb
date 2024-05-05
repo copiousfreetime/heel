@@ -76,9 +76,9 @@ module Heel
       source
     end
 
-    def rouge_lexer_for(req, source, file_type)
+    def rouge_lexer_for(filename, source, file_type)
       ::Rouge::Lexer.guess(
-        filename: req.request_path,
+        filename: filename,
         source: source,
         mime_type: file_type
       )
@@ -88,7 +88,7 @@ module Heel
       source = slurp_path(req.request_path)
       # only do a rouge type check if we are going to use rouge in the
       # response
-      lexer = rouge_lexer_for(req, source, file_type)
+      lexer = rouge_lexer_for(req.request_path, source, file_type)
 
       formatter = ::Rouge::Formatters::HTMLPygments.new(::Rouge::Formatters::HTML.new)
       content = formatter.format(lexer.lex(source))
@@ -123,17 +123,7 @@ module Heel
         return response.finish
       end
 
-      if file_type == "application/octet-stream"
-      # fall through to the default file, type, but - if we 'could' parse it
-      # and it is of type application/octet-stream, then we should subvert it to
-      # text/plain
-        lexer = rouge_lexer_for(req, File.read(req.request_path, 4096), file_type)
-        response["Content-Type"] = "text/plain" if lexer
-      elsif  Marcel::Magic.child?(file_type, "text/plain")
-        response["Content-Type"] = "text/plain"
-      else
-        response["Content-Type"] = file_type
-      end
+      response["Content-Type"] = content_type_for(req, file_type)
 
       File.open(req.request_path) do |f|
         while (p = f.read(8192))
@@ -141,6 +131,20 @@ module Heel
         end
       end
       response.finish
+    end
+
+    def content_type_for(filename, file_type)
+      if file_type == "application/octet-stream"
+        # fall through to the default file, type, but - if we 'could' parse it
+        # and it is of type application/octet-stream, then we should subvert it to
+        # text/plain
+        lexer = rouge_lexer_for(filename, File.read(filename, 8192), file_type)
+        return "text/plain" if lexer
+      elsif Marcel::Magic.child?(file_type, "text/plain")
+        return "text/plain"
+      end
+
+      file_type
     end
 
     # interface to rack, env is a hash
