@@ -10,7 +10,7 @@ module Heel
 
     def initialize(path)
       @path = path
-      @loaded_at = nil
+      @loaded_at = Time.at(0)
       @template = load_template
     end
 
@@ -28,7 +28,7 @@ module Heel
     end
 
     def render(binding)
-      load_template if should_reload?
+      @template = load_template if should_reload?
       template.result(binding)
     end
   end

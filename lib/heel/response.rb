@@ -13,7 +13,7 @@ module Heel
     def self.default_headers
       {
         "Cache-Control" => "no-cache, no-store, max-age=0, private, must-revalidate",
-        "Content-Type" => "text/html"
+        "Content-Type" => "text/html",
       }
     end
 
