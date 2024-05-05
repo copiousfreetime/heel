@@ -14,7 +14,7 @@ module Heel
   # Internal: The Rack application that is Heel.
   #
   class RackApp
-    attr_reader :document_root, :directory_index_html, :icon_url, :highlighting, :ignore_globs
+    attr_reader :document_root, :directory_index_html, :icon_url, :ignore_globs, :options
 
     def initialize(options = {})
       @ignore_globs               = options[:ignore_globs] ||= %w[*~ .htaccess .]
@@ -35,14 +35,6 @@ module Heel
       @highlighting
     end
 
-    def directory_index_template_file
-      @directory_index_template_file ||= Heel::Configuration.data_path("listing.rhtml")
-    end
-
-    def directory_indexer
-      @directory_indexer ||= DirectoryIndexer.new(directory_index_template_file, @options)
-    end
-
     def should_ignore?(fname)
       ignore_globs.each do |glob|
         return true if ::File.fnmatch(glob, fname)
@@ -53,98 +45,20 @@ module Heel
     # formulate a directory index response
     #
     def directory_index_response(req)
-      response = ::Rack::Response.new
       dir_index = File.join(req.request_path, directory_index_html)
-      if File.file?(dir_index) && File.readable?(dir_index)
-        response["Content-Type"] = MimeMap.mime_type_of(dir_index).to_s
-        response.write(File.read(dir_index))
-      elsif directory_listing_allowed?
-        body                       = directory_indexer.index_page_for(req)
-        response["Content-Type"]   = "text/html"
-        response.write(body)
-      else
-        return ::Heel::ErrorResponse.new(req.path_info, "Directory index is forbidden", 403).finish
-      end
-      response.finish
-    end
 
-    def slurp_path(path)
-      source = nil
-      File.open(path, "rt:bom|utf-8") do |f|
-        source = f.read
-      end
-      source
-    end
+      return ResourceResponse.new(request: req, path: dir_index, options:).finish if File.readable?(dir_index)
+      return DirectoryIndexResponse.new(request: req, options:).finish if directory_listing_allowed?
 
-    def rouge_lexer_for(filename, source, file_type)
-      ::Rouge::Lexer.guess(
-        filename: filename,
-        source: source,
-        mime_type: file_type
-      )
-    end
-
-    def highlight_contents(req, file_type)
-      source = slurp_path(req.request_path)
-      # only do a rouge type check if we are going to use rouge in the
-      # response
-      lexer = rouge_lexer_for(req.request_path, source, file_type)
-
-      formatter = ::Rouge::Formatters::HTMLPygments.new(::Rouge::Formatters::HTML.new)
-      content = formatter.format(lexer.lex(source))
-
-      <<-BODY
-      <html>
-        <head>
-          <title>#{req.path_info}</title>
-          <link href='/heel_css/syntax-highlighting.css' rel='stylesheet' type='text/css'>
-        </head>
-        <body>
-          #{content}
-        </body>
-      </html>
-      BODY
+      return ::Heel::ErrorResponse.new(request: req, message: "Directory index is forbidden", status: 403).finish
     end
 
     # formulate a file content response. Possibly a rouge highlighted file if
     # it is a type that rouge can deal with and the file is not already an
     # html file.
     #
-    def file_response(req)
-      response = ::Rack::Response.new
-      response["Last-Modified"] = req.stat.mtime.rfc822
-      file_type = MimeMap.mime_type_of(req.request_path)
-
-      if highlighting? && req.highlighting_allowed? && file_type
-        body = highlight_contents(req, file_type)
-        response["Content-Type"]   = "text/html"
-        response["Content-Length"] = body.length.to_s
-        response.write(body)
-        return response.finish
-      end
-
-      response["Content-Type"] = content_type_for(req, file_type)
-
-      File.open(req.request_path) do |f|
-        while (p = f.read(8192))
-          response.write(p)
-        end
-      end
-      response.finish
-    end
-
-    def content_type_for(filename, file_type)
-      if file_type == "application/octet-stream"
-        # fall through to the default file, type, but - if we 'could' parse it
-        # and it is of type application/octet-stream, then we should subvert it to
-        # text/plain
-        lexer = rouge_lexer_for(filename, File.read(filename, 8192), file_type)
-        return "text/plain" if lexer
-      elsif Marcel::Magic.child?(file_type, "text/plain")
-        return "text/plain"
-      end
-
-      file_type
+    def file_response(request)
+      ResourceResponse.new(request:, options:).finish
     end
 
     # interface to rack, env is a hash
@@ -153,19 +67,31 @@ module Heel
     #
     def call(env)
       req = Heel::Request.new(env, document_root)
+
       if req.get?
         if req.forbidden? || should_ignore?(req.request_path)
-          return ErrorResponse.new(req.path_info, "You do not have permissionto view #{req.path_info}", 403).finish
+          return ErrorResponse.new(request: req,
+                                   message: "You do not have permissionto view #{req.path_info}",
+                                   status: 403).finish
         end
-        return ErrorResponse.new(req.path_info, "File not found: #{req.path_info}", 404).finish unless req.found?
+
+        return ErrorResponse.new(request: req,
+                                 message: "File not found: #{req.path_info}",
+                                 status: 404).finish unless req.found?
+
         return directory_index_response(req) if req.for_directory?
 
-        file_response(req) if req.for_file?
+        return file_response(req) if req.for_file?
+
+        ErrorResponse.new(request: req,
+                          message: "Request for #{req.path_info} is not a file or directory",
+                          status: 404).finish
       else
-        ErrorResponse.new(req.path_info,
-                          "Method #{req.request_method} Not Allowed. Only GET is honored.",
-                          405,
-                          { "Allow" => "GET" }).finish
+        ErrorResponse.new(request: req,
+                          message: "Method #{req.request_method} Not Allowed. Only GET is honored.",
+                          status: 405,
+                          headers: { "Allow" => "GET" },
+                         ).finish
       end
     end
   end

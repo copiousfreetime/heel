@@ -6,7 +6,7 @@ require "heel/rackapp"
 
 describe Heel::RackApp do
   before(:each) do
-    @app = Heel::RackApp.new({ highlighting: "true" })
+    @app = Heel::RackApp.new({ highlighting: true })
     @request = Rack::MockRequest.new(@app)
   end
 
