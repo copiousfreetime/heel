@@ -4,59 +4,51 @@ module Heel
   # Internal: Strure for holding display information on a directory entry
   #
   class DirectoryEntry
-    attr_reader :entry, :parent_path, :path, :stat, :icon_base_url
+    attr_reader :entry, :parent_path, :path, :stat, :icon_base_url, :resource
 
     def initialize(parent_path:, entry:, using_icons: false, icon_base_url: nil)
       @parent_path = parent_path
       @entry = entry
       @path = File.join(parent_path, entry)
-      @stat = File.stat(@path)
+      @resource = Resource.new(path: @path)
       @using_icons = using_icons
       @icon_base_url = icon_base_url
     end
 
     def name
       name = dotdot? ? "Parent Directory" : entry
-      name += "/" if stat.directory?
+      name += "/" if directory?
       name
     end
 
-    def last_modified
-      stat.mtime.strftime("%Y-%m-%d %H:%M:%S")
+    def display_size
+      return "-" if directory?
+
+      num_to_bytes(resource.size)
     end
 
-    def display_size
-      return "-" if stat.directory?
-
-      num_to_bytes(stat.size)
+    def last_modified
+      resource.last_modified
     end
 
     def directory?
-      stat.directory?
+      resource.directory?
     end
 
     def link
       ERB::Util.url_encode(entry)
     end
 
-    def mime_type
-      MimeMap.mime_type_of(entry)
-    end
-
     def content_type
-      stat.directory? ? "Directory" : mime_type
+      resource.content_type
     end
 
     def icon_url
       return nil unless using_icons?
       return nil unless icon_base_url
 
-      slug = stat.directory? ? MimeMap.icons_by_mime_type[:directory] : MimeMap.icon_for(mime_type)
-
-      File.join(icon_base_url, slug)
+      File.join(icon_base_url, resource.icon_slug)
     end
-
-    private
 
     # essentially this is strfbytes from facets
     #
