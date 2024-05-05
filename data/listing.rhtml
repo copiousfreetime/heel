@@ -42,7 +42,12 @@
                 <% link = "#{base_uri.chomp('/')}/#{entry.link}" %>
                 <% link += "?highlighting_allowed=true" unless entry.directory? %>
                 <a href="<%= link %>">
-                  <%= entry.name %>
+                  <a href="<%= link %>">
+                    <% if entry.icon_url then %>
+                      <img src="<%= entry.icon_url %>" width="32" height="32" alt="icon for type <%= entry.content_type %>">
+                    <% end %>
+                    <%= entry.name %>
+                  </a>
                 </a>
 
                 <% unless entry.directory? %>
