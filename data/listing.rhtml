@@ -10,7 +10,19 @@
   </head>
   <body class="container">
     <header>
-      <h1>Index of: <%= base_uri %></h1>
+      <h2>
+        <nav aria-label="breadcrumb" style="--pico-nav-breadcrumb-divider: '/';" >
+          <ul>
+            <li><a href="/">Home</a></li>
+            <% collection = [] %>
+            <% base_uri.split("/").each do |part| %>
+              <% collection << part %>
+              <% next if part.empty? %>
+              <li><a href="<%= collection.join("/") %>"><%= part %></a></li>
+            <% end %>
+          </ul>
+        </nav>
+      </h2>
     </header>
     <main>
       <table class="striped">
