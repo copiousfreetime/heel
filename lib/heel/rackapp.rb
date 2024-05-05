@@ -76,15 +76,19 @@ module Heel
       source
     end
 
-    def highlight_contents(req, file_type)
-      source = slurp_path(req.request_path)
-      # only do a rouge type check if we are going to use rouge in the
-      # response
-      lexer = ::Rouge::Lexer.guess(
+    def rouge_lexer_for(req, source, file_type)
+      ::Rouge::Lexer.guess(
         filename: req.request_path,
         source: source,
         mime_type: file_type
       )
+    end
+
+    def highlight_contents(req, file_type)
+      source = slurp_path(req.request_path)
+      # only do a rouge type check if we are going to use rouge in the
+      # response
+      lexer = rouge_lexer_for(req, source, file_type)
 
       formatter = ::Rouge::Formatters::HTMLPygments.new(::Rouge::Formatters::HTML.new)
       content = formatter.format(lexer.lex(source))
@@ -119,8 +123,18 @@ module Heel
         return response.finish
       end
 
-      # fall through to a default file return
-      response["Content-Type"] = file_type.to_s
+      if file_type == "application/octet-stream"
+      # fall through to the default file, type, but - if we 'could' parse it
+      # and it is of type application/octet-stream, then we should subvert it to
+      # text/plain
+        lexer = rouge_lexer_for(req, File.read(req.request_path, 4096), file_type)
+        response["Content-Type"] = "text/plain" if lexer
+      elsif  Marcel::Magic.child?(file_type, "text/plain")
+        response["Content-Type"] = "text/plain"
+      else
+        response["Content-Type"] = file_type
+      end
+
       File.open(req.request_path) do |f|
         while (p = f.read(8192))
           response.write(p)
