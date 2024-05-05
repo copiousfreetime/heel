@@ -11,42 +11,35 @@ require "erb"
 module Heel
   # Internal: Wrapper for the http error code responses
   #
-  class ErrorResponse
-    attr_reader :base_uri
-
-    class << self
-      def template_file
-        @template_file ||= Heel::Configuration.data_path("error.rhtml")
-      end
-
-      def template
-        @template ||= ::ERB.new(File.read(template_file))
-      end
-
-      def homepage
-        @homepage ||= Heel::Configuration::HOMEPAGE
-      end
+  class ErrorResponse < Response
+    def self.error_template_file
+      @template_file ||= Heel::Configuration.data_path("error.rhtml")
     end
 
-    def initialize(base_uri, _body, status = 404, header = {})
-      header    = header.merge("Content-Type" => "text/html")
-      @response = Rack::Response.new("", status, header)
-      @base_uri = base_uri
+    def self.template
+      @template ||= Template.new(error_template_file)
+    end
+
+    attr_reader :message
+
+    def initialize(request:, message: nil, status: 404, headers: {}, options: {})
+      super(request:, options:, status:, headers:)
+      @message = message
     end
 
     def finish
-      status = @response.status
+      status = response.status
 
       template_vars = ErrorResponseVars.new(
         status: status,
-        message: Rack::Utils::HTTP_STATUS_CODES[status],
+        message: message || Rack::Utils::HTTP_STATUS_CODES[status],
         base_uri: base_uri,
-        homepage: ErrorResponse.homepage
+        homepage: homepage,
       )
 
-      content = ErrorResponse.template.result(template_vars.binding_for_template)
-      @response.write(content)
-      @response.finish
+      body = self.class.template.render(template_vars.binding_for_template)
+      response.write(body)
+      response.finish
     end
   end
 end
