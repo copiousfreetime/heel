@@ -30,8 +30,6 @@ module Heel
         chunk = File.read(path, 8192)
         lexer = rouge_lexer_for(path, chunk, content_type)
         return "text/plain" if lexer
-      elsif resource.text?
-        return "text/plain"
       end
 
       content_type

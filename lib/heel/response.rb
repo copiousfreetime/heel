@@ -10,9 +10,16 @@ module Heel
       @homepage ||= Heel::Configuration::HOMEPAGE
     end
 
+    def self.default_headers
+      {
+        "Cache-Control" => "no-cache, no-store, max-age=0, private, must-revalidate",
+        "Content-Type" => "text/html"
+      }
+    end
+
     # Initialize the request with the environment and the root directory of the
     # request
-    def initialize(request:, options: {}, status: 200, headers: { "Content-Type" => "text/html" })
+    def initialize(request:, options: {}, status: 200, headers: Response.default_headers)
       @request = request
       @options = options
       @response = Rack::Response.new("", status, headers)
