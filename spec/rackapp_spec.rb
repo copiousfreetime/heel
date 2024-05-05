@@ -18,7 +18,7 @@ describe Heel::RackApp do
   end
 
   it "should highlight a ruby file" do
-    res = @request.get("/lib/heel.rb")
+    res = @request.get("/lib/heel.rb?highlighting_allowed=on")
     _(res).must_be :ok?
     _(res["Content-Type"]).must_equal "text/html"
     _(res.body).must_match(/class="highlight"/)
