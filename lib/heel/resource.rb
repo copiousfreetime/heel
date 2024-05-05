@@ -41,8 +41,7 @@ module Heel
 
     def icon_slug
       key = directory? ? :directory : magic
-      slug = MimeUtils.icon_for(key)
-      slug
+      MimeUtils.icon_for(key)
     end
 
     def content_type
