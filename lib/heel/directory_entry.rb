@@ -47,7 +47,7 @@ module Heel
       return nil unless using_icons?
       return nil unless icon_base_url
 
-      slug = stat.directory? ? MimeMap.icons_by_mime_type[:directory] : mime_type.to_s
+      slug = stat.directory? ? MimeMap.icons_by_mime_type[:directory] : MimeMap.icon_for(mime_type)
 
       File.join(icon_base_url, slug)
     end
