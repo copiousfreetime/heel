@@ -49,7 +49,7 @@ module Heel
     end
 
     def icon_base_url
-      options.fetch(:icon_url, "/heel_icons")
+      options.fetch(:icon_url, "/__heel__/icons")
     end
 
     def homepage

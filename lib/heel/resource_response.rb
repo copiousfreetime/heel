@@ -47,7 +47,7 @@ module Heel
       <html>
         <head>
           <title>#{request.path_info}</title>
-          <link href='/heel_css/syntax-highlighting.css' rel='stylesheet' type='text/css'>
+          <link href='/__heel__/css/syntax-highlighting.css' rel='stylesheet' type='text/css'>
         </head>
         <body>
           #{content}

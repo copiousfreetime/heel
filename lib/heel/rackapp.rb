@@ -22,7 +22,7 @@ module Heel
       @directory_listing_allowed  = options[:directory_listing_allowed] ||= true
       @directory_index_html       = options[:directory_index_html] ||= "index.html"
       @using_icons                = options[:using_icons] ||= true
-      @icon_url                   = options[:icon_url] ||= "/heel_icons"
+      @icon_url                   = options[:icon_url] ||= "/__heel__/icons"
       @highlighting               = options[:highlighting] ||= false
       @options                    = options
     end

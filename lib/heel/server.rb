@@ -231,10 +231,10 @@ module Heel
         map "/" do
           run app
         end
-        map "/heel_css" do
+        map "/__heel__/css" do
           run Rack::Files.new(Heel::Configuration.data_path("css"))
         end
-        map "/heel_icons" do
+        map "/__heel__/icons" do
           run Rack::Files.new(Heel::Configuration.data_path("lineicons"))
         end
       end
