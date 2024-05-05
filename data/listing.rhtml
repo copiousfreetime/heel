@@ -27,14 +27,14 @@
             <% directory_entries.each do |entry| %>
               <tr>
                 <td>
-                  <a href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>">
+                  <a href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting_allowed=true" %>">
                     <% if entry.icon_url then %>
                       <img src="<%= entry.icon_url %>" width="32" height="32" alt="icon for type <%= entry.content_type %>">
                     <% end %>
                     <%= entry.name %>
                   </a>
                   <% if entry.content_type != 'Directory' then %>
-                    (<a download="<%= entry.name %>" href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting_allowed=true" %>">download</a>)
+                    (<a download="<%= entry.name %>" href="<%= "#{base_uri.chomp('/')}/#{entry.link}" %>">download</a>)
                   <% end %>
                 </td>
                 <td><%= entry.last_modified %></td>
