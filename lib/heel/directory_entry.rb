@@ -31,6 +31,10 @@ module Heel
       num_to_bytes(stat.size)
     end
 
+    def directory?
+      stat.directory?
+    end
+
     def link
       ERB::Util.url_encode(entry)
     end
@@ -40,7 +44,7 @@ module Heel
     end
 
     def content_type
-      stat.directory? ? "Directory" : mime_type.content_type
+      stat.directory? ? "Directory" : mime_type
     end
 
     def icon_url

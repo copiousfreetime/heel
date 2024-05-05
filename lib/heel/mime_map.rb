@@ -5,13 +5,13 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require "mime/types"
+require "marcel"
+
+Marcel::MimeType.extend "text/markdown", extensions: %w(rdoc), parents: "text/x-web-markdown"
 
 module Heel
   # Internal: MimeMap is a Heel specific mime mapping utility.
   #
-  # It is based upon MIME::Type and adds some additional mime types.  It can
-  # also say what the icon name for a particular mime type is.
   #
   class MimeMap
     class << self
@@ -33,41 +33,17 @@ module Heel
         }
       end
 
-      # if any other mime types are needed, add them directly via the
-      # mime-types calls.
-      def additional_mime_types
-        [
-          MIME::Type.new("text/plain") { |text| text.extensions = %w[rb rdoc rhtml md markdown] },
-        ]
-      end
-
       # return the icon name for a particular mime type
       #
-      def icon_for(mime_type)
-        %i[content_type sub_type media_type default].each do |field|
-          icon = MimeMap.icons_by_mime_type[mime_type.send(field)]
-          return icon if icon
-        end
+      def icon_for(content_type)
+        MimeMap.icons_by_mime_type.fetch(content_type) { MimeMap.icons_by_mime_type[:default] }
       end
 
       # returns the mime type of the file at a given pathname
       #
       def mime_type_of(filename)
-        MIME::Types.of(filename).last || default_mime_type
-      end
-
-      def default_mime_type
-        @default_mime_type ||= MIME::Types["application/octet-stream"].first
-      end
-    end
-
-    MimeMap.additional_mime_types.each do |mt|
-      existing_type = MIME::Types[mt]
-      if existing_type.empty?
-        MIME::Types.add(mt)
-      else
-        type = existing_type.first
-        type.add_extensions(mt.extensions)
+        path = Pathname.new(filename) if File.exist?(filename)
+        Marcel::MimeType.for(path, name: filename)
       end
     end
   end
