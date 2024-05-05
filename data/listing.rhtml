@@ -33,8 +33,8 @@
                     <% end %>
                     <%= entry.name %>
                   </a>
-                  <% if highlighting? && (entry.content_type != 'Directory') then %>
-                    (<a download="<%= entry.name %>" href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting=false" %>">download</a>)
+                  <% if entry.content_type != 'Directory' then %>
+                    (<a download="<%= entry.name %>" href="<%= "#{base_uri.chomp('/')}/#{entry.link}?highlighting_allowed=true" %>">download</a>)
                   <% end %>
                 </td>
                 <td><%= entry.last_modified %></td>

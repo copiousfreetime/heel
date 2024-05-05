@@ -25,7 +25,7 @@ describe Heel::RackApp do
   end
 
   it "should not highlight a ruby file if told not to" do
-    res = @request.get("/lib/heel.rb?highlighting=off")
+    res = @request.get("/lib/heel.rb?highlighting_allowed=off")
     _(res).must_be :ok?
     _(res.body.size).must_equal File.size("lib/heel.rb")
     _(res["Content-Type"]).must_equal "text/plain"

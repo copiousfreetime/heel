@@ -58,8 +58,8 @@ module Heel
 
     # was the highlighting parameter true or false?
     #
-    def highlighting?
-      !(%w[off false].include? self.GET["highlighting"].to_s.downcase)
+    def highlighting_allowed?
+      %w[on true 1 yes].include? self.GET["highlighting_allowed"].to_s.downcase
     end
   end
 end

@@ -111,7 +111,7 @@ module Heel
       response["Last-Modified"] = req.stat.mtime.rfc822
       file_type = MimeMap.mime_type_of(req.request_path)
 
-      if highlighting? && req.highlighting? && (file_type && (file_type != "text/html"))
+      if highlighting? && req.highlighting_allowed? && file_type
         body = highlight_contents(req, file_type)
         response["Content-Type"]   = "text/html"
         response["Content-Length"] = body.length.to_s
