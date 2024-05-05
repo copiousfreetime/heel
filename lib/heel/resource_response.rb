@@ -16,7 +16,7 @@ module Heel
     attr_reader :path, :resource
 
     def initialize(request:, path: nil, status: 200, headers: {}, options: {})
-      super(request:, options:, status:, headers:)
+      super(request: request, options: options, status: status, headers: headers)
       @path = path || request_path
       @resource = Resource.new(path: @path)
     end

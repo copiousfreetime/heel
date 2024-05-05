@@ -20,7 +20,7 @@ module Heel
 
     def load_template
       @loaded_at = Time.now
-     ::ERB.new(File.read(path))
+      ::ERB.new(File.read(path))
     end
 
     def last_modified
@@ -33,4 +33,3 @@ module Heel
     end
   end
 end
-

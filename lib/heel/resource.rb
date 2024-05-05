@@ -13,18 +13,18 @@ module Heel
   class Resource
     class << self
       def icons_by_content_type
-        @icons_by_mime_type ||= Hash.new("file.svg").tap do |hash|
+        @icons_by_content_type ||= Hash.new("file.svg").tap do |hash|
           hash.update({
-            "image" => "image.svg",
-            "pdf" => "pdf.svg",
-            "x-zip-compressed" => "zip.svg",
-            "x-gtar" => "zip.svg",
-            "x-gzip" => "zip.svg",
-            "application/x-word" => "word.svg",
-            "application/powerpoint" => "presentation.svg",
-            "text/html" => "html5.svg",
-            :directory => "folder-alt.svg",
-          })
+                        "image" => "image.svg",
+                        "pdf" => "pdf.svg",
+                        "x-zip-compressed" => "zip.svg",
+                        "x-gtar" => "zip.svg",
+                        "x-gzip" => "zip.svg",
+                        "application/x-word" => "word.svg",
+                        "application/powerpoint" => "presentation.svg",
+                        "text/html" => "html5.svg",
+                        :directory => "folder-alt.svg",
+                      })
         end
       end
     end
@@ -55,7 +55,7 @@ module Heel
     end
 
     def content_type
-      directory? ? 'Directory' : (magic&.type&.downcase || 'application/octet-stream')
+      directory? ? "Directory" : (magic&.type&.downcase || "application/octet-stream")
     end
 
     def text?
@@ -70,10 +70,8 @@ module Heel
       magic ||= Marcel::Magic.by_path(path)
     end
 
-    def with_io(path = @path)
-      File.open(path, "rt:bom|utf-8") do |io|
-        yield io
-      end
+    def with_io(path = @path, &block)
+      File.open(path, "rt:bom|utf-8", &block)
     end
   end
 end

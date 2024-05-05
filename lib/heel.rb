@@ -8,15 +8,17 @@
 module Heel
   VERSION = "4.0.1"
 end
-
 require "heel/configuration"
+require "heel/resource"
 require "heel/directory_entry"
+require "heel/template"
 require "heel/directory_listing_vars"
-require "heel/directory_indexer"
+require "heel/response"
+require "heel/directory_index_response"
 require "heel/error_response_vars"
 require "heel/error_response"
 require "heel/logger"
-require "heel/mime_map"
 require "heel/rackapp"
 require "heel/request"
+require "heel/resource_response"
 require "heel/server"

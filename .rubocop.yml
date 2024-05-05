@@ -8,6 +8,7 @@ require:
 
 AllCops:
   NewCops: enable
+  TargetRubyVersion: 3.0
   Exclude:
     - 'coverage/**/*'
     - 'doc/**/*'
@@ -61,6 +62,7 @@ Metrics/MethodLength:
   Exclude:
     - 'spec/**/*'
     - 'lib/heel/server.rb'
+    - 'lib/heel/rackapp.rb'
 
 Metrics/ParameterLists:
   CountKeywordArgs: false

@@ -4,7 +4,7 @@ require "spec_helper"
 
 describe Heel::DirectoryIndexResponse do
   before(:each) do
-    @request = ::Heel::Request.new({}, ::Heel::Configuration.root_dir)
+    @request = Heel::Request.new({}, Heel::Configuration.root_dir)
     @response = Heel::DirectoryIndexResponse.new(request: @request, options: { highlighting: true })
   end
 

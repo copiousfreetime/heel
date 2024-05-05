@@ -47,10 +47,10 @@ module Heel
     def directory_index_response(req)
       dir_index = File.join(req.request_path, directory_index_html)
 
-      return ResourceResponse.new(request: req, path: dir_index, options:).finish if File.readable?(dir_index)
-      return DirectoryIndexResponse.new(request: req, options:).finish if directory_listing_allowed?
+      return ResourceResponse.new(request: req, path: dir_index, options: options).finish if File.readable?(dir_index)
+      return DirectoryIndexResponse.new(request: req, options: options).finish if directory_listing_allowed?
 
-      return ::Heel::ErrorResponse.new(request: req, message: "Directory index is forbidden", status: 403).finish
+      ::Heel::ErrorResponse.new(request: req, message: "Directory index is forbidden", status: 403).finish
     end
 
     # formulate a file content response. Possibly a rouge highlighted file if
@@ -58,7 +58,7 @@ module Heel
     # html file.
     #
     def file_response(request)
-      ResourceResponse.new(request:, options:).finish
+      ResourceResponse.new(request: request, options: options).finish
     end
 
     # interface to rack, env is a hash
@@ -75,9 +75,11 @@ module Heel
                                    status: 403).finish
         end
 
-        return ErrorResponse.new(request: req,
-                                 message: "File not found: #{req.path_info}",
-                                 status: 404).finish unless req.found?
+        unless req.found?
+          return ErrorResponse.new(request: req,
+                                   message: "File not found: #{req.path_info}",
+                                   status: 404).finish
+        end
 
         return directory_index_response(req) if req.for_directory?
 
@@ -90,8 +92,7 @@ module Heel
         ErrorResponse.new(request: req,
                           message: "Method #{req.request_method} Not Allowed. Only GET is honored.",
                           status: 405,
-                          headers: { "Allow" => "GET" },
-                         ).finish
+                          headers: { "Allow" => "GET" }).finish
       end
     end
   end

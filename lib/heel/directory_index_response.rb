@@ -31,8 +31,7 @@ module Heel
           entry_data = DirectoryEntry.new(parent_path: request_path,
                                           entry: raw_entry,
                                           using_icons: using_icons?,
-                                          icon_base_url: icon_base_url,
-                                         )
+                                          icon_base_url: icon_base_url)
 
           next if (request_path == options[:document_root]) && entry_data.dotdot?
 
@@ -47,7 +46,7 @@ module Heel
       template_vars = DirectoryListingVars.new(base_uri: base_uri,
                                                highlighting: highlighting?,
                                                directory_entries: entries.sort_by(&:link),
-                                               homepage: homepage,)
+                                               homepage: homepage)
       body = self.class.template.render(template_vars.binding_for_template)
       response.write(body)
       response.finish
