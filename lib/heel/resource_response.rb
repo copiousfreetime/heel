@@ -22,8 +22,7 @@ module Heel
     end
 
     def content_type_of_path
-      magic = resource.magic
-      content_type = magic.type.downcase
+      content_type = resource.content_type
       if content_type == "application/octet-stream"
         # fall through to the default file, type, but - if we 'could' parse it
         # and it is of type application/octet-stream, then we should subvert it to
@@ -31,7 +30,7 @@ module Heel
         chunk = File.read(path, 8192)
         lexer = rouge_lexer_for(path, chunk, content_type)
         return "text/plain" if lexer
-      elsif magic.text?
+      elsif resource.text?
         return "text/plain"
       end
 
@@ -84,7 +83,7 @@ module Heel
     def finish
       response["Last-Modified"] = request.stat.mtime.rfc822
 
-      if highlighting? && request.highlighting_allowed? && resource.magic.text?
+      if highlighting? && request.highlighting_allowed? && resource.text?
         build_highlighted_response
       else
         build_content_response

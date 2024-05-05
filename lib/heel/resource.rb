@@ -58,6 +58,10 @@ module Heel
       directory? ? 'Directory' : (magic&.type&.downcase || 'application/octet-stream')
     end
 
+    def text?
+      magic&.text?
+    end
+
     def calculate_magic(path)
       magic = nil
       with_io(path) do |io|

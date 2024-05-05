@@ -28,7 +28,7 @@ module Heel
     end
 
     def render(binding)
-      reload_template if should_reload?
+      load_template if should_reload?
       template.result(binding)
     end
   end
