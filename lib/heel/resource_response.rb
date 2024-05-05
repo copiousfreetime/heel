@@ -23,29 +23,23 @@ module Heel
 
     def content_type_of_path
       content_type = resource.content_type
-      if content_type == "application/octet-stream"
-        # fall through to the default file, type, but - if we 'could' parse it
-        # and it is of type application/octet-stream, then we should subvert it to
-        # text/plain
-        chunk = File.read(path, 8192)
-        lexer = rouge_lexer_for(path, chunk, content_type)
-        return "text/plain" if lexer
-      end
 
+      # if we could parse it, and its octet-stream -- then send it as text/plain
+      return "text/plain" if content_type == "application/octet-stream" && resource.lexer
+
+      # if its html/javascript/css return it
+      return content_type if resource.web_content?
+
+      # and then textish if its text-like
+      return "text/plain" if resource.text?
+
+      # and finally - what it is
       content_type
-    end
-
-    def rouge_lexer_for(filename, source, mime_type)
-      ::Rouge::Lexer.guess(
-        filename: filename,
-        source: source,
-        mime_type: mime_type
-      )
     end
 
     def highlighted_body
       source = File.read(path)
-      lexer = rouge_lexer_for(path, source, resource.content_type)
+      lexer = resource.lexer(source)
       formatter = ::Rouge::Formatters::HTMLPygments.new(::Rouge::Formatters::HTML.new)
       content = formatter.format(lexer.lex(source))
 
@@ -81,7 +75,7 @@ module Heel
     def finish
       response["Last-Modified"] = request.stat.mtime.rfc822
 
-      if highlighting? && request.highlighting_allowed? && resource.text?
+      if highlighting? && request.highlighting_allowed? && resource.highlightable?
         build_highlighted_response
       else
         build_content_response

@@ -62,6 +62,22 @@ module Heel
       magic&.text?
     end
 
+    def lexer(source = File.read(path, 8192))
+      ::Rouge::Lexer.guess(
+        filename: path,
+        source: source,
+        mime_type: content_type
+      )
+    end
+
+    def highlightable?
+      lexer && !web_content?
+    end
+
+    def web_content?
+      %w[text/html text/css text/javascript].include?(content_type)
+    end
+
     def calculate_magic(path)
       magic = nil
       with_io(path) do |io|
