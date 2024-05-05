@@ -13,7 +13,7 @@ module Heel
   # This may be highlighted or it may just be a raw response
   #
   class ResourceResponse < Response
-    attr_reader :path, :magic, :resource
+    attr_reader :path, :resource
 
     def initialize(request:, path: nil, status: 200, headers: {}, options: {})
       super(request:, options:, status:, headers:)
