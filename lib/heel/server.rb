@@ -228,14 +228,14 @@ module Heel
 
       stack = Rack::Builder.new do
         use Rack::CommonLogger, logger
-        map "/" do
-          run app
-        end
         map "/__heel__/css" do
           run Rack::Files.new(Heel::Configuration.data_path("css"))
         end
         map "/__heel__/icons" do
           run Rack::Files.new(Heel::Configuration.data_path("icons"))
+        end
+        map "/" do
+          run app
         end
       end
       stack.to_app
