@@ -5,13 +5,6 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require "ostruct"
-require "launchy"
-require "fileutils"
-require "heel/rackapp"
-require "rackup"
-require "puma"
-
 module Heel
   # Internal: The heel server
   #

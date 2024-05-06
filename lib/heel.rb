@@ -1,26 +1,31 @@
 # frozen_string_literal: true
 
-#--
-# Copyright (c) 2007 - 2013 Jeremy Hinegardner
-# All rights reserved. Licensed under the BSD license. See LICENSE for details
-#++
-
-module Heel
-  VERSION = "4.0.1"
+require "zeitwerk"
+Zeitwerk::Loader.new.then do |loader|
+  loader.inflector.inflect("erb" => "ERB")
+  loader.tag = File.basename(__FILE__, ".rb")
+  loader.push_dir(__dir__)
+  loader.setup
 end
 
-require "heel/configuration"
-require "heel/mime_utils"
-require "heel/resource"
-require "heel/directory_entry"
-require "heel/template"
-require "heel/directory_listing_vars"
-require "heel/response"
-require "heel/directory_index_response"
-require "heel/error_response_vars"
-require "heel/error_response"
-require "heel/logger"
-require "heel/rackapp"
-require "heel/request"
-require "heel/resource_response"
-require "heel/server"
+# Heel namespace and version
+module Heel
+  VERSION = "4.0.1"
+
+  def self.loader(registry = Zeitwerk::Registry)
+    @loader ||= registry.loaders.find { |loader| loader.tag == File.basename(__FILE__, ".rb") }
+  end
+end
+
+# Stdlib and Gems
+require "erb"
+require "fileutils"
+require "launchy"
+require "marcel"
+require "pathname"
+require "puma"
+require "rack"
+require "rack/utils"
+require "rackup"
+require "rouge"
+require "time"

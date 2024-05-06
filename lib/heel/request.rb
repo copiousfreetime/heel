@@ -5,7 +5,6 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require "rack"
 module Heel
   # Internal: A RackRequest with some additional methods and error handling
   #

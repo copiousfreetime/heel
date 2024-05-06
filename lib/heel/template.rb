@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "erb"
-
 module Heel
   # Internal: A wrapper for an erb template
   #

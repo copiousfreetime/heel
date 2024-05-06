@@ -5,8 +5,6 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require "marcel"
-
 module Heel
   # Internal: Generate a resource response.
   #

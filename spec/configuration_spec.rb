@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "pathname"
 
 describe Heel::Configuration do
   before do

@@ -5,8 +5,6 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require "marcel"
-
 module Heel
   # Internal: Resource representing a single file or directory that is being served
   #
