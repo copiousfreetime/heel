@@ -5,12 +5,6 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require "erb"
-require_relative "response"
-require_relative "directory_entry"
-require_relative "directory_listing_vars"
-require_relative "template"
-
 module Heel
   # Internal: Generate a directory index
   #

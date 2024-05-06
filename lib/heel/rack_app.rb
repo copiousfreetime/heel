@@ -5,11 +5,6 @@
 # All rights reserved. Licensed under the BSD license. See LICENSE for details
 #++
 
-require "rack"
-require "rack/utils"
-require "rouge"
-require "time"
-
 module Heel
   # Internal: The Rack application that is Heel.
   #

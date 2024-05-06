@@ -1,4 +1,14 @@
 # Changelog
+## Version NEXT
+* Convert to using zeitwerk for loading
+* Update all ruby dependencies
+* Switch to [marcel](https://github.com/rails/marcel) for mime type detection
+* Rework maintenance scripts
+* Switch to [tabler icons](https://tabler.io/icons)
+* Update the embedded pico-css versino
+* Full rubocop sweep
+* Lots of Internal refactoring
+
 ## Version 4.0.1 - 2024-03-03
 * Update all dependencies
 * update test versions of ruby

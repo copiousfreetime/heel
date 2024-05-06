@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeremy Hinegardner".freeze]
   s.bindir = "exe".freeze
-  s.date = "2024-05-05"
+  s.date = "2024-05-06"
   s.description = "Heel is a small static web server for use when you need a quick web server for a directory.  Once the server is running, heel will use (https://rubygems.org/gems/launchy/) to open your browser at the URL of your document root. Run it right now! `gem exec heel` ----- Heel is built using (https://github.com/rack/rack) and (https://puma.io)     % heel     Launching your browser...     Puma starting in single mode...     * Puma version: 6.2.1 (ruby 3.2.2-p53) (\"Speaking of Now\")     *  Min threads: 0     *  Max threads: 5     *  Environment: none     *          PID: 11322     * Listening on http://0.0.0.0:4331     Use Ctrl-C to stop Or run it in the background     % heel --daemonize     Launching your browser at http://0.0.0.0:4331/     % heel --kill     Sending TERM to process 3304     Done.".freeze
   s.email = "jeremy@copiousfreetime.org".freeze
   s.executables = ["heel".freeze]
@@ -27,10 +27,11 @@ Gem::Specification.new do |s|
 
   s.specification_version = 4
 
+  s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.5".freeze])
+  s.add_runtime_dependency(%q<marcel>.freeze, ["~> 1.0".freeze])
+  s.add_runtime_dependency(%q<puma>.freeze, ["~> 6.0".freeze])
   s.add_runtime_dependency(%q<rack>.freeze, ["~> 3.0".freeze])
   s.add_runtime_dependency(%q<rackup>.freeze, ["~> 2.1".freeze])
-  s.add_runtime_dependency(%q<puma>.freeze, ["~> 6.0".freeze])
-  s.add_runtime_dependency(%q<marcel>.freeze, ["~> 1.0".freeze])
-  s.add_runtime_dependency(%q<launchy>.freeze, ["~> 2.5".freeze])
   s.add_runtime_dependency(%q<rouge>.freeze, ["~> 4.0".freeze])
+  s.add_runtime_dependency(%q<zeitwerk>.freeze, ["~> 2.6".freeze])
 end
