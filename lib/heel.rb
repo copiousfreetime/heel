@@ -2,7 +2,7 @@
 
 require "zeitwerk"
 Zeitwerk::Loader.new.then do |loader|
-  loader.inflector.inflect("erb" => "ERB")
+  loader.inflector = Zeitwerk::GemInflector.new(__FILE__)
   loader.tag = File.basename(__FILE__, ".rb")
   loader.push_dir(__dir__)
   loader.setup
@@ -10,8 +10,6 @@ end
 
 # Heel namespace and version
 module Heel
-  VERSION = "4.0.1"
-
   def self.loader(registry = Zeitwerk::Registry)
     @loader ||= registry.loaders.find { |loader| loader.tag == File.basename(__FILE__, ".rb") }
   end
