@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "rack/mock"
-require "heel/rackapp"
 
 describe Heel::RackApp do
   before(:each) do
