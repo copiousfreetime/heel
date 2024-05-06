@@ -1,10 +1,8 @@
 CONTRIBUTING.md
 HISTORY.md
-LICENSE
+LICENSE.txt
 Manifest.txt
 README.md
-Rakefile
-bin/heel
 data/css/error.css
 data/css/pico.min.css
 data/css/syntax-highlighting.css
@@ -19,6 +17,8 @@ data/lineicons/presentation.svg
 data/lineicons/word.svg
 data/lineicons/zip.svg
 data/listing.rhtml
+exe/heel
+heel.gemspec
 lib/heel.rb
 lib/heel/configuration.rb
 lib/heel/directory_indexer.rb
@@ -29,11 +29,3 @@ lib/heel/rackapp.rb
 lib/heel/request.rb
 lib/heel/server.rb
 lib/heel/template_vars.rb
-spec/configuration_spec.rb
-spec/directory_indexer_spec.rb
-spec/rackapp_spec.rb
-spec/server_spec.rb
-spec/spec_helper.rb
-spec/template_vars_spec.rb
-tasks/default.rake
-tasks/this.rb

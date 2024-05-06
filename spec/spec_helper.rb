@@ -1,7 +1,6 @@
-require 'simplecov'
-SimpleCov.start if ENV['COVERAGE']
+# frozen_string_literal: true
 
-gem 'minitest'
-require 'heel'
-require 'minitest/autorun'
-require 'minitest/pride'
+require "heel"
+require "minitest/autorun"
+require "minitest/focus"
+require "minitest/pride"

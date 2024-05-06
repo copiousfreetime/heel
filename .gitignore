@@ -1,7 +1,24 @@
-*.swp
+*.gem
+*.rbc
+*.log
+/.config/
+/coverage/
+/pkg/
+/test/tmp/
+/test/version_tmp/
+/tmp/
+/log/
+
+# documentation
+/doc/
+
+# editor
 *~
-coverage/
-doc/
-pkg/
-tmp/
-.byebug*
+*.swp
+*.swo
+
+# environment normalization
+/.gem/
+/.bundle/
+/vendor/bundle/
+/lib/bundler/man/
